@@ -1,0 +1,16 @@
+[book]
+authors = ["{{INITIATIVE_NAME}} Members"]
+language = "en"
+multilingual = false
+src = "."
+title = "{{INITIATIVE_NAME}} initiative"
+
+[output.html]
+no-section-label=true
+git-repository-url="https://github.com/rust-lang/{{INITIATIVE_SLUG}}"
+edit-url-template="https://github.com/rust-lang/{{INITIATIVE_SLUG}}/edit/master/{path}"
+site-url="/{{INITIATIVE_SLUG}}/"
+
+[output.html.fold]
+enable = true
+level = 0
