@@ -1,15 +1,15 @@
 [book]
-authors = ["{{INITIATIVE_NAME}} Members"]
+authors = ["keyword generics Members"]
 language = "en"
 multilingual = false
 src = "."
-title = "{{INITIATIVE_NAME}} initiative"
+title = "keyword generics initiative"
 
 [output.html]
 no-section-label=true
-git-repository-url="https://github.com/rust-lang/{{INITIATIVE_SLUG}}"
-edit-url-template="https://github.com/rust-lang/{{INITIATIVE_SLUG}}/edit/master/{path}"
-site-url="/{{INITIATIVE_SLUG}}/"
+git-repository-url="https://github.com/rust-lang/keyword-generics"
+edit-url-template="https://github.com/rust-lang/keyword-generics/edit/master/{path}"
+site-url="/keyword-generics/"
 
 [output.html.fold]
 enable = true

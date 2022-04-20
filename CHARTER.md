@@ -1,4 +1,4 @@
-# 📜 {{INITIATIVE_NAME}} Charter
+# 📜 keyword generics Charter
 <!--
  Provide an introduction summarising the goals and motivation behind your
  initiative.
