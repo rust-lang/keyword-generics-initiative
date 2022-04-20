@@ -34,7 +34,9 @@ https://github.com/rust-lang/infra-team/issues/new
 
 ## What is this?
 
-This page tracks the work of the keyword generics [initiative]! To learn more about what we are trying to do, and to find out the people who are doing it, take a look at the [charter]. 
+This page tracks the work of the keyword generics [initiative]! To learn more
+about what we are trying to do, and to find out the people who are doing it,
+take a look at the [charter]. 
 
 [charter]: ./CHARTER.md
 [initiative]: https://lang-team.rust-lang.org/initiatives.html
@@ -43,16 +45,16 @@ This page tracks the work of the keyword generics [initiative]! To learn more ab
 
 The following table lists of the stages of an initiative, along with links to the artifacts that will be produced during that stage.
 
-| Stage                                 | State | Artifact(s) |
-| ------------------------------------- | ----- | ----------- |
-| [Proposal]                            | ✅    | [Proposal issue](https://github.com/rust-lang/lang-team/) |
-|                                       |       | [Charter](./CHARTER.md) |
-|                                       |       | [Tracking issue](https://github.com/rust-lang/rust/) |
-| [Experimental]                        | 🦀    | [Evaluation](./evaluation.md) |
-|                                       |       | [RFC](./RFC.md) |
-| [Development]                         | 💤    | [Explainer](./explainer.md) | 
-| [Feature complete]                    | 💤    | Stabilization report |
-| [Stabilized]                          | 💤    | |
+| Stage              | State | Artifact(s)                                               |
+|--------------------|-------|-----------------------------------------------------------|
+| [Proposal]         | 🦀    | [Proposal issue](https://github.com/rust-lang/lang-team/) |
+|                    |       | [Charter](./CHARTER.md)                                   |
+|                    |       | [Tracking issue](https://github.com/rust-lang/rust/)      |
+| [Experimental]     | 🦀    | [Evaluation](./evaluation.md)                             |
+|                    |       | [RFC](./RFC.md)                                           |
+| [Development]      | 💤    | [Explainer](./explainer.md)                               |
+| [Feature complete] | 💤    | Stabilization report                                      |
+| [Stabilized]       | 💤    |                                                           |
 
 [Proposal]: https://lang-team.rust-lang.org/initiatives/process/stages/proposal.html
 [Experimental]: https://lang-team.rust-lang.org/initiatives/process/stages/proposal.html
