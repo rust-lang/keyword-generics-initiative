@@ -1,4 +1,4 @@
-## Implications of the effect hierarchy
+# Implications of the effect hierarchy
 
 One implication of the subset-superset relationship is that code which is
 generic over effects will not be able to use all functionality of the superset

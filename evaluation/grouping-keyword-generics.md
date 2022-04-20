@@ -1,4 +1,4 @@
-## Grouping Keyword Generics
+# Grouping Keyword Generics
 
 We expect it to be common that if a function takes generics and has conditional
 keywords on those, it will want to be conditional over *all* keywords on those

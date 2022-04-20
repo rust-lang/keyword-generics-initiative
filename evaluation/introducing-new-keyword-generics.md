@@ -1,4 +1,4 @@
-## Adding new keyword generics
+# Adding new keyword generics
 
 ```rust
 const fn foo() { // maybe const context
