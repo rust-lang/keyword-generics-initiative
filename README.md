@@ -19,7 +19,7 @@
  *Note* you need `-i ''` on macOS and just `-i` on Linux.
 
  * keyword generics -> The display name of your group e.g. "Inline ASM".
- * keyword-generics -> The url slug name of your group used for
+ * keyword-generics-initiative -> The url slug name of your group used for
    `rust-lang/team` and repo name. e.g. "pg-inline-asm".
  * Zulip -> The name of your chat app e.g. "Zulip".
  * {{CHAT_LINK}} -> The hyperlink to your discussions on the chat app
@@ -81,7 +81,7 @@ We also participate on [Zulip][chat-link], feel free to introduce yourself over 
 
 [open issues]: /issues
 [chat-link]: {{CHAT_LINK}}
-[team-toml]: https://github.com/rust-lang/team/blob/master/teams/initiative-keyword-generics.toml
+[team-toml]: https://github.com/rust-lang/team/blob/master/teams/initiative-keyword-generics-initiative.toml
 
 ## Building Documentation
 This repository is also an mdbook project. You can view and build it using the
