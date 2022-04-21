@@ -75,6 +75,7 @@ in a trenchcoat.
 |-----------|-----------------------------------|
 | [Owner]   | [Yosh Wuyts](https://github.com/yoshuawuyts) |
 | [Owner]   | [Oli Scherer](https://github.com/oli-obk) |
+| [Liaison] | [Niko Matsakis?](https://github.com/nikomatsakis) |
 
 [Owner]: https://lang-team.rust-lang.org/initiatives/process/roles/owner.html
 [Liaison]: https://lang-team.rust-lang.org/initiatives/process/roles/liaison.html
