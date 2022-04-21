@@ -1,9 +1,14 @@
 # Summary
 
 - [👋 Welcome](./README.md)
-- [✏️ Updates](./updates.md)
+- [✏️ Updates](./updates/README.md)
 - [📜 Charter](./CHARTER.md)
-- [🔬 Evaluation](./evaluation.md)
-- [📚 Explainer](./explainer.md)
+- [🔬 Evaluation](./evaluation/README.md)
+  - [Effect hierarchy](./evaluation/effect-hierarchy.md)
+  - [Grouping keyword generics](./evaluation/grouping-keyword-generics.md)
+  - [Introducing new keyword generics](./evaluation/introducing-new-keyword-generics.md)
+  - [MIR desugaring](./evaluation/mir-desugaring.md)
+  - [Overloading](./evaluation/overloading-keyword-generics.md)
+- [📚 Explainer](./evaluation/README.md)
 - [✨ RFC](./RFC.md)
 - [😕 FAQ](./FAQ.md)
