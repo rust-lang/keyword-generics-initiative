@@ -43,8 +43,8 @@ the difference in contexts is "compile time" and "run-time".
                       | | |                   | | |     - numbers
                       | | |    const Rust     |-------{ - functions               
                       | | |                   | | |     - control flow            
- Access to the host:  | | +-------------------+ | |     - traits (soon)                 
- - networking         | |                       | |     - containers (soon)
+ Access to the host:  | | +-------------------+ | |     - traits (planned)                 
+ - networking         | |                       | |     - containers (planned)
  - filesystem  }--------|      "base" Rust      | |                               
  - threads            | |                       | |                               
  - system time        | +-----------------------+ |     
