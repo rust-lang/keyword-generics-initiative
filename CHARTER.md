@@ -38,20 +38,21 @@ the difference in contexts is "compile time" and "run-time".
 
 ```
                       +---------------------------+                               
-                      | +-----------------------+ |                               
-                      | | +-------------------+ | |     - numbers                 
-                      | | |                   | | |     - containers (soon)      
+                      | +-----------------------+ |     Compute values:
+                      | | +-------------------+ | |     - types
+                      | | |                   | | |     - numbers
                       | | |    const Rust     |-------{ - functions               
                       | | |                   | | |     - control flow            
- - networking         | | +-------------------+ | |     - traits                  
- - filesystem         | |                       | |     - types                   
- - threads     }--------|      "base" Rust      | |                               
- - system time        | |                       | |                               
- - statics            | +-----------------------+ |                               
-                      |                           |     - ad-hoc concurrency      
-                      |        async Rust         |---{ - ad-hoc cancellation     
-                      |                           |     - ad-hoc parking/unparking
-                      +---------------------------+
+ Access to the host:  | | +-------------------+ | |     - traits (soon)                 
+ - networking         | |                       | |     - containers (soon)
+ - filesystem  }--------|      "base" Rust      | |                               
+ - threads            | |                       | |                               
+ - system time        | +-----------------------+ |     
+                      |                           |     Control over execution:      
+                      |         async Rust        |---{ - ad-hoc concurrency      
+                      |                           |     - ad-hoc cancellation     
+                      +---------------------------+     - ad-hoc pausing/resumption
+
 ```
 
 In terms of standard library these relationships also mirror each other. "Base"
