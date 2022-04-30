@@ -1,7 +1,18 @@
 # 📜 keyword generics Charter
 
-_Not being able to write code which is generic over keywords limits what we can
-express in Rust, and we should seek to improve that._
+One of Rust's defining features is the ability to write functions which are
+_generic_ over their input types. That allows us to write a function once,
+leaving it up to the compiler to generate the right implementations for us.
+
+When we introduce a new keyword for something which used to be a trait, we not
+only gain new functionality - we also lose the ability to be generic over that
+keyword. This proposal seeks to change that by introducing keyword generics: the
+ability to be generic over specific keywords.
+
+This proposal is scoped to the `const` and `async` keywords only, but is designed
+to be leveraged by other keywords as well in the future. Keywords are valuable,
+generics are valuable, users of Rust shouldn't have to choose between the two.
+
 <!--
  Provide an introduction summarising the goals and motivation behind your
  initiative.
