@@ -61,6 +61,36 @@ async<A> fn foo<T: SomeTrait * A>(t: T) {
 
 which allows you to call trait methods within the `~async fn`.
 
+### Combining effects
+
+If you have both `async` and `const` modifiers, your function may not perform
+any non-const operations like accessing the file system or static items, but is
+allowed to use `await`.
+
+```rust
+// Can be const, async, both or neither
+const<X> async<X> fn foo<T: SomeTrait * X>(t: T)
+where
+    effect X: async ^ const,
+{
+    t.bar().await
+}
+```
+
+`async` and `const` can mutually exclusive, because `async` is useful for non-blocking IO,
+but `const` doesn't have *any* IO at all. Thus we allow declaring arbitrary *exclusive-or*
+bounds for effects.
+
+```rust
+// Can be const, async, both or neither
+const<X> async<X> fn foo<T: SomeTrait * X>(t: T)
+where
+    effect X: async ^ const,
+{
+    t.bar().await
+}
+```
+
 - Yosh's brain error brain worms: we shouldn't have `try` functions, we should
   have functions which use `throws`, and it specifies which error we throw.
 - Oli: the carried error from `try` could just be inferred from the call-site.
@@ -90,3 +120,8 @@ try<E1, E2> fn foo(t: impl SomeTrait * E1 * E2) {
     t.some_method()??;
 }
 ```
+
+## Alternatives
+
+## Future Extensions
+
