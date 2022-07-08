@@ -80,7 +80,7 @@ Key:
 We also participate on [Zulip][chat-link], feel free to introduce yourself over there and ask us any questions you have.
 
 [open issues]: /issues
-[chat-link]: {{CHAT_LINK}}
+[chat-link]: https://rust-lang.zulipchat.com/#narrow/stream/328082-t-lang.2Fkeyword-generics
 [team-toml]: https://github.com/rust-lang/team/blob/master/teams/initiative-keyword-generics-initiative.toml
 
 ## Building Documentation
