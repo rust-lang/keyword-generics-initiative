@@ -50,9 +50,9 @@ The following table lists of the stages of an initiative, along with links to th
 | [Proposal]         | 🦀    | [Proposal issue](https://github.com/rust-lang/lang-team/issues/162) |
 |                    |       | [Charter](./CHARTER.md)                                             |
 |                    |       | [Tracking issue](https://github.com/rust-lang/rust/)                |
-| [Experimental]     | 🦀    | [Evaluation](./evaluation.md)                                       |
+| [Experimental]     | 🦀    | [Evaluation](./evaluation/)                                         |
 |                    |       | [RFC](./RFC.md)                                                     |
-| [Development]      | 💤    | [Explainer](./explainer.md)                                         |
+| [Development]      | 💤    | [Explainer](./explainer/)                                           |
 | [Feature complete] | 💤    | Stabilization report                                                |
 | [Stabilized]       | 💤    |                                                                     |
 
