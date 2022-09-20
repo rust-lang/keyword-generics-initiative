@@ -141,7 +141,9 @@ where
     // ...
 }
 ```
-Using the same `const` effect parameter (in our impl) doesn't work. Checking `F1: const<?> FnMut(T) -> R` may infer the `const`-ness to `yes` at which point `F2: const<yes> FnMut(U) -> R` would result in an error if `F2` isn't const, even though it should only result in `merge` not being `const`.
+This example has a function with two arguments which should only be `const` if **both** arguments are `const`. More importantly, it should be possible to have 1 argument be `const` while the other one is not without causing an error.
+
+This means that using the same `const` effect parameter (in our impl) doesn't work. Checking `F1: const<?> FnMut(T) -> R` may infer the `const`-ness to `yes` at which point `F2: const<yes> FnMut(U) -> R` would result in an error if `F2` isn't const, even though it should only result in `merge` not being `const`.
 
 Unifying const effect infer variables may require some experimentation but shouldn't be too bad.
 
