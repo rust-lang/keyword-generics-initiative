@@ -42,7 +42,7 @@ trait Read {
 fn read_to_string(reader: &mut impl Read) -> std::io::Result<String> {
     let mut string = String::new();
     reader.read_to_string(&mut string)?;
-    string
+    Ok(string)
 }
 ```
 
@@ -59,7 +59,7 @@ trait ?async Read {
 ?async fn read_to_string(reader: &mut impl ?async Read) -> std::io::Result<String> {
     let mut string = String::new();
     reader.read_to_string(&mut string).await?;
-    string
+    Ok(string)
 }
 ```
 
@@ -102,7 +102,7 @@ trait ?const Read {
 ?const fn read_to_string(reader: &mut impl ?const Read) -> std::io::Result<String> {
     let mut string = String::new();
     reader.read_to_string(&mut string).await?;
-    string
+    Ok(string)
 }
 ```
 
@@ -117,7 +117,7 @@ we call a `const fn` today is not in fact guaranteed to be const-evaluated: it
 [read]: https://doc.rust-lang.org/std/io/trait.Read.html
 [rts]: https://doc.rust-lang.org/std/io/fn.read_to_string.html
 
-## A const and async example
+## Combining const and async
 
 For completion's sake, let's take a look at what the `Read` trait would look like when
 it's both maybe-const and maybe-async:
@@ -129,10 +129,10 @@ trait ?const ?async Read {
 }
 
 /// Read from a reader into a string.
-?const ?async fn read_to_string(reader: &mut impl ?const ?async Read) -> std::io::Result<String> {
+?const ?async fn read_to_string(reader: &mut impl ?const ?async Read) -> io::Result<String> {
     let mut string = String::new();
     reader.read_to_string(&mut string).await?;
-    string
+    Ok(string)
 }
 ```
 
@@ -175,31 +175,159 @@ modifier keywords, but requires it to always be `async`. It should be possible
 for functions to enforce these kinds of restrictions in the type system, and we're
 not yet sure how we'd go about this.
 
+## Adding support for types
+
+We don't just want `?const` and `?async` to apply to functions, traits, and
+trait bounds. We want people to be able to use it in types as well. This will
+enable us to start providing async types such as `TcpStream` and `File` directly
+from the stdlib, without needing to duplicate interfaces.
+
+The challenge with concrete async types is that their behavior will be different
+when used in async and non-async contexts. Instead of blocking on a call, it
+instead asynchronously _waits_ on a call. In the implementation this means
+different system calls, and different fields in the struct. Luckily we have
+accounted for this in our design.
+
+Say we wanted to implement `?async File` with a single `?async open` method. The
+way we expect this to look will be something like this:
+
+```rust
+/// A file which may or may not be async
+struct ?async File {
+    file_descriptor: std::os::RawFd,  // shared field in all contexts
+    async waker: Waker,               // field only available in async contexts
+    !async meta: Metadata,            // field only available in non-async contexts
+}
+
+impl ?async File {
+    /// Attempts to open a file in read-only mode.
+    ?async fn open(path: Path) -> io::Result<Self> {
+        if is_async() {   // compiler built-in function
+            // create an async `File` here; can use `.await`
+        } else {
+            // create a non-async `File` here
+        }
+    }
+}
+```
+
+This enables authors to use different fields depending on whether they're compiling
+for async or not, while still sharing a common core. And within function bodies
+to provide different behaviors depending on the context as well. The function
+body notation would work as a generalization of the currently unstable
+[`const_eval_select`][eval-select] intrinsic, and at least for the function
+bodies we expect a similar `is_const()` compiler built-in to be made available
+as well.
+
+[eval-select]: https://doc.rust-lang.org/std/intrinsics/fn.const_eval_select.html
+[connect]: https://doc.rust-lang.org/std/net/struct.TcpStream.html#method.connect
+
+## Consistent syntax
+
+One of the biggest challenges in language design is adding features in a way that
+makes them feel like they're a core part of the language, rather than a separate
+language which just happens to be shipped in the same package. And modifier
+keywords such as `async` and `const` definitely risk feeling like their own
+niche if we're not careful.
+
+Luckily in Rust we have the ability to make surface-level changes to the
+language through the edition system. There are many things this doesn't let us
+do, but it does allow us to require syntax changes. We want to leverage this
+to help make `const` and `async` feel consistent with one another, and to make
+their base versions feel consistent with their maybe-counterparts.
+
+For `const` this means there should be a syntactic distinction between `const`
+declarations and `const` uses. Currently when you write `const fn` you get a
+function which can be evaluated both at runtime and during compilation. But when
+you write `const FOO: () = ..;` the meaning of `const` there guarantees
+compile-time evaluation. Same keyword, different meanings. So for that reason we
+want to propose we change `const fn` to `?const fn` to more clearly indicate
+that this function may be const-evaluated, but can also be used at runtime.
+
+```rust
+//! Define a function which may be evaluated both at runtime and during
+//! compilation.
+
+// Current
+const fn meow() -> String { .. }
+
+// Proposed
+?const fn meow() -> String { .. }
+```
+
+For `async` we're planning similar surface-level consistency changes. To implement
+inherent `?async` methods on types we will required that the type itself is
+labeled with `?async`. This is currently not the case when implementing inherent
+always-async methods on types, which is an inconsistency we may want to address:
+
+```rust
+//! Proposed: define a method on a maybe-async type
+struct ?async File { .. }
+impl ?async File {
+    ?async fn open(path: PathBuf) -> io::Result<Self> { .. }
+}
+
+//! Current: define a method on an always-async type
+struct File { .. }
+impl File {
+    async fn open(path: PathBuf) -> io::Result<Self> { .. }
+}
+
+//! Proposed: define a method on an always-async type
+struct async File { .. }
+impl async File {
+    async fn open(path: PathBuf) -> io::Result<Self> { .. }
+}
+```
+
+Similarly, the Async WG is in the process of moving from "async functions in
+traits" to a design for "async traits". This would unlock the `async(Send)`
+syntax which will enable declaring bounds on the anonymous futures return by the
+async methods returned by the trait. The ["Lightweight, Predictable Async Send
+Bounds"][bounds-post] by Eric Holk covers this design in more detail, but here's
+a brief example of what it would look like when combined with the `struct async`
+notation:
+
+```rust
+struct async File { .. }
+impl async Read for async File {
+    async fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> { .. }
+}
+
+async fn read_to_string(reader: &mut impl async Read) -> io::Result<String> {
+    let mut string = String::new();
+    reader.read_to_string(&mut string).await?;
+    Ok(string)
+}
+```
+
+What's nice about the `reader: &mut impl async Read` bound is that it won't
+distinguish between "maybe-async" and "always-async" types. If it takes a type
+which implements `?async Read`, it will just interpret it as a type implementing
+`async Read`. While this is a slight increase in verbosity, it will make usage
+of async types unambiguous, and importantly make `async` and `?async` types
+behave consistently and interchangeably. This also means that it will be
+backwards-compatible to mark an existing (async) type or trait as
+`?async`, since they would require bounds on their usage.
+
 ## The plan
 
 Our initial focus will be on the `async` and `const` keywords specifically.
 We're now ready to start writing RFCs, so we have the following planned (in no
 particular order):
 
-1. `?async fn` notation without trait bounds, including an `async_eval_select`
-    mechanism [^async-eval].
-2. `async trait` declarations and bounds.
-3. `?async trait` declarations and bounds, `?const trait` declarations and bounds
-4. `?const fn` notation, becoming the recommended notation for Rust 2024.
+1. `?async fn` notation without trait bounds, including an `is_async` mechanism.
+2. `trait async`  declarations and bounds.
+3. `trait ?async` declarations and bounds, `trait ?const` declarations and bounds.
+4. `?const fn` notation without trait bounds.
+5. `struct async` notation and `struct ?const` notation.
 
 We're going to be working with the Lang Team, and Async WG on these.
 Specifically the `async trait` notation RFC will be driven by the Async WG,
-though the Keyword Generics Initiative will be advicing.
-
-Only once those RFCs have been completed will we start looking more closely at
-the `effect/.do` notation. After all: without it there would be no keywords to
-be generic over!
-
-[^async-eval]: Think
-[`const_eval_select`](https://doc.rust-lang.org/std/intrinsics/fn.const_eval_select.html)
-but for `?async` contexts. This is needed to enable concrete `?async` types to
-function such as `?File` - because it relies on a different implementation for
-`async` and non-`async` operation.
+with the Keyword Generics Initiative taking an advicing role. Only once those
+RFCs have been completed will we start looking more closely at the `effect/.do`
+notation. We're doing that because `effect/.do` needs keywords to be generic
+over, and there currently are none yet.
 
 ## Conclusion
 
@@ -209,4 +337,5 @@ speaking of: we'll be publishing those over the coming months, and once they go
 through it shouldn't be long before we can bring the features to nightly. Most
 of what we've discussed in this post (except `effect/.do` and specific inference
 bits) has already been successfully prototyped outside of the stdlib, meaning
-we have a really good sense of how it's going to work.
+we have a really good sense of how it's going to work and are fairly confident
+in what we're presenting in this post.
