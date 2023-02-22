@@ -2,6 +2,7 @@
 
 - [👋 Welcome](./README.md)
 - [✏️ Updates](./updates/README.md)
+  - [Progress Report Feburary 2023](./updates/progress-report-february-2023.md)
 - [📜 Charter](./CHARTER.md)
 - [🔬 Evaluation](./evaluation/README.md)
   - [Effect hierarchy](./evaluation/effect-hierarchy.md)
