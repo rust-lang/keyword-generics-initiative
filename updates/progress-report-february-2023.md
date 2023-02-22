@@ -6,12 +6,13 @@
 
 About 9 months ago [we announced][announce] the creation of the Keyword Generics
 Initiative; a group working under the lang team with the intent to solve the 
-[function coloring problem][color] [^color] not just for `async`, but for
-`const` and all current and future function keywords as well.
+[function coloring problem][color] [^color] through the type system not just for
+`async`, but for `const` and all current and future function modifier keywords
+as well.
 
 We're happy to share that we've made a lot of progress over these last several
-months, and are now working on writing RFCs.  This post is a summary of what
-we'll be including in those RFCs.
+months, and are now working on writing RFCs. This post is an overview of the
+designs we'll be covering in those RFCs.
 
 [announce]: https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html
 [color]: https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
@@ -26,11 +27,15 @@ they're async or not, const or not, etc.
 
 ## An async example
 
-In our last post we introduced the placeholder `async<A>` syntax. We used this
-to describe the semantics of keyword generics. We always knew we wanted something
-lighter weight, and we've chosen to go with the `?async`-notation for functions and types which are generic over their "asyncness". We refer to this as "maybe-async" functions.
+In our last post we introduced the placeholder `async<A>` syntax to describe the
+concept of a "function which is generic over its asyncness". We always knew we
+wanted something lighter weight, and we've chosen to go with the
+`?async`-notation for functions and types which are generic over their
+"asyncness". We refer to these as "maybe-async" functions.
 
-Say we took the [`Read` trait][read] and the [read_to_string_methods][rts]. In the stdlib their implementations look somewhat like this today:
+To show an example. Say we took the [`Read` trait][read] and the
+[read_to_string_methods][rts]. In the stdlib their implementations look somewhat
+like this today:
 
 ```rust
 trait Read {
@@ -47,7 +52,7 @@ fn read_to_string(reader: &mut impl Read) -> std::io::Result<String> {
 ```
 
 Now, what if we wanted to make these async in the future? Using `?async`
-notation we change them to look like this:
+notation we could change them to look like this:
 
 ```rust
 trait ?async Read {
@@ -63,8 +68,20 @@ trait ?async Read {
 }
 ```
 
-The `read_to_string` function is `?async`, which means it can be called from
-`async`, `?async` and non-`async` contexts alike:
+The way this works is that `Read` and `read_to_string` are now generic over
+their "asyncness". When compiled for an `async` context, they'll behave
+asynchronously. When compiled in a non-async context, they'll behave
+synchronously. The `.await` in the `read_to_string` function body is necessary
+to mark the cancellation pointin case the function is compiled as async; but it
+when not async it will essentially be a no-op [^always-async-maybe]:
+
+[^always-async-maybe]: One important rule for `?async` contexts is that they can
+only call other `?async` and non-`async` functions. Because if it would call an
+always-`async` function, there would be no clear right thing to do when compiled
+as a non-async function. So async-only things like concurrency won't directly
+work in always-async contexts. But using the `if is_async() {} else {}`
+functionality we show later on in the post you could define `?async` functions
+which make use of concurrency operations *only* when compiled in async mode.
 
 ```rust
 // `read_to_string` is inferred to be `!async` because
