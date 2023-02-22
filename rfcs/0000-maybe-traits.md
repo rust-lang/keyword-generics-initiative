@@ -1,7 +1,7 @@
 # 0000-maybe-traits
 
-- Feature Name: (fill me in with a unique ident, `maybe-traits`)
-- Start Date: (fill me in with today's date, 2023-02-22)
+- Feature Name: `maybe-traits`
+- Start Date: 2023-02-22
 - RFC PR: [rust-lang/rfcs#0000](https://github.com/rust-lang/rfcs/pull/0000)
 - Rust Issue: [rust-lang/rust#0000](https://github.com/rust-lang/rust/issues/0000)
 
