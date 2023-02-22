@@ -1,4 +1,4 @@
-# Progress Report Feburary 2023
+# Progress Report February 2023
 
 * This post is intended to be published on the Rust internals blog.*
 
