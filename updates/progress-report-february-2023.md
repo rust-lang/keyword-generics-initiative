@@ -408,7 +408,7 @@ the iniatiative, and hold off on making plans to introduce it quiet yet.
 
 And that concludes the 9-month progress report of the Keyword Generics
 Initiative. We hope to be able to provide more exact details about things such
-as desugarings, and language semantics in the RFCs. We're pretty stoked with the
+as desugarings, semantics, and alternatives in the RFCs. We're pretty stoked with the
 progress we've made in these past few months! Something which I don't think
 we've mentioned yet, but is probably good to share: we've actually prototyped
 much of the work in this post already; so we're feeling fairly confident all of
