@@ -11,8 +11,10 @@ Initiative; a group working under the lang team with the intent to solve the
 as well.
 
 We're happy to share that we've made a lot of progress over these last several
-months, and are now working on writing RFCs. This post is an overview of the
-designs we'll be covering in those RFCs.
+months, and we're finally ready to start putting some of our designs forward through
+RFCs. Because it's been a while since our last update, and because we're excited
+to share what we've been working on, in this post we'll be going over some of the things
+we're planning to propose.
 
 [announce]: https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html
 [color]: https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
@@ -27,13 +29,16 @@ they're async or not, const or not, etc.
 
 ## An async example
 
-In our last post we introduced the placeholder `async<A>` syntax to describe the
+In our [previous post][announce] we introduced the placeholder `async<A>` syntax to describe the
 concept of a "function which is generic over its asyncness". We always knew we
-wanted something lighter weight, and we've chosen to go with the
-`?async`-notation for functions and types which are generic over their
-"asyncness". We refer to these as "maybe-async" functions.
+wanted something that felt lighter weight than that, so in for our current design
+we've chosen to drop the notion of a generic parameter for the end-user syntax,
+and instead picked the `?async` notation. We've borrowed this from the trait
+system, where for example `+ ?Sized` indicates that something may or may not
+implement the `Sized` trait. Similarly `?async` means a function may or may not be
+async. We also refer to these as "maybe-async" functions.
 
-To show an example. Say we took the [`Read` trait][read] and the
+Time for an example. Say we took the [`Read` trait][read] and the
 [read_to_string_methods][rts]. In the stdlib their implementations look somewhat
 like this today:
 
@@ -68,24 +73,27 @@ trait ?async Read {
 }
 ```
 
-The way this works is that `Read` and `read_to_string` are now generic over
-their "asyncness". When compiled for an `async` context, they'll behave
-asynchronously. When compiled in a non-async context, they'll behave
+The way this would work is that `Read` and `read_to_string` would become generic over
+their "asyncness". When compiled for an `async` context, they will behave
+asynchronously. When compiled in a non-async context, they will behave
 synchronously. The `.await` in the `read_to_string` function body is necessary
-to mark the cancellation pointin case the function is compiled as async; but it
-when not async it will essentially be a no-op [^always-async-maybe]:
+to mark the cancellation pointin case the function is compiled as async; but
+when not async would essentially become a no-op [^always-async-maybe]:
 
-[^always-async-maybe]: One important rule for `?async` contexts is that they can
-only call other `?async` and non-`async` functions. Because if it would call an
+[^always-async-maybe]: One restriction `?async` contexts have is that they can
+only call other `?async` and non-`async` functions. Because if we could call an
 always-`async` function, there would be no clear right thing to do when compiled
-as a non-async function. So async-only things like concurrency won't directly
-work in always-async contexts. But using the `if is_async() {} else {}`
-functionality we show later on in the post you could define `?async` functions
-which make use of concurrency operations *only* when compiled in async mode.
+in non-async mode. So things like async concurrency operations won't directly
+work in always-async contexts. But we have a way out of this we talk about later
+in the post: `if is_async() .. else ..`. This allows you to branch the body of a
+`?async fn` based on which mode it's being compiled in, and will allow you to
+write different logic for async and non-async modes. This means you can choose
+to use async concurrency in the async version, but keep things sequential in the
+non-async version.
 
 ```rust
 // `read_to_string` is inferred to be `!async` because
-// we didn't `.await` it, nor expect a future of any kind.
+// we didn't `.await` it, nor expected a future of any kind.
 #[test]
 fn sync_call() {
     let _string = read_to_string("file.txt")?;
@@ -99,45 +107,70 @@ async fn async_call() {
 }
 ```
 
+We expect `?async` notation would be most useful for library code which doesn't
+do anything particularly specific to async Rust. Think: most of the stdlib, and
+ecosystem libraries such as parsers, encoders, and drivers. We expect most
+applications to choose to be compiled either as async or non-async, making them
+mostly a consumer of `?async` APIs.
+
 ## A const example
 
-For `const` we're planning to introduce syntax which mirrors the syntax for
-`async`. We want function modifier keywords in Rust to feel like they're part
-of a single language, following consistent rules. So this means using `?const`
-to denote "maybe-const" bounds and contexts.
+A main driver of the keywords generics initiative has been our desire to make the
+different modifier keywords in Rust feel consistent with one another. Both the
+const WG and the async WG were thinking about introducing keyword-traits at the
+same time, and we figured we should probably start talking with each other to make
+sure that what we were going to introduce felt like it was part of the same
+language - and could be extended to support more keywords in the future.
 
-Taking the `Read` example we had earlier, we could imagine a "maybe-const" version
-of the `Read` trait to look like this:
+So with that in mind, it may be unsurprising that for the maybe-`const` trait
+bounds and declarations we're going to propose using the `?const` notation.
+A common source of confusion with `const fn` is that it actually doesn't
+guarantee compile-time execution; it only means that it's *possible* to evaluate
+in a `const` compile-time context. So in a way `const fn` has always been a way
+of declaring a "maybe-const" function, and there isn't a way to declare an
+"always-const" function. More on that later in this post.
+
+Taking the `Read` example we used earlier, we could imagine a "maybe-const" version
+of the `Read` trait to look very similar:
 
 ```rust
 trait ?const Read {
     ?const fn read(&mut self, buf: &mut [u8]) -> Result<usize>;
     ?const fn read_to_string(&mut self, buf: &mut String) -> Result<usize> { ... }
 }
+```
 
-/// Read from a reader into a string.
-?const fn read_to_string(reader: &mut impl ?const Read) -> std::io::Result<String> {
+Which we could then use use as a bound in the const `read_to_string` function, like this:
+
+```rust
+const fn read_to_string(reader: &mut impl ?const Read) -> std::io::Result<String> {
     let mut string = String::new();
-    reader.read_to_string(&mut string).await?;
+    reader.read_to_string(&mut string)?;
     Ok(string)
 }
 ```
 
-Just like with `?async` traits, traits will need to be marked as `?const` both
-when declared and when used. But additionally we also intend to change the
-existing `const fn` notation to become `?const fn`, making it clearer that what
-we call a `const fn` today is not in fact guaranteed to be const-evaluated: it
-*may* be used in `const` contexts, but doesn't have to. In contrast: using a `const`-declaration or `const` block will be guaranteed to be *always*-const [^const-post].
+Just like with `?async` traits, `?const` traits would also need to be labeled as
+such when used in a bound. This is important to surface at the trait level,
+because it's allowed to pass non-const bounds to maybe-const functions, as long
+as no trait methods are called in the function body. This means we need to
+distinguish between "never-const" and "maybe-const".
 
-[^const-post]: You can read more about this in the [Keywords II: Const Syntax](https://blog.yoshuawuyts.com/const-syntax/) blog post.
+You may have noticed the `?const` on the trait declaration and the extra
+`?const` on the trait methods. This is on purpose: it keeps the path open to
+potentially add support for "always-const" or "never-const" methods on traits as
+well. In `?async` we know that even if the entire trait is `?async`, some
+methods (such as `Iterator::size_hint`) will never be async. And this would keep
+both `?const` and `?async` traits use the same rules.
 
 [read]: https://doc.rust-lang.org/std/io/trait.Read.html
 [rts]: https://doc.rust-lang.org/std/io/fn.read_to_string.html
 
 ## Combining const and async
 
-For completion's sake, let's take a look at what the `Read` trait would look like when
-it's both maybe-const and maybe-async:
+We've covered `?async`, and we've covered `?const`. Now what happens if we were
+to use them together? Let's take a look at what the `Read` trait would look like
+when if we extended it using our designs for `?const` and `?async`:
 
 ```rust
 trait ?const ?async Read {
@@ -153,14 +186,25 @@ trait ?const ?async Read {
 }
 ```
 
-While this does in fact accurately describe what's going on, you can see it's
-starting to look rather verbose. You can imagine that if we were to throw
-fallibility (`throws`) or some other keyword in the mix it would quickly start
-resembling a bit of a keyword stew. To fix this we intend to a new `effect/.do`
-notation which will enable being generic over *all* modifier keywords. This is
-not yet part of what we'll be proposing, as it needs a lot more design work. But
-it is an important part of our final vision, so we want to provide a brief
-glimpse at what we think it might look like if we rewrote the `Read` trait using that:
+That's sure starting to feel like a lot of keywords, right? We've accurately
+described exactly what's going on, but there's a lot of repetition. We know that
+if we're dealing with a `?const ?async fn`, most arguments probably will also
+want to be `?const ?async`. But under the syntax rules we've proposed so far,
+you'd end up repeating that everywhere. And it probably gets worse once we start
+adding in more keywords. Not ideal!
+
+So we're very eager to make sure that we find a solution to this. And we've been
+thinking about a way we could get out of this, which we've been calling
+`effect/.do`-notation. This would allow you to mark a function as "generic over
+all modifier keywords" by annotating it as `effect fn`, and it would allow the
+compiler to insert all the right `.await`, `?`, and `yield` keywords in the
+function body by suffixing function calls with `.do`.
+
+Just to set some expectations: this is the least developed part of our proposal,
+and we don't intend to formally propose this until after we're done with some of
+the other proposals. But we think it's an important part of the entire vision,
+so we wanted to make sure we shared it here. And with that out of the way,
+here's the same example we had above, but this time using the `effect/.do`-notation:
 
 ```rust
 trait ?effect Read {
@@ -176,21 +220,16 @@ trait ?effect Read {
 }
 ```
 
-`?effect` would be equivalent to `?const` and `?async`, but importantly: would
-in the future extend to include any other keywords as well. For example: `?gen`
-or `?throws`. And using the `.do` notation we could make sure the right
-combination of `.await`, `?`, `yield`, etc. are always inserted in the right
-spot.
+One of the things we would like to figure out as part of `effect/.do` is a way
+to enable writing conditional effect-bounds. For example: there may be a
+function which is always async, may never panic, and is generic over the
+remainder of the effects. Or like we're seeing with APIs such as
+[`Vec::reserve`] and [`Vec::try_reserve`]: the ability to panic xor return an
+error. This will take more time and research to figure out, but we believe it
+is something which can be solved.
 
-There are a bunch of things we still need to figure out for this. For example:
-we probably would want a modifier keyword for fallibility (e.g. `throws`) to be
-stabilized first, so that `.do` can be expanded to include `?` as well. And we
-probably want to find a way to enable different modifier keywords to be marked
-as mutually exclusive. For example: "can panic" and "will return an error" may
-be exclusive to one another. Or perhaps a function wants to be generic over most
-modifier keywords, but requires it to always be `async`. It should be possible
-for functions to enforce these kinds of restrictions in the type system, and we're
-not yet sure how we'd go about this.
+[`Vec::reserve`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve
+[`Vec::try_reserve`]: https://doc.rust-lang.org/std/vec/struct.Vec.html#method.try_reserve
 
 ## Adding support for types
 
