@@ -394,22 +394,23 @@ the following proposals (in no particular order):
 - `struct async` notation and `struct ?const` notation.
 
 We'll be working closely with the Lang Team, Const WG, and Async WG on these
-proposals, 
+proposals, and in some cases (such as `trait async`) we may even take an
+advicing role with a WG directly driving the RFC. As usual, these will be going
+through the RFC-nightly-stabilization cycle. And only once we're fully confident
+in them will they become available on stable Rust.
 
-We're going to be working with the Lang Team, and Async WG on these.
-Specifically the `async trait` notation RFC will be driven by the Async WG,
-with the Keyword Generics Initiative taking an advicing role. Only once those
-RFCs have been completed will we start looking more closely at the `effect/.do`
-notation. We're doing that because `effect/.do` needs keywords to be generic
-over, and there currently are none yet.
+We're intentionally not yet including `effect/.do` notation on this roadmap. We
+expect to only be able to start this work once we have `?async` on nightly,
+which we don't yet have. So for now we'll continue work on designing it within
+the iniatiative, and hold off on making plans to introduce it quiet yet.
 
 ## Conclusion
 
-And that concludes the summary of what we're looking at. We intentionally didn't
-drill too deep into details because that's what the RFCs will be for. Which
-speaking of: we'll be publishing those over the coming months, and once they go
-through it shouldn't be long before we can bring the features to nightly. Most
-of what we've discussed in this post (except `effect/.do` and specific inference
-bits) has already been successfully prototyped outside of the stdlib, meaning
-we have a really good sense of how it's going to work and are fairly confident
-in what we're presenting in this post.
+And that concludes the 9-month progress report of the Keyword Generics
+Initiative. We hope to be able to provide more exact details about things such
+as desugarings, and language semantics in the RFCs. We're pretty stoked with the
+progress we've made in these past few months! Something which I don't think
+we've mentioned yet, but is probably good to share: we've actually prototyped
+much of the work in this post already; so we're feeling fairly confident all of
+this may actually *actually* work. And that is something we're
+incredibly excited for!
