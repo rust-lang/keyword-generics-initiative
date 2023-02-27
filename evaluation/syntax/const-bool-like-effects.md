@@ -30,36 +30,54 @@ where
 ## always async
 
 <!-- A variant where all items are always `async` -->
+In all 
+The methods on the trait are assumed async because the trait is `async`.
+
+Variation A:
 
 ```rust
 pub async trait Iterator {
     type Item;
-    // function assumed async since trait is
     fn next(&mut self) -> Option<Self::Item>;
     !async fn size_hint(&self) -> (usize, Option<usize>);
 }
-// or
-pub trait Iterator<effect async> {
-    type Item;
-    fn next(&mut self) -> Option<Self::Item>;
-    fn size_hint<effect !async>(&self) -> (usize, Option<usize>);
-}
-// or
-pub trait Iterator where effect async {
-    type Item;
-    fn next(&mut self) -> Option<Self::Item>;
-    fn size_hint(&self) -> (usize, Option<usize>) where effect !async;
-}
-
 
 pub async fn find<I, T, P>(iter: &mut I, predicate: P) -> Option<T>
 where
     I: Iterator<Item = T> + Sized,
     P: async FnMut(&T) -> bool;
+```
 
-// or
+Variation B. Using an "`effect`-generics" notation:
+
+```rust
+pub trait Iterator<effect async> {
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
+    fn size_hint<effect !async>(&self) -> (usize, Option<usize>);
+}
 
 pub fn find<I, T, P, effect async>(iter: &mut I, predicate: P) -> Option<T>
+where
+    I: Iterator<Item = T> + Sized,
+    P: FnMut<effect async>(&T) -> bool;
+```
+
+Variation C. Using an `effect`-notation in `where`-bounds:
+
+```rust
+pub trait Iterator
+where
+    effect async
+{
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
+    fn size_hint(&self) -> (usize, Option<usize>)
+    where
+        effect !async;
+}
+
+pub fn find<I, T, P>(iter: &mut I, predicate: P) -> Option<T>
 where
     I: Iterator<Item = T> + Sized,
     P: FnMut<effect async>(&T) -> bool;
@@ -69,18 +87,49 @@ where
 
 <!-- A variant where all items are generic over `async` -->
 
+For all variations the use of `<effect async = A>` on `fn next` is elided.
+
+Variation A. Using an `effect A: async` + `!async fn` in the trait definition:
+
 ```rust
 pub trait Iterator<effect A: async> {
     type Item;
-    // `<effect async = A>` elided
     fn next(&mut self) -> Option<Self::Item>;
     !async fn size_hint(&self) -> (usize, Option<usize>);
-    // or
+}
+
+pub fn find<I, T, P, effect A: async>(iter: &mut I, predicate: P) -> Option<T>
+where
+    I: Iterator<Item = T, effect async = A> + Sized,
+    P: FnMut<effect async = A>(&T) -> bool;
+```
+
+Variation B. Using `effect A: async` + `effect! async` in the trait definition:
+
+```rust
+pub trait Iterator<effect A: async> {
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
     fn size_hint<effect !async>(&self) -> (usize, Option<usize>);
-    // or
-    fn size_hint(&self) -> (usize, Option<usize>) where effect !async;
-    // as opposed to `where A = !async` which would make this function
-    // only exist if we're in a context where `Iterator<A = true>`
+}
+
+pub fn find<I, T, P, effect A: async>(iter: &mut I, predicate: P) -> Option<T>
+where
+    I: Iterator<Item = T, effect async = A> + Sized,
+    P: FnMut<effect async = A>(&T) -> bool;
+```
+
+Variation C. Using `effect A: async` + `where effect !async` notation.  If we'd
+instead written `where A = !async`, the `size_hint` method would only exist if
+the context was not async. It instead now exists as not async in all contexts:
+
+```rust
+pub trait Iterator<effect A: async> {
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
+    fn size_hint(&self) -> (usize, Option<usize>)
+    where
+        effect !async;
 }
 
 pub fn find<I, T, P, effect A: async>(iter: &mut I, predicate: P) -> Option<T>
@@ -107,6 +156,7 @@ where
     P: FnMut<for<effect> = A>(&T) -> bool;
 ```
 [See also](#foreffect-bounds-and-traits)
+
 # Notes
 `!async fn foo` could be `sync fn foo` or omitted entirely in favor of only having `fn foo<effect !async>`. It is also a question if *all* effects should allow for `effect fn foo` syntax.
 
