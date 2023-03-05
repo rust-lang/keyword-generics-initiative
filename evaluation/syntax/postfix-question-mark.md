@@ -1,4 +1,4 @@
-- Name: `postix-question-mark`
+- Name: `postfix-question-mark`
 - Proposed by: [@tvallotton](https://github.com/tvallotton)
 
 # Design
