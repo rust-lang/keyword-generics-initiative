@@ -4,7 +4,7 @@
 
 `async/.await` in Rust is considered "MVP stable". This means the reification of
 the effect is stable, and both the `async` and `.await` keywords exist in the
-language, but not all keyword positions are available yet. At the time of writing the most notable omissions are
+language, but not all keyword positions are available yet.
 
 ## Description
 
@@ -12,13 +12,13 @@ todo
 
 ## Feature categorization
 
-| Position      | Syntax               |
-| ------------- | -------------------- |
-| Create scope  | `async`              |
-| Return item   | N/A                  |
-| Forward item  | `.await`             |
-| Consume scope | `thread::block_on` † |
-| Reification   | `impl Future`        |
+| Position    | Syntax               |
+| ----------- | -------------------- |
+| Create      | `async`              |
+| Yield       | N/A                  |
+| Forward     | `.await`             |
+| Consume     | `thread::block_on` † |
+| Reification | `impl Future`        |
 
 > † `thread::block_on` is not yet part of the stdlib, and only exists as a
 > library feature. An example implementation can be found in the
@@ -35,6 +35,12 @@ todo
 | Trait declarations  | ❌        | `async trait Cat {}`               |
 | Block scope         | ✅        | `fn meow() { async {} }`           |
 | Argument qualifiers | ❌        | `fn meow(cat: impl async Cat) {}`  |
-| Drop                | ❌        | `impl async Drop for Cat {}`       |
+| Data types †         | ❌        | `async struct Cat {}`              |
+| Drop †               | ❌        | `impl async Drop for Cat {}`       |
 | Closures            | ❌        | `async ǀǀ  {}`                     |
 | Iterators           | ❌        | `for await cat in cats {}`         |
+
+> † In non-async Rust if you place a value which implements `Drop` inside of
+> another type, the destructor of that value is run when the enclosing type is
+> destructed. This is called _drop-forwarding_. In order for drop-forwarding to
+> work with async drop, some form of "async value" annotation will be required.

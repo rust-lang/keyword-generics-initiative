@@ -10,10 +10,10 @@ todo
 
 ## Feature categorization
 
-| Position      | Syntax     |
-| ------------- | ---------- |
-| Create        | `try`      |
-| Return item   | `throw`    |
-| Forward item  | `?`        |
-| Consume scope | `match`    |
-| Reification   | `impl Try` |
+| Position    | Syntax     |
+| ----------- | ---------- |
+| Create      | `try`      |
+| Yield       | `throw`    |
+| Forward     | `?`        |
+| Consume     | `match`    |
+| Reification | `impl Try` |

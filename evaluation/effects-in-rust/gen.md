@@ -12,13 +12,13 @@ todo
 
 ## Technical Overview
 
-| Position      | Syntax          |
-| ------------- | --------------- |
-| Create        | `gen`           |
-| Return item   | `yield`         |
-| Forward item  | N/A             |
-| Consume scope | `for..in`       |
-| Reification   | `impl Iterator` |
+| Position    | Syntax          |
+| ----------- | --------------- |
+| Create      | `gen`           |
+| Yield       | `yield`         |
+| Forward     | N/A             |
+| Consume     | `for..in`       |
+| Reification | `impl Iterator` |
 
 ## Refinements
 

@@ -12,6 +12,7 @@
     - [Multiplicity](./evaluation/effects-in-rust/gen.md)
     - [Thread-Safety](./evaluation/effects-in-rust/send.md)
     - [Must not move](./evaluation/effects-in-rust/pin.md)
+    - [Panic](./evaluation/effects-in-rust/panic.md)
   - [Effect hierarchy](./evaluation/effect-hierarchy.md)
   - [Grouping keyword generics](./evaluation/grouping-keyword-generics.md)
   - [Introducing new keyword generics](./evaluation/introducing-new-keyword-generics.md)
