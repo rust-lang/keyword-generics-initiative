@@ -22,14 +22,14 @@ todo
 
 ## Refinements
 
-| Name                      | Description                                           |
-| ------------------------- | ----------------------------------------------------- |
-| `Step`                    | Has a notion of successor and predecessor operations. |
-| `TrustedLen` † (unstable) | Reports an accurate length using `size_hint`.         |
-| `TrustedStep` (unstable)  | Upholds all invariants of `Step`.                     |
-| `DoubleEndedIterator`     | Is able to yield elements from both ends.             |
-| `ExactSizeIterator` †     | Knows its exact length.                               |
-| `FusedIterator`           | Always continues to yield `None` when exhausted.      |
+| Modifier      | Description                                           |
+| ------------- | ----------------------------------------------------- |
+| step          | Has a notion of successor and predecessor operations. |
+| trusted len † | Reports an accurate length using `size_hint`.         |
+| trusted step  | Upholds all invariants of `Step`.                     |
+| double-ended  | Is able to yield elements from both ends.             |
+| exact size †  | Knows its exact length.                               |
+| fused         | Always continues to yield `None` when exhausted.      |
 
 > † The difference between `TrustedLen` and `ExactSizeIterator` is that
 >  `TrustedLen` is marked as `unsafe` to implement while `ExactSizeIterator` is
