@@ -1,4 +1,4 @@
-# Multiplicity
+# Iterativity
 
 ## Feature Status
 
@@ -51,3 +51,64 @@ todo
 | Drop                | ❌        | `impl gen Drop for Cat {}`       |
 | Closures            | ❌        | `gen ǀǀ  {}`                     |
 | Iterators           | ❌        | `for cat in cats {}`             |
+
+## Interactions with other effects
+
+### Asynchrony
+
+
+
+| Overview                       | Description                                                                                                                        |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Composition                    | iterator of futures                                                                                                                |
+| Description                    | Creates an iterator of futures. The future takes the iterator by `&mut self`, so only a single future may be executed concurrently |
+| Example                        | [`AsyncIterator`][ai]                                                                                                              |
+| Implementable as of Rust 1.70? | No, async functions in traits are unstable                                                                                         |
+
+[ai]: https://docs.rs/async-iterator/latest/async_iterator/
+
+### Fallibility
+
+| Overview                       | Description                                                        |
+| ------------------------------ | ------------------------------------------------------------------ |
+| Composition                    | iterator of tryables                                               |
+| Description                    | Creates an iterator of tryables, typically an iterator of `Result` |
+| Example                        | [`FallibleIterator`][fi]                                           |
+| Implementable as of Rust 1.70? | No, try in traits is not available                                 |
+
+[fi]: https://docs.rs/fallible-iterator/latest/fallible_iterator/trait.FallibleIterator.html
+
+### Compile-time Execution
+
+| Overview                       | Description                                                    |
+| ------------------------------ | -------------------------------------------------------------- |
+| Composition                    | const iterator                                                 |
+| Description                    | Creates an iterator which can be iterated over at compile-time |
+| Example                        | N/A                                                            |
+| Implementable as of Rust 1.70? | No, const traits are unstable                                  |
+
+### Thread-Safety
+
+| Overview                       | Description                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------- |
+| Composition                    | iterator of tryables                                                        |
+| Description                    | Creates an iterator whose items which can be sent across threads            |
+| Example                        | `where I: Iterator<Item = T>, T: Send`                                      |
+| Implementable as of Rust 1.70? | Yes, as a bound on use. And by unit-testing the `Send` auto-trait on decls. |
+
+### Must-not Move
+| Overview                       | Description                                               |
+| ------------------------------ | --------------------------------------------------------- |
+| Composition                    | an iterator with `self: Pin<&mut Self>                    |
+| Description                    | An iterator which itself holds onto self-referential data |
+| Example                        | N/A                                                       |
+| Implementable as of Rust 1.70? | Yes, but not yet part of the stdlib.                      |
+
+### Panicking
+
+| Overview                       | Description                                      |
+| ------------------------------ | ------------------------------------------------ |
+| Composition                    | iterator may panic instead of yield              |
+| Description                    | Creates an iterator which may panic              |
+| Example                        | `Iterator` (may panic by default)                |
+| Implementable as of Rust 1.70? | Yes, but cannot opt-out of "may panic" semantics |

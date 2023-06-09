@@ -15,3 +15,8 @@ reified as traits or types such as `impl Iterator`.
 Because in Rust functions can be passed around as types, it means that effects
 which apply to types also apply to functions since functions in Rust _are_ types
 (e.g.  `impl FnMut`).
+
+
+## Sized trait
+
+idk what this even is lol. The "dynamic dispatch" effect? Probably more than that.

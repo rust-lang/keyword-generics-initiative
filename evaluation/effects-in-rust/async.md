@@ -34,10 +34,10 @@ todo
 | ------------------- | ------------------------------------ |
 | cancellation-safe † | Has no associated future-local state |
 
-> † The name "cancellation-safe" is in quotes because it only named that it
-> is more a term of art than a fixed, understood concept. We have yet to
-> encode this as part of the type system anywhere, and it seems unlikely
-> the term "cancellation-safety" would be what we would want to call that.
+> † The name "cancellation-safe" is in quotes because currently it's more like a
+> term of art than an agreed-upon term. For example: it is yet to be encoded 
+> in the type system anywhere. And when we do, we probably would want to call it
+> something else.
 
 A `FusedFuture` super-trait also exists, but it does not meaningfully feel like
 a modifier of the "async" effect. It only adds an `is_terminated` method which
@@ -66,3 +66,15 @@ the behavior of the `Iterator::next` function.
 > another type, the destructor of that value is run when the enclosing type is
 > destructed. This is called _drop-forwarding_. In order for drop-forwarding to
 > work with async drop, some form of "async value" notation will be required.
+
+## Interactions with other effects
+
+### Fallibility
+### Compile-time Execution
+### Multiplicity
+### Thread-Safety
+### Must-not Move
+### Unwinding
+### Thread Safety
+### Fallibility
+
