@@ -6,7 +6,7 @@
 ### Iterativity
 ### May Panic
 ### Memory-Unsafety
-### Must-not Move
+### Must-Not Move
 ### Object-Safety
 ### Ownership
 ### Thread-Safety

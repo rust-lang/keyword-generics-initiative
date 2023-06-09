@@ -96,7 +96,7 @@ todo
 | Example                        | `where I: Iterator<Item = T>, T: Send`                                      |
 | Implementable as of Rust 1.70? | Yes, as a bound on use. And by unit-testing the `Send` auto-trait on decls. |
 
-### Must-not Move
+### Must-Not Move
 | Overview                       | Description                                               |
 | ------------------------------ | --------------------------------------------------------- |
 | Composition                    | an iterator with `self: Pin<&mut Self>                    |

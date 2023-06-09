@@ -41,7 +41,7 @@ The `try` effect currently has no refinements.
 ### Iterativity
 ### May Panic
 ### Memory-Unsafety
-### Must-not Move
+### Must-Not Move
 ### Object-Safety
 ### Ownership
 ### Thread-Safety

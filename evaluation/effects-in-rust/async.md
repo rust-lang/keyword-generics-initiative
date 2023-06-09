@@ -39,6 +39,27 @@ language, but not all keyword positions are available yet.
 > proc-macro extension as part of the ecosystem. It chiefly wraps the existing `fn
 > main` logic in a `thread::block_on` call.
 
+## Positions Available
+
+| Position            | Available | Example                            |
+| ------------------- | --------- | ---------------------------------- |
+| Manual trait impl   | ✅        | `impl Future for Cat {}`           |
+| Free functions      | ✅        | `async fn meow() {}`               |
+| Inherent functions  | ✅        | `impl Cat { async fn meow() {} } ` |
+| Trait methods       | ⏳         | `trait Cat { async fn meow() {} }` |
+| Trait declarations  | ❌        | `async trait Cat {}`               |
+| Block scope         | ✅        | `fn meow() { async {} }`           |
+| Argument qualifiers | ❌        | `fn meow(cat: impl async Cat) {}`  |
+| Data types †        | ❌        | `async struct Cat {}`              |
+| Drop †              | ❌        | `impl async Drop for Cat {}`       |
+| Closures            | ❌        | `async ǀǀ  {}`                     |
+| Iterators           | ❌        | `for await cat in cats {}`         |
+
+> † In non-async Rust if you place a value which implements `Drop` inside of
+> another type, the destructor of that value is run when the enclosing type is
+> destructed. This is called _drop-forwarding_. In order for drop-forwarding to
+> work with async drop, some form of "async value" notation will be required.
+
 ## Refinements
 
 | Modifier          | Description                          |
@@ -65,26 +86,6 @@ underlying `Iterator` trait, or enhance it with behavior which is otherwise
 absent. This is different from e.g. `FusedIterator` which says something about
 the behavior of the `Iterator::next` function.
 
-## Positions Available
-
-| Position            | Available | Example                            |
-| ------------------- | --------- | ---------------------------------- |
-| Manual trait impl   | ✅        | `impl Future for Cat {}`           |
-| Free functions      | ✅        | `async fn meow() {}`               |
-| Inherent functions  | ✅        | `impl Cat { async fn meow() {} } ` |
-| Trait methods       | ⏳         | `trait Cat { async fn meow() {} }` |
-| Trait declarations  | ❌        | `async trait Cat {}`               |
-| Block scope         | ✅        | `fn meow() { async {} }`           |
-| Argument qualifiers | ❌        | `fn meow(cat: impl async Cat) {}`  |
-| Data types †        | ❌        | `async struct Cat {}`              |
-| Drop †              | ❌        | `impl async Drop for Cat {}`       |
-| Closures            | ❌        | `async ǀǀ  {}`                     |
-| Iterators           | ❌        | `for await cat in cats {}`         |
-
-> † In non-async Rust if you place a value which implements `Drop` inside of
-> another type, the destructor of that value is run when the enclosing type is
-> destructed. This is called _drop-forwarding_. In order for drop-forwarding to
-> work with async drop, some form of "async value" notation will be required.
 
 ## Interactions with other effects
 ### Asynchrony
@@ -93,7 +94,7 @@ the behavior of the `Iterator::next` function.
 ### Iterativity
 ### May Panic
 ### Memory-Unsafety
-### Must-not Move
+### Must-Not Move
 ### Object-Safety
 ### Ownership
 ### Thread-Safety

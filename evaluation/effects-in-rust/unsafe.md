@@ -6,7 +6,11 @@
 ### Iterativity
 ### May Panic
 ### Memory-Unsafety
-### Must-not Move
+### Must-Not Move
 ### Object-Safety
 ### Ownership
 ### Thread-Safety
+
+## References
+
+- [Keywords I: Unsafe Syntax](https://blog.yoshuawuyts.com/unsafe-syntax/)
