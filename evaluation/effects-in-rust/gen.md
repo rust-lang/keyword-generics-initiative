@@ -1,4 +1,4 @@
-# Iterativity
+# Iterativity (Scoped Effect)
 
 ## Feature Status
 

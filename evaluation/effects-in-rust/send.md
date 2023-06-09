@@ -1,13 +1,14 @@
-# Thread-Safety
+# Thread-Safety (Data-Type Effect)
 
 ## Interactions with other effects
 
 ### Asynchrony
-### Fallibility
 ### Compile-time Execution
-### Multiplicity
-### Thread-Safety
-### Must-not Move
-### Unwinding
-### Thread Safety
 ### Fallibility
+### Iterativity
+### May Panic
+### Memory-Unsafety
+### Must-not Move
+### Object-Safety
+### Ownership
+### Thread-Safety

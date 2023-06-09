@@ -1,4 +1,4 @@
-# Ownership (Data-Type Effect)
+# Memory Unsafety (Scoped Effect)
 
 ### Asynchrony
 ### Compile-time Execution

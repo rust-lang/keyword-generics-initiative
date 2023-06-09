@@ -1,4 +1,4 @@
-# Panic
+# May Panic (Scoped Effect)
 
 ## Feature Status
 
@@ -34,12 +34,12 @@ it.
 ## Interactions with other effects
 
 ### Asynchrony
-### Fallibility
 ### Compile-time Execution
-### Multiplicity
-### Thread-Safety
-### Must-not Move
-### Thread Safety
 ### Fallibility
-
-
+### Iterativity
+### May Panic
+### Memory-Unsafety
+### Must-not Move
+### Object-Safety
+### Ownership
+### Thread-Safety

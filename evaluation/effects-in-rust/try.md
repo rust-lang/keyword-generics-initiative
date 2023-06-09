@@ -1,4 +1,4 @@
-# Fallibility
+# Fallibility (Scoped Effect)
 
 ## Feature Status
 
@@ -36,11 +36,12 @@ The `try` effect currently has no refinements.
 ## Interactions with other effects
 
 ### Asynchrony
-### Fallibility
 ### Compile-time Execution
-### Multiplicity
-### Thread-Safety
-### Must-not Move
-### Unwinding
-### Thread Safety
 ### Fallibility
+### Iterativity
+### May Panic
+### Memory-Unsafety
+### Must-not Move
+### Object-Safety
+### Ownership
+### Thread-Safety

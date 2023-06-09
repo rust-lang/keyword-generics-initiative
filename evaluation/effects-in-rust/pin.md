@@ -1,12 +1,14 @@
-# Must not move
+# Must-Not Move (Data-Type Effect)
 
 ## Interactions with other effects
 
 ### Asynchrony
-### Fallibility
 ### Compile-time Execution
-### Multiplicity
-### Thread-Safety
-### Unwinding
-### Thread Safety
 ### Fallibility
+### Iterativity
+### May Panic
+### Memory-Unsafety
+### Must-not Move
+### Object-Safety
+### Ownership
+### Thread-Safety

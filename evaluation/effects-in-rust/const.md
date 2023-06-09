@@ -1,14 +1,14 @@
-# Compile-time Execution
+# Compile-time Execution (Scoped Effect)
 
 ## Interactions with other effects
 
 ### Asynchrony
+### Compile-time Execution
 ### Fallibility
-### Multiplicity
-### Thread-Safety
+### Iterativity
+### May Panic
+### Memory-Unsafety
 ### Must-not Move
-### Unwinding
-### Thread Safety
-### Fallibility
-
-
+### Object-Safety
+### Ownership
+### Thread-Safety
