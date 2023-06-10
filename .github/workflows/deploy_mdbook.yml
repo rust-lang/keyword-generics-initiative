@@ -1,29 +1,29 @@
+name: github pages
+
 on:
-  pull_request:
   push:
     branches:
       - master
 
 jobs:
-  test:
-    name: build and test
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v2
-      - name: Install mdbook
-        run: |
-          tag=$(curl -LsSf https://api.github.com/repos/rust-lang/mdBook/releases/latest | jq -r '.tag_name')
-          curl -LsSf https://github.com/rust-lang/mdBook/releases/download/$tag/mdbook-$tag-x86_64-unknown-linux-gnu.tar.gz | tar xzf -
-          tag=$(curl -LsSf https://api.github.com/repos/badboy/mdbook-mermaid/releases/latest | jq -r '.tag_name')
-          curl -LsSf https://github.com/badboy/mdbook-mermaid/releases/download/$tag/mdbook-mermaid-$tag-x86_64-unknown-linux-gnu.tar.gz | tar xzf -
-          echo $(pwd) >> $GITHUB_PATH
-      - run: mdbook build
-      - name: Configure git
-        run: |
-          git config --global http.postBuffer 50000000
-          git config --global https.postBuffer 50000000
-      - uses: rust-lang/simpleinfra/github-actions/static-websites@master
+
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
         with:
-          deploy_dir: book
+          mdbook-version: '0.4.10'
+          # mdbook-version: 'latest'
+
+      - run: mdbook build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository_owner == 'rust-lang'
+          publish_dir: ./book
