@@ -96,15 +96,15 @@ todo
 | Example                        | `where I: Iterator<Item = T>, T: Send`                                      |
 | Implementable as of Rust 1.70? | Yes, as a bound on use. And by unit-testing the `Send` auto-trait on decls. |
 
-### Must-Not Move
+### Immovability
 | Overview                       | Description                                               |
 | ------------------------------ | --------------------------------------------------------- |
-| Composition                    | an iterator with `self: Pin<&mut Self>                    |
+| Composition                    | an iterator which takes `self: Pin<&mut Self>`            |
 | Description                    | An iterator which itself holds onto self-referential data |
 | Example                        | N/A                                                       |
-| Implementable as of Rust 1.70? | Yes, but not yet part of the stdlib.                      |
+| Implementable as of Rust 1.70? | Yes                                                       |
 
-### Panicking
+### Unwinding
 
 | Overview                       | Description                                      |
 | ------------------------------ | ------------------------------------------------ |

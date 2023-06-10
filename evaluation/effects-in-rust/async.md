@@ -86,15 +86,19 @@ underlying `Iterator` trait, or enhance it with behavior which is otherwise
 absent. This is different from e.g. `FusedIterator` which says something about
 the behavior of the `Iterator::next` function.
 
+It's also worth noting that the `FusedFuture` trait is mostly useful for the
+`select!` control-flow construct. Without that, `FusedFuture` would likely not
+see much use
+([ref](https://blog.yoshuawuyts.com/futures-concurrency-3/#fuse-requirements)).
 
 ## Interactions with other effects
 ### Asynchrony
 ### Compile-time Execution
 ### Fallibility
 ### Iterativity
-### May Panic
-### Memory-Unsafety
-### Must-Not Move
+### Unwinding
+### Memory-Safety
+### Immovability
 ### Object-Safety
 ### Ownership
 ### Thread-Safety

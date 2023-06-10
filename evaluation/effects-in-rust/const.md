@@ -56,9 +56,9 @@ There are currently no refiments to the compile-time execution effect.
 ### Compile-time Execution
 ### Fallibility
 ### Iterativity
-### May Panic
-### Memory-Unsafety
-### Must-Not Move
+### Unwinding
+### Memory-Safety
+### Immovability
 ### Object-Safety
 ### Ownership
 ### Thread-Safety

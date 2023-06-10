@@ -6,9 +6,9 @@
 ### Compile-time Execution
 ### Fallibility
 ### Iterativity
-### May Panic
-### Memory-Unsafety
-### Must-Not Move
+### Unwinding
+### Memory-Safety
+### Immovability
 ### Object-Safety
 ### Ownership
 ### Thread-Safety

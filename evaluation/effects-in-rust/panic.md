@@ -1,4 +1,4 @@
-# May Panic (Scoped Effect)
+# Unwinding (Scoped Effect)
 
 ## Feature Status
 
@@ -37,9 +37,9 @@ it.
 ### Compile-time Execution
 ### Fallibility
 ### Iterativity
-### May Panic
-### Memory-Unsafety
-### Must-Not Move
+### Unwinding
+### Memory-Safety
+### Immovability
 ### Object-Safety
 ### Ownership
 ### Thread-Safety
