@@ -1,0 +1,570 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Progress Report February 2023 - keyword generics initiative</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../index.html">👋 Welcome</a></li><li class="chapter-item expanded "><a href="../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../updates/progress-report-february-2023.html" class="active">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="../evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="../RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="../FAQ.html">😕 FAQ</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">keyword generics initiative</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./updates/progress-report-february-2023.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="progress-report-february-2023"><a class="header" href="#progress-report-february-2023">Progress Report February 2023</a></h1>
+<ul>
+<li>This post is intended to be published on the Rust internals blog.*</li>
+</ul>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>About 9 months ago <a href="https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html">we announced</a> the creation of the Keyword Generics
+Initiative; a group working under the lang team with the intent to solve the 
+<a href="https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/">function coloring problem</a> <sup class="footnote-reference"><a href="#color">1</a></sup> through the type system not just for
+<code>async</code>, but for <code>const</code> and all current and future function modifier keywords
+as well.</p>
+<p>We're happy to share that we've made a lot of progress over these last several
+months, and we're finally ready to start putting some of our designs forward through
+RFCs. Because it's been a while since our last update, and because we're excited
+to share what we've been working on, in this post we'll be going over some of the things
+we're planning to propose.</p>
+<div class="footnote-definition" id="color"><sup class="footnote-definition-label">1</sup>
+<p>To briefly recap this problem: you can't call an <code>async fn</code> from a
+non-async fn. This makes the &quot;async&quot; notation go viral, as every function that
+calls it also needs to be async. But we believe possibly more importantly: it
+requires a duplication of most stdlib types and ecosystem libraries. Instead we
+suspected we might be able to overcome this issue by introducing a new kind of
+generic which would enable functions and types to be &quot;generic&quot; over whether
+they're async or not, const or not, etc.</p>
+</div>
+<h2 id="an-async-example"><a class="header" href="#an-async-example">An async example</a></h2>
+<p>In our <a href="https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html">previous post</a> we introduced the placeholder <code>async&lt;A&gt;</code> syntax to describe the
+concept of a &quot;function which is generic over its asyncness&quot;. We always knew we
+wanted something that felt lighter weight than that, so in for our current design
+we've chosen to drop the notion of a generic parameter for the end-user syntax,
+and instead picked the <code>?async</code> notation. We've borrowed this from the trait
+system, where for example <code>+ ?Sized</code> indicates that something may or may not
+implement the <code>Sized</code> trait. Similarly <code>?async</code> means a function may or may not be
+async. We also refer to these as &quot;maybe-async&quot; functions.</p>
+<p>Time for an example. Say we took the <a href="https://doc.rust-lang.org/std/io/trait.Read.html"><code>Read</code> trait</a> and the
+<a href="https://doc.rust-lang.org/std/io/fn.read_to_string.html">read_to_string_methods</a>. In the stdlib their implementations look somewhat
+like this today:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Read {
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
+}
+
+/// Read from a reader into a string.
+fn read_to_string(reader: &amp;mut impl Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string)?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now, what if we wanted to make these async in the future? Using <code>?async</code>
+notation we could change them to look like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?async Read {
+    ?async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?async fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
+}
+
+/// Read from a reader into a string.
+?async fn read_to_string(reader: &amp;mut impl ?async Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).await?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The way this would work is that <code>Read</code> and <code>read_to_string</code> would become generic over
+their &quot;asyncness&quot;. When compiled for an <code>async</code> context, they will behave
+asynchronously. When compiled in a non-async context, they will behave
+synchronously. The <code>.await</code> in the <code>read_to_string</code> function body is necessary
+to mark the cancellation pointin case the function is compiled as async; but
+when not async would essentially become a no-op <sup class="footnote-reference"><a href="#always-async-maybe">2</a></sup>:</p>
+<div class="footnote-definition" id="always-async-maybe"><sup class="footnote-definition-label">2</sup>
+<p>One restriction <code>?async</code> contexts have is that they can
+only call other <code>?async</code> and non-<code>async</code> functions. Because if we could call an
+always-<code>async</code> function, there would be no clear right thing to do when compiled
+in non-async mode. So things like async concurrency operations won't directly
+work in always-async contexts. But we have a way out of this we talk about later
+in the post: <code>if is_async() .. else ..</code>. This allows you to branch the body of a
+<code>?async fn</code> based on which mode it's being compiled in, and will allow you to
+write different logic for async and non-async modes. This means you can choose
+to use async concurrency in the async version, but keep things sequential in the
+non-async version.</p>
+</div>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// `read_to_string` is inferred to be `!async` because
+// we didn't `.await` it, nor expected a future of any kind.
+#[test]
+fn sync_call() {
+    let _string = read_to_string(&quot;file.txt&quot;)?;
+}
+
+// `read_to_string` is inferred to be `async` because
+// we `.await`ed it.
+#[async_std::test]
+async fn async_call() {
+    let _string = read_to_string(&quot;file.txt&quot;).await?;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We expect <code>?async</code> notation would be most useful for library code which doesn't
+do anything particularly specific to async Rust. Think: most of the stdlib, and
+ecosystem libraries such as parsers, encoders, and drivers. We expect most
+applications to choose to be compiled either as async or non-async, making them
+mostly a consumer of <code>?async</code> APIs.</p>
+<h2 id="a-const-example"><a class="header" href="#a-const-example">A const example</a></h2>
+<p>A main driver of the keywords generics initiative has been our desire to make the
+different modifier keywords in Rust feel consistent with one another. Both the
+const WG and the async WG were thinking about introducing keyword-traits at the
+same time, and we figured we should probably start talking with each other to make
+sure that what we were going to introduce felt like it was part of the same
+language - and could be extended to support more keywords in the future.</p>
+<p>So with that in mind, it may be unsurprising that for the maybe-<code>const</code> trait
+bounds and declarations we're going to propose using the <code>?const</code> notation.
+A common source of confusion with <code>const fn</code> is that it actually doesn't
+guarantee compile-time execution; it only means that it's <em>possible</em> to evaluate
+in a <code>const</code> compile-time context. So in a way <code>const fn</code> has always been a way
+of declaring a &quot;maybe-const&quot; function, and there isn't a way to declare an
+&quot;always-const&quot; function. More on that later in this post.</p>
+<p>Taking the <code>Read</code> example we used earlier, we could imagine a &quot;maybe-const&quot; version
+of the <code>Read</code> trait to look very similar:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?const Read {
+    ?const fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?const fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Which we could then use use as a bound in the const <code>read_to_string</code> function,
+like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn read_to_string(reader: &amp;mut impl ?const Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string)?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Just like with <code>?async</code> traits, <code>?const</code> traits would also need to be labeled as
+<code>?const</code> when used as a bound. This is important to surface at the trait level,
+because it's allowed to pass non-const bounds to maybe-const functions, as long
+as no trait methods are called in the function body. This means we need to
+distinguish between &quot;never-const&quot; and &quot;maybe-const&quot;.</p>
+<p>You may have noticed the <code>?const</code> on the trait declaration and the extra
+<code>?const</code> on the trait methods. This is on purpose: it keeps the path open to
+potentially add support for &quot;always-const&quot; or &quot;never-const&quot; methods on traits as
+well. In <code>?async</code> we know that even if the entire trait is <code>?async</code>, some
+methods (such as <code>Iterator::size_hint</code>) will never be async. And this would
+make <code>?const</code> and <code>?async</code> traits behave similarly using the same rules.</p>
+<h2 id="combining-const-and-async"><a class="header" href="#combining-const-and-async">Combining const and async</a></h2>
+<p>We've covered <code>?async</code>, and we've covered <code>?const</code>. Now what happens if we were
+to use them together? Let's take a look at what the <code>Read</code> trait would look like
+when if we extended it using our designs for <code>?const</code> and <code>?async</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?const ?async Read {
+    ?const ?async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?const ?async fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { .. }
+}
+
+/// Read from a reader into a string.
+?const ?async fn read_to_string(reader: &amp;mut impl ?const ?async Read) -&gt; io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).await?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>That's sure starting to feel like a lot of keywords, right? We've accurately
+described exactly what's going on, but there's a lot of repetition. We know that
+if we're dealing with a <code>?const ?async fn</code>, most arguments probably will also
+want to be <code>?const ?async</code>. But under the syntax rules we've proposed so far,
+you'd end up repeating that everywhere. And it probably gets worse once we start
+adding in more keywords. Not ideal!</p>
+<p>So we're very eager to make sure that we find a solution to this. And we've been
+thinking about a way we could get out of this, which we've been calling
+<code>effect/.do</code>-notation. This would allow you to mark a function as &quot;generic over
+all modifier keywords&quot; by annotating it as <code>effect fn</code>, and it would allow the
+compiler to insert all the right <code>.await</code>, <code>?</code>, and <code>yield</code> keywords in the
+function body by suffixing function calls with <code>.do</code>.</p>
+<p>Just to set some expectations: this is the least developed part of our proposal,
+and we don't intend to formally propose this until after we're done with some of
+the other proposals. But we think it's an important part of the entire vision,
+so we wanted to make sure we shared it here. And with that out of the way,
+here's the same example we had above, but this time using the <code>effect/.do</code>-notation:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?effect Read {
+    ?effect fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?effect fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { .. }
+}
+
+/// Read from a reader into a string.
+?effect fn read_to_string(reader: &amp;mut impl ?effect Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).do;  // note the singular `.do` here
+    string
+}
+<span class="boring">}</span></code></pre></pre>
+<p>One of the things we would like to figure out as part of <code>effect/.do</code> is a way
+to enable writing conditional effect-bounds. For example: there may be a
+function which is always async, may never panic, and is generic over the
+remainder of the effects. Or like we're seeing with APIs such as
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a> and <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.try_reserve"><code>Vec::try_reserve</code></a>: the ability to panic xor return an
+error. This will take more time and research to figure out, but we believe it
+is something which can be solved.</p>
+<h2 id="adding-support-for-types"><a class="header" href="#adding-support-for-types">Adding support for types</a></h2>
+<p>Something we're keen on doing is not just adding support for <code>?async</code> and to
+apply to functions, traits, and trait bounds. We would like <code>?async</code> to be
+possible to use with types as well. This would enable the ecosystem to stop
+having to provide both sync and async versions of crates. It would also enable
+the stdlib to gradually &quot;asyncify&quot; just like we have been with const.</p>
+<p>The challenge with async types, especially in the stdlib, is that their behavior
+will often have to be different when used in async and non-async contexts. At
+the very lowest level async system calls work a bit differently from non-async
+system calls. But we think we may have a solution for that too in the form of
+the <code>is_async</code> compiler built-in method.</p>
+<p>Say we wanted to implement <code>?async File</code> with a single <code>?async open</code> method. The
+way we expect this to look will be something like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// A file which may or may not be async
+struct ?async File {
+    file_descriptor: std::os::RawFd,  // shared field in all contexts
+    async waker: Waker,               // field only available in async contexts
+    !async meta: Metadata,            // field only available in non-async contexts
+}
+
+impl ?async File {
+    /// Attempts to open a file in read-only mode.
+    ?async fn open(path: Path) -&gt; io::Result&lt;Self&gt; {
+        if is_async() {   // compiler built-in function
+            // create an async `File` here; can use `.await`
+        } else {
+            // create a non-async `File` here
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This would enable authors to use different fields depending on whether they're
+compiling for async or not, while still sharing a common core. And within
+function bodies it would be possible to provide different behaviors depending on
+the context as well. The function body notation would work as a generalization
+of the currently unstable <a href="https://doc.rust-lang.org/std/intrinsics/fn.const_eval_select.html"><code>const_eval_select</code></a> intrinsic, and at
+least for the function bodies we expect a similar <code>is_const()</code> compiler built-in
+to be made available as well.</p>
+<h2 id="consistent-syntax"><a class="header" href="#consistent-syntax">Consistent syntax</a></h2>
+<p>As we alluded to earlier in the post: one of the biggest challenges we see in
+language design is adding features in a way that makes them feel like they're in
+harmony with the rest of the language - and not something which stands out as
+noticably different. And because we're touching on something core to Rust, the
+way we do keywords, we have to pay extra close attention here to make sure Rust
+keeps feeling like a single language.</p>
+<p>Luckily Rust has the ability to make surface-level changes to the
+language through the edition system. There are many things this doesn't let us
+do, but it does allow us to require syntax changes. A possibility we're
+exploring is leveraging the edition system to make some minor changes to <code>const</code>
+and <code>async</code> so they feel more consistent with one another, and with <code>?const</code> and
+<code>?async</code>.</p>
+<p>For <code>const</code> this means there should be a syntactic distinction between <code>const</code>
+declarations and <code>const</code> uses. Like we mentioned earlier in the post, when you
+write <code>const fn</code> you get a function which can be evaluated both at runtime and
+during compilation. But when you write <code>const FOO: () = ..;</code> the meaning of
+<code>const</code> there guarantees compile-time evaluation. One keyword, different
+meanings. So for that reason we're wondering whether perhaps it would make more
+sense if we changed <code>const fn</code> to <code>?const fn</code>.  This would make it clear that
+it's a function which <em>may</em> be const-evaluated, but doesn't necessarily have to -
+and can also be called from non-<code>const</code> contexts.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! Define a function which may be evaluated both at runtime and during
+//! compilation.
+
+// Current
+const fn meow() -&gt; String { .. }
+
+// Proposed
+?const fn meow() -&gt; String { .. }
+<span class="boring">}</span></code></pre></pre>
+<p>For <code>async</code> we're considering some similar surface-level changes.  The Async WG
+is in the process of expanding the &quot;async functions in traits&quot; design into an
+design covering &quot;async traits&quot; entirely, largely motivated by the desire to be
+able to add <code>+ Send</code> bound to anonymous futures. There are more details about
+this in [&quot;Lightweight, Predictable Async Send Bounds&quot;][bounds-post] by Eric
+Holk. But it would roughly become the following notation:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct File { .. }
+impl async Read for File {                                                // async trait declaration
+    async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; io::Result&lt;usize&gt; { .. }  // async method
+}
+
+async fn read_to_string(reader: &amp;mut impl async Read) -&gt; io::Result&lt;String&gt; { // async trait bound
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).await?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This would make <code>impl ?async Read</code> and <code>impl async Read</code> consistent with each
+other. And it would open the door for <code>trait ?async</code> traits to be passed to
+<code>impl async Read</code> and be guaranteed to be always interpreted as <code>trait async</code>.
+Which is another nice consistency gain.</p>
+<p>The final thing we're looking at is <code>async</code>-notation for types. To implement
+inherent <code>?async</code> methods on types, our current design requires the type to also
+be marked as <code>?async</code>. In order to bring <code>?async</code> and <code>async</code> closer together,
+we're exploring whether it might also make sense to require types to be marked
+as <code>async</code> as well:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! Proposed: define a method on a maybe-async type
+struct ?async File { .. }
+impl ?async File {
+    ?async fn open(path: PathBuf) -&gt; io::Result&lt;Self&gt; { .. }
+}
+
+//! Current: define a method on an always-async type
+struct File { .. }
+impl File {
+    async fn open(path: PathBuf) -&gt; io::Result&lt;Self&gt; { .. }
+}
+
+//! Proposed: define a method on an always-async type
+struct async File { .. }
+impl async File {
+    async fn open(path: PathBuf) -&gt; io::Result&lt;Self&gt; { .. }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We already have something similar going on for &quot;always-const&quot; arguments via the
+const-generics system. These look something like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;const N: usize&gt;() {}
+<span class="boring">}</span></code></pre></pre>
+<p>Every &quot;always-const&quot; argument to the function must always be marked by <code>const</code>,
+so it wouldn't be entirely without precedent for every &quot;always-async&quot; type to
+always require to be marked using <code>async</code>. So we're exploring some of what might
+be possible here.</p>
+<h2 id="the-tentative-plan"><a class="header" href="#the-tentative-plan">The tentative plan</a></h2>
+<p>We plan to initially focus our efforts on the <code>async</code> and <code>const</code> keywords only.
+We're feeling ready to start converting some of our designs into RFCs, and start
+putting them out for review. In the coming months we expect to start writing
+the following proposals (in no particular order):</p>
+<ul>
+<li><code>?async fn</code> notation without trait bounds, including an <code>is_async</code> mechanism.</li>
+<li><code>trait async</code>  declarations and bounds.</li>
+<li><code>trait ?async</code> declarations and bounds, <code>trait ?const</code> declarations and bounds.</li>
+<li><code>?const fn</code> notation without trait bounds.</li>
+<li><code>struct async</code> notation and <code>struct ?const</code> notation.</li>
+</ul>
+<p>We'll be working closely with the Lang Team, Const WG, and Async WG on these
+proposals, and in some cases (such as <code>trait async</code>) we may even take an
+advicing role with a WG directly driving the RFC. As usual, these will be going
+through the RFC-nightly-stabilization cycle. And only once we're fully confident
+in them will they become available on stable Rust.</p>
+<p>We're intentionally not yet including <code>effect/.do</code> notation on this roadmap. We
+expect to only be able to start this work once we have <code>?async</code> on nightly,
+which we don't yet have. So for now we'll continue work on designing it within
+the iniatiative, and hold off on making plans to introduce it quiet yet.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>And that concludes the 9-month progress report of the Keyword Generics
+Initiative. We hope to be able to provide more exact details about things such
+as desugarings, semantics, and alternatives in the RFCs. We're pretty stoked with the
+progress we've made in these past few months! Something which I don't think
+we've mentioned yet, but is probably good to share: we've actually prototyped
+much of the work in this post already; so we're feeling fairly confident all of
+this may actually <em>actually</em> work. And that is something we're
+incredibly excited for!</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../updates/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../CHARTER.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../updates/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../CHARTER.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

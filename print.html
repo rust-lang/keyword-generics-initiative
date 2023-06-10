@@ -1,0 +1,1777 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>keyword generics initiative</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">keyword generics initiative</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="keyword-generics-initiative"><a class="header" href="#keyword-generics-initiative">keyword generics initiative</a></h1>
+<!--
+
+ This is the template for creating an initiative in rust-lang. Be sure to go
+ through all sections marked with `**FIX ME**`, and make sure that the text is
+ correct, and feel free to replace/remove any part that's not relevant to
+ your group.
+
+ Steps to customize:
+
+ * Edit CHARTER.md
+ * Replace placeholder text (see below)
+ * Remove references to "expermental" and "evaluation" unless you need them
+ 
+  All of the text across all of the initial files uses the same group of
+ variables to allow for easy search and replace. They are listed below.
+
+ Example sed command: `sed -i '' 's/keyword generics/Inline ASM/g' ./**/*.md`
+ *Note* you need `-i ''` on macOS and just `-i` on Linux.
+
+ * keyword generics -> The display name of your group e.g. "Inline ASM".
+ * keyword-generics-initiative -> The url slug name of your group used for
+   `rust-lang/team` and repo name. e.g. "pg-inline-asm".
+ * Zulip -> The name of your chat app e.g. "Zulip".
+ * {{CHAT_LINK}} -> The hyperlink to your discussions on the chat app
+   e.g. "https://rust-lang.zulipchat.com/#narrow/stream/216763-project-inline-asm".
+
+To get your repo under rust-lang, file an infra issue:
+https://github.com/rust-lang/infra-team/issues/new
+
+-->
+<p><img src="https://img.shields.io/badge/status-active-brightgreen.svg" alt="initiative status: active" /></p>
+<h2 id="what-is-this"><a class="header" href="#what-is-this">What is this?</a></h2>
+<p>This page tracks the work of the keyword generics <a href="https://lang-team.rust-lang.org/initiatives.html">initiative</a>! To learn more
+about what we are trying to do, and to find out the people who are doing it,
+take a look at the <a href="./CHARTER.html">charter</a>. </p>
+<h2 id="current-status"><a class="header" href="#current-status">Current status</a></h2>
+<p>The following table lists of the stages of an initiative, along with links to the artifacts that will be produced during that stage.</p>
+<div class="table-wrapper"><table><thead><tr><th>Stage</th><th>State</th><th>Artifact(s)</th></tr></thead><tbody>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/proposal.html">Proposal</a></td><td>🦀</td><td><a href="https://github.com/rust-lang/lang-team/issues/162">Proposal issue</a></td></tr>
+<tr><td></td><td></td><td><a href="./CHARTER.html">Charter</a></td></tr>
+<tr><td></td><td></td><td><a href="https://github.com/rust-lang/rust/">Tracking issue</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/proposal.html">Experimental</a></td><td>🦀</td><td><a href="./evaluation/">Evaluation</a></td></tr>
+<tr><td></td><td></td><td><a href="./RFC.html">RFC</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/development.html">Development</a></td><td>💤</td><td><a href="./explainer/">Explainer</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/feature-complete.html">Feature complete</a></td><td>💤</td><td>Stabilization report</td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/stabilized.html">Stabilized</a></td><td>💤</td><td></td></tr>
+</tbody></table>
+</div>
+<p>Key:</p>
+<ul>
+<li>✅ -- phase complete</li>
+<li>🦀 -- phase in progress</li>
+<li>💤 -- phase not started yet</li>
+</ul>
+<h2 id="how-can-i-get-involved"><a class="header" href="#how-can-i-get-involved">How Can I Get Involved?</a></h2>
+<ul>
+<li>Check for 'help wanted' issues on this repository!</li>
+<li>If you would like to help with development, please contact the <a href="./charter.html#membership">owner</a> to find out if there are things that need doing.</li>
+<li>If you would like to help with the design, check the list of active <a href="./design-questions/README.html">design questions</a> first. </li>
+<li>If you have questions about the design, you can file an issue, but be sure to check the <a href="./FAQ.html">FAQ</a> or the <a href="./design-questions/README.html">design-questions</a> first to see if there is already something that covers your topic.</li>
+<li>If you are using the feature and would like to provide feedback about your experiences, please [open a &quot;experience report&quot; issue].</li>
+<li>If you are using the feature and would like to report a bug, please open a regular issue.</li>
+</ul>
+<p>We also participate on <a href="https://rust-lang.zulipchat.com/#narrow/stream/328082-t-lang.2Fkeyword-generics">Zulip</a>, feel free to introduce yourself over there and ask us any questions you have.</p>
+<h2 id="building-documentation"><a class="header" href="#building-documentation">Building Documentation</a></h2>
+<p>This repository is also an mdbook project. You can view and build it using the
+following command.</p>
+<pre><code>mdbook serve
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-updates"><a class="header" href="#-updates">✏️ Updates</a></h1>
+<p>Lang-team initiatives give monthly updates. This section collects the updates from this initiative for posterity.</p>
+<p>To add a new update:</p>
+<ul>
+<li>Create a new file <code>updates/YYYY-mmm.md</code>, e.g. <code>updates/2021-nov.md</code>
+<ul>
+<li>We recomend basing this on the <a href="https://github.com/rust-lang/initiative-template/tree/master/updates/template.md">update template</a></li>
+</ul>
+</li>
+<li>Link it from the <code>SUMMARY.md</code></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="progress-report-february-2023"><a class="header" href="#progress-report-february-2023">Progress Report February 2023</a></h1>
+<ul>
+<li>This post is intended to be published on the Rust internals blog.*</li>
+</ul>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>About 9 months ago <a href="https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html">we announced</a> the creation of the Keyword Generics
+Initiative; a group working under the lang team with the intent to solve the 
+<a href="https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/">function coloring problem</a> <sup class="footnote-reference"><a href="#color">1</a></sup> through the type system not just for
+<code>async</code>, but for <code>const</code> and all current and future function modifier keywords
+as well.</p>
+<p>We're happy to share that we've made a lot of progress over these last several
+months, and we're finally ready to start putting some of our designs forward through
+RFCs. Because it's been a while since our last update, and because we're excited
+to share what we've been working on, in this post we'll be going over some of the things
+we're planning to propose.</p>
+<div class="footnote-definition" id="color"><sup class="footnote-definition-label">1</sup>
+<p>To briefly recap this problem: you can't call an <code>async fn</code> from a
+non-async fn. This makes the &quot;async&quot; notation go viral, as every function that
+calls it also needs to be async. But we believe possibly more importantly: it
+requires a duplication of most stdlib types and ecosystem libraries. Instead we
+suspected we might be able to overcome this issue by introducing a new kind of
+generic which would enable functions and types to be &quot;generic&quot; over whether
+they're async or not, const or not, etc.</p>
+</div>
+<h2 id="an-async-example"><a class="header" href="#an-async-example">An async example</a></h2>
+<p>In our <a href="https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html">previous post</a> we introduced the placeholder <code>async&lt;A&gt;</code> syntax to describe the
+concept of a &quot;function which is generic over its asyncness&quot;. We always knew we
+wanted something that felt lighter weight than that, so in for our current design
+we've chosen to drop the notion of a generic parameter for the end-user syntax,
+and instead picked the <code>?async</code> notation. We've borrowed this from the trait
+system, where for example <code>+ ?Sized</code> indicates that something may or may not
+implement the <code>Sized</code> trait. Similarly <code>?async</code> means a function may or may not be
+async. We also refer to these as &quot;maybe-async&quot; functions.</p>
+<p>Time for an example. Say we took the <a href="https://doc.rust-lang.org/std/io/trait.Read.html"><code>Read</code> trait</a> and the
+<a href="https://doc.rust-lang.org/std/io/fn.read_to_string.html">read_to_string_methods</a>. In the stdlib their implementations look somewhat
+like this today:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Read {
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
+}
+
+/// Read from a reader into a string.
+fn read_to_string(reader: &amp;mut impl Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string)?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Now, what if we wanted to make these async in the future? Using <code>?async</code>
+notation we could change them to look like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?async Read {
+    ?async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?async fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
+}
+
+/// Read from a reader into a string.
+?async fn read_to_string(reader: &amp;mut impl ?async Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).await?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The way this would work is that <code>Read</code> and <code>read_to_string</code> would become generic over
+their &quot;asyncness&quot;. When compiled for an <code>async</code> context, they will behave
+asynchronously. When compiled in a non-async context, they will behave
+synchronously. The <code>.await</code> in the <code>read_to_string</code> function body is necessary
+to mark the cancellation pointin case the function is compiled as async; but
+when not async would essentially become a no-op <sup class="footnote-reference"><a href="#always-async-maybe">2</a></sup>:</p>
+<div class="footnote-definition" id="always-async-maybe"><sup class="footnote-definition-label">2</sup>
+<p>One restriction <code>?async</code> contexts have is that they can
+only call other <code>?async</code> and non-<code>async</code> functions. Because if we could call an
+always-<code>async</code> function, there would be no clear right thing to do when compiled
+in non-async mode. So things like async concurrency operations won't directly
+work in always-async contexts. But we have a way out of this we talk about later
+in the post: <code>if is_async() .. else ..</code>. This allows you to branch the body of a
+<code>?async fn</code> based on which mode it's being compiled in, and will allow you to
+write different logic for async and non-async modes. This means you can choose
+to use async concurrency in the async version, but keep things sequential in the
+non-async version.</p>
+</div>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// `read_to_string` is inferred to be `!async` because
+// we didn't `.await` it, nor expected a future of any kind.
+#[test]
+fn sync_call() {
+    let _string = read_to_string(&quot;file.txt&quot;)?;
+}
+
+// `read_to_string` is inferred to be `async` because
+// we `.await`ed it.
+#[async_std::test]
+async fn async_call() {
+    let _string = read_to_string(&quot;file.txt&quot;).await?;
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We expect <code>?async</code> notation would be most useful for library code which doesn't
+do anything particularly specific to async Rust. Think: most of the stdlib, and
+ecosystem libraries such as parsers, encoders, and drivers. We expect most
+applications to choose to be compiled either as async or non-async, making them
+mostly a consumer of <code>?async</code> APIs.</p>
+<h2 id="a-const-example"><a class="header" href="#a-const-example">A const example</a></h2>
+<p>A main driver of the keywords generics initiative has been our desire to make the
+different modifier keywords in Rust feel consistent with one another. Both the
+const WG and the async WG were thinking about introducing keyword-traits at the
+same time, and we figured we should probably start talking with each other to make
+sure that what we were going to introduce felt like it was part of the same
+language - and could be extended to support more keywords in the future.</p>
+<p>So with that in mind, it may be unsurprising that for the maybe-<code>const</code> trait
+bounds and declarations we're going to propose using the <code>?const</code> notation.
+A common source of confusion with <code>const fn</code> is that it actually doesn't
+guarantee compile-time execution; it only means that it's <em>possible</em> to evaluate
+in a <code>const</code> compile-time context. So in a way <code>const fn</code> has always been a way
+of declaring a &quot;maybe-const&quot; function, and there isn't a way to declare an
+&quot;always-const&quot; function. More on that later in this post.</p>
+<p>Taking the <code>Read</code> example we used earlier, we could imagine a &quot;maybe-const&quot; version
+of the <code>Read</code> trait to look very similar:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?const Read {
+    ?const fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?const fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Which we could then use use as a bound in the const <code>read_to_string</code> function,
+like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn read_to_string(reader: &amp;mut impl ?const Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string)?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Just like with <code>?async</code> traits, <code>?const</code> traits would also need to be labeled as
+<code>?const</code> when used as a bound. This is important to surface at the trait level,
+because it's allowed to pass non-const bounds to maybe-const functions, as long
+as no trait methods are called in the function body. This means we need to
+distinguish between &quot;never-const&quot; and &quot;maybe-const&quot;.</p>
+<p>You may have noticed the <code>?const</code> on the trait declaration and the extra
+<code>?const</code> on the trait methods. This is on purpose: it keeps the path open to
+potentially add support for &quot;always-const&quot; or &quot;never-const&quot; methods on traits as
+well. In <code>?async</code> we know that even if the entire trait is <code>?async</code>, some
+methods (such as <code>Iterator::size_hint</code>) will never be async. And this would
+make <code>?const</code> and <code>?async</code> traits behave similarly using the same rules.</p>
+<h2 id="combining-const-and-async"><a class="header" href="#combining-const-and-async">Combining const and async</a></h2>
+<p>We've covered <code>?async</code>, and we've covered <code>?const</code>. Now what happens if we were
+to use them together? Let's take a look at what the <code>Read</code> trait would look like
+when if we extended it using our designs for <code>?const</code> and <code>?async</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?const ?async Read {
+    ?const ?async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?const ?async fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { .. }
+}
+
+/// Read from a reader into a string.
+?const ?async fn read_to_string(reader: &amp;mut impl ?const ?async Read) -&gt; io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).await?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>That's sure starting to feel like a lot of keywords, right? We've accurately
+described exactly what's going on, but there's a lot of repetition. We know that
+if we're dealing with a <code>?const ?async fn</code>, most arguments probably will also
+want to be <code>?const ?async</code>. But under the syntax rules we've proposed so far,
+you'd end up repeating that everywhere. And it probably gets worse once we start
+adding in more keywords. Not ideal!</p>
+<p>So we're very eager to make sure that we find a solution to this. And we've been
+thinking about a way we could get out of this, which we've been calling
+<code>effect/.do</code>-notation. This would allow you to mark a function as &quot;generic over
+all modifier keywords&quot; by annotating it as <code>effect fn</code>, and it would allow the
+compiler to insert all the right <code>.await</code>, <code>?</code>, and <code>yield</code> keywords in the
+function body by suffixing function calls with <code>.do</code>.</p>
+<p>Just to set some expectations: this is the least developed part of our proposal,
+and we don't intend to formally propose this until after we're done with some of
+the other proposals. But we think it's an important part of the entire vision,
+so we wanted to make sure we shared it here. And with that out of the way,
+here's the same example we had above, but this time using the <code>effect/.do</code>-notation:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait ?effect Read {
+    ?effect fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    ?effect fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { .. }
+}
+
+/// Read from a reader into a string.
+?effect fn read_to_string(reader: &amp;mut impl ?effect Read) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).do;  // note the singular `.do` here
+    string
+}
+<span class="boring">}</span></code></pre></pre>
+<p>One of the things we would like to figure out as part of <code>effect/.do</code> is a way
+to enable writing conditional effect-bounds. For example: there may be a
+function which is always async, may never panic, and is generic over the
+remainder of the effects. Or like we're seeing with APIs such as
+<a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.reserve"><code>Vec::reserve</code></a> and <a href="https://doc.rust-lang.org/std/vec/struct.Vec.html#method.try_reserve"><code>Vec::try_reserve</code></a>: the ability to panic xor return an
+error. This will take more time and research to figure out, but we believe it
+is something which can be solved.</p>
+<h2 id="adding-support-for-types"><a class="header" href="#adding-support-for-types">Adding support for types</a></h2>
+<p>Something we're keen on doing is not just adding support for <code>?async</code> and to
+apply to functions, traits, and trait bounds. We would like <code>?async</code> to be
+possible to use with types as well. This would enable the ecosystem to stop
+having to provide both sync and async versions of crates. It would also enable
+the stdlib to gradually &quot;asyncify&quot; just like we have been with const.</p>
+<p>The challenge with async types, especially in the stdlib, is that their behavior
+will often have to be different when used in async and non-async contexts. At
+the very lowest level async system calls work a bit differently from non-async
+system calls. But we think we may have a solution for that too in the form of
+the <code>is_async</code> compiler built-in method.</p>
+<p>Say we wanted to implement <code>?async File</code> with a single <code>?async open</code> method. The
+way we expect this to look will be something like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// A file which may or may not be async
+struct ?async File {
+    file_descriptor: std::os::RawFd,  // shared field in all contexts
+    async waker: Waker,               // field only available in async contexts
+    !async meta: Metadata,            // field only available in non-async contexts
+}
+
+impl ?async File {
+    /// Attempts to open a file in read-only mode.
+    ?async fn open(path: Path) -&gt; io::Result&lt;Self&gt; {
+        if is_async() {   // compiler built-in function
+            // create an async `File` here; can use `.await`
+        } else {
+            // create a non-async `File` here
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This would enable authors to use different fields depending on whether they're
+compiling for async or not, while still sharing a common core. And within
+function bodies it would be possible to provide different behaviors depending on
+the context as well. The function body notation would work as a generalization
+of the currently unstable <a href="https://doc.rust-lang.org/std/intrinsics/fn.const_eval_select.html"><code>const_eval_select</code></a> intrinsic, and at
+least for the function bodies we expect a similar <code>is_const()</code> compiler built-in
+to be made available as well.</p>
+<h2 id="consistent-syntax"><a class="header" href="#consistent-syntax">Consistent syntax</a></h2>
+<p>As we alluded to earlier in the post: one of the biggest challenges we see in
+language design is adding features in a way that makes them feel like they're in
+harmony with the rest of the language - and not something which stands out as
+noticably different. And because we're touching on something core to Rust, the
+way we do keywords, we have to pay extra close attention here to make sure Rust
+keeps feeling like a single language.</p>
+<p>Luckily Rust has the ability to make surface-level changes to the
+language through the edition system. There are many things this doesn't let us
+do, but it does allow us to require syntax changes. A possibility we're
+exploring is leveraging the edition system to make some minor changes to <code>const</code>
+and <code>async</code> so they feel more consistent with one another, and with <code>?const</code> and
+<code>?async</code>.</p>
+<p>For <code>const</code> this means there should be a syntactic distinction between <code>const</code>
+declarations and <code>const</code> uses. Like we mentioned earlier in the post, when you
+write <code>const fn</code> you get a function which can be evaluated both at runtime and
+during compilation. But when you write <code>const FOO: () = ..;</code> the meaning of
+<code>const</code> there guarantees compile-time evaluation. One keyword, different
+meanings. So for that reason we're wondering whether perhaps it would make more
+sense if we changed <code>const fn</code> to <code>?const fn</code>.  This would make it clear that
+it's a function which <em>may</em> be const-evaluated, but doesn't necessarily have to -
+and can also be called from non-<code>const</code> contexts.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! Define a function which may be evaluated both at runtime and during
+//! compilation.
+
+// Current
+const fn meow() -&gt; String { .. }
+
+// Proposed
+?const fn meow() -&gt; String { .. }
+<span class="boring">}</span></code></pre></pre>
+<p>For <code>async</code> we're considering some similar surface-level changes.  The Async WG
+is in the process of expanding the &quot;async functions in traits&quot; design into an
+design covering &quot;async traits&quot; entirely, largely motivated by the desire to be
+able to add <code>+ Send</code> bound to anonymous futures. There are more details about
+this in [&quot;Lightweight, Predictable Async Send Bounds&quot;][bounds-post] by Eric
+Holk. But it would roughly become the following notation:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct File { .. }
+impl async Read for File {                                                // async trait declaration
+    async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; io::Result&lt;usize&gt; { .. }  // async method
+}
+
+async fn read_to_string(reader: &amp;mut impl async Read) -&gt; io::Result&lt;String&gt; { // async trait bound
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).await?;
+    Ok(string)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>This would make <code>impl ?async Read</code> and <code>impl async Read</code> consistent with each
+other. And it would open the door for <code>trait ?async</code> traits to be passed to
+<code>impl async Read</code> and be guaranteed to be always interpreted as <code>trait async</code>.
+Which is another nice consistency gain.</p>
+<p>The final thing we're looking at is <code>async</code>-notation for types. To implement
+inherent <code>?async</code> methods on types, our current design requires the type to also
+be marked as <code>?async</code>. In order to bring <code>?async</code> and <code>async</code> closer together,
+we're exploring whether it might also make sense to require types to be marked
+as <code>async</code> as well:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//! Proposed: define a method on a maybe-async type
+struct ?async File { .. }
+impl ?async File {
+    ?async fn open(path: PathBuf) -&gt; io::Result&lt;Self&gt; { .. }
+}
+
+//! Current: define a method on an always-async type
+struct File { .. }
+impl File {
+    async fn open(path: PathBuf) -&gt; io::Result&lt;Self&gt; { .. }
+}
+
+//! Proposed: define a method on an always-async type
+struct async File { .. }
+impl async File {
+    async fn open(path: PathBuf) -&gt; io::Result&lt;Self&gt; { .. }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We already have something similar going on for &quot;always-const&quot; arguments via the
+const-generics system. These look something like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;const N: usize&gt;() {}
+<span class="boring">}</span></code></pre></pre>
+<p>Every &quot;always-const&quot; argument to the function must always be marked by <code>const</code>,
+so it wouldn't be entirely without precedent for every &quot;always-async&quot; type to
+always require to be marked using <code>async</code>. So we're exploring some of what might
+be possible here.</p>
+<h2 id="the-tentative-plan"><a class="header" href="#the-tentative-plan">The tentative plan</a></h2>
+<p>We plan to initially focus our efforts on the <code>async</code> and <code>const</code> keywords only.
+We're feeling ready to start converting some of our designs into RFCs, and start
+putting them out for review. In the coming months we expect to start writing
+the following proposals (in no particular order):</p>
+<ul>
+<li><code>?async fn</code> notation without trait bounds, including an <code>is_async</code> mechanism.</li>
+<li><code>trait async</code>  declarations and bounds.</li>
+<li><code>trait ?async</code> declarations and bounds, <code>trait ?const</code> declarations and bounds.</li>
+<li><code>?const fn</code> notation without trait bounds.</li>
+<li><code>struct async</code> notation and <code>struct ?const</code> notation.</li>
+</ul>
+<p>We'll be working closely with the Lang Team, Const WG, and Async WG on these
+proposals, and in some cases (such as <code>trait async</code>) we may even take an
+advicing role with a WG directly driving the RFC. As usual, these will be going
+through the RFC-nightly-stabilization cycle. And only once we're fully confident
+in them will they become available on stable Rust.</p>
+<p>We're intentionally not yet including <code>effect/.do</code> notation on this roadmap. We
+expect to only be able to start this work once we have <code>?async</code> on nightly,
+which we don't yet have. So for now we'll continue work on designing it within
+the iniatiative, and hold off on making plans to introduce it quiet yet.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>And that concludes the 9-month progress report of the Keyword Generics
+Initiative. We hope to be able to provide more exact details about things such
+as desugarings, semantics, and alternatives in the RFCs. We're pretty stoked with the
+progress we've made in these past few months! Something which I don't think
+we've mentioned yet, but is probably good to share: we've actually prototyped
+much of the work in this post already; so we're feeling fairly confident all of
+this may actually <em>actually</em> work. And that is something we're
+incredibly excited for!</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-keyword-generics-charter"><a class="header" href="#-keyword-generics-charter">📜 keyword generics Charter</a></h1>
+<p>One of Rust's defining features is the ability to write functions which are
+<em>generic</em> over their input types. That allows us to write a function once,
+leaving it up to the compiler to generate the right implementations for us.</p>
+<p>When we introduce a new keyword for something which used to be a trait, we not
+only gain new functionality - we also lose the ability to be generic over that
+keyword. This proposal seeks to change that by introducing keyword generics: the
+ability to be generic over specific keywords.</p>
+<p>This proposal is scoped to the <code>const</code> and <code>async</code> keywords only, but is designed
+to be leveraged by other keywords as well in the future. Keywords are valuable,
+generics are valuable, users of Rust shouldn't have to choose between the two.</p>
+<!--
+ Provide an introduction summarising the goals and motivation behind your
+ initiative.
+-->
+<h2 id="proposal"><a class="header" href="#proposal">Proposal</a></h2>
+<p>We're in the process of adding new features to Rust. The Const WG is creating an
+extension to Rust which enables arbitrary computation at compile time.
+While the Async WG is in the process of adding capabilities for asynchronous
+computation. We've noticed that both these efforts have a lot in common, and may
+in fact require similar solutions. This document describes a framework for
+thinking about these language features, describes their individual needs, and
+makes the case that we should be considering a generalized language design for
+&quot;keywords&quot; (aka &quot;definitely not effects&quot;), so that we can ensure that the Rust
+language and standard library remain consistent in the face of extensions.</p>
+<h2 id="a-broad-perspective-on-language-extensions"><a class="header" href="#a-broad-perspective-on-language-extensions">A broad perspective on language extensions</a></h2>
+<p><code>const fn</code> and <code>async fn</code> are similar language extensions, but the way they
+extend the language is different:</p>
+<ul>
+<li><code>const fn</code> creates a <em>subset</em> of &quot;base Rust&quot;, enabling functions to be
+executed during compilation. <code>const</code> functions can be executed in &quot;base&quot;
+contexts, while the other way around isn't possible.</li>
+<li><code>async fn</code> creates a <em>superset</em> of &quot;base Rust&quot;, enabling functions to be
+executed asynchronously. <code>async</code> types cannot be executed in &quot;base&quot; contexts
+<sup class="footnote-reference"><a href="#bridge">1</a></sup>, but &quot;base&quot; in <code>async</code> contexts <em>is</em> possible.</li>
+</ul>
+<div class="footnote-definition" id="bridge"><sup class="footnote-definition-label">1</sup>
+<p>In order to bridge async and non-async Rust, functionality such as
+<code>thread::block_on</code> or <code>async fn</code> must be used, which runs a future to completion
+from a synchronous context. <code>const</code> Rust does not require such a bridge, since
+the difference in contexts is &quot;compile time&quot; and &quot;run-time&quot;.</p>
+</div>
+<pre><code>                      +---------------------------+                               
+                      | +-----------------------+ |     Compute values:
+                      | | +-------------------+ | |     - types
+                      | | |                   | | |     - numbers
+                      | | |    const Rust     |-------{ - functions               
+                      | | |                   | | |     - control flow            
+ Access to the host:  | | +-------------------+ | |     - traits (planned)                 
+ - networking         | |                       | |     - containers (planned)
+ - filesystem  }--------|      &quot;base&quot; Rust      | |                               
+ - threads            | |                       | |                               
+ - system time        | +-----------------------+ |     
+                      |                           |     Control over execution:      
+                      |         async Rust        |---{ - ad-hoc concurrency      
+                      |                           |     - ad-hoc cancellation     
+                      +---------------------------+     - ad-hoc pausing/resumption
+
+</code></pre>
+<p>In terms of standard library these relationships also mirror each other. &quot;Base&quot;
+Rust will want to do everything during runtime what <code>const</code> rust can do, but in
+addition to that also things like network and filesystem IO. Async Rust will in
+turn want to do everything &quot;base&quot; Rust can do, but in addition to that will also
+want to introduce methods for ad-hoc concurrency, cancellation, and execution
+control. It will also want to do things which are blocking in &quot;base&quot; Rust as
+non-blocking in async Rust.</p>
+<p>And it doesn't stop with <code>const</code> and <code>async</code> Rust; it's not hard to imagine that
+other annotations for &quot;can this panic&quot;, &quot;can this return an error&quot;, &quot;can this
+yield values&quot; may want to exist as well. All of which would present extensions
+to the &quot;base&quot; Rust language, which would need to be introduced in a way which
+keeps it feeling like a single language - instead of several disjoint languages
+in a trenchcoat.</p>
+<h2 id="membership"><a class="header" href="#membership">Membership</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Role</th><th>Github</th></tr></thead><tbody>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/yoshuawuyts">Yosh Wuyts</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/oli-obk">Oli Scherer</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/liaison.html">Liaison</a></td><td><a href="https://github.com/nikomatsakis">Niko Matsakis?</a></td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="-evaluation"><a class="header" href="#-evaluation">🔬 Evaluation</a></h1>
+<blockquote>
+<p>The <em>evaluation</em> surveys the various design approaches that are under consideration.
+It is not required for all initiatives, only those that begin with a problem statement
+but without a clear picture of the best solution. Often the evaluation will refer to topics
+in the <a href="evaluation/./design-discussions.html">design-discussions</a> for more detailed consideration.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="effects-in-rust"><a class="header" href="#effects-in-rust">Effects in Rust</a></h1>
+<p>Rust has a number of built-ins which sure look a lot like effects. In this
+section we cover what those are, how they're in use today, touch on some of the
+pain-points experienced by them.</p>
+<h2 id="what-do-we-mean-by-effect-in-this-section"><a class="header" href="#what-do-we-mean-by-effect-in-this-section">What do we mean by &quot;effect&quot; in this section?</a></h2>
+<p>For the purpose of this section we're considering effects in the broadest terms:
+&quot;Any built-in language mechanism which triggers a bifurcation of the design
+space&quot;. This means: anything which causes you to create a parallel, alternate
+copy of the same things is considered an effect in this space.</p>
+<p>This is probably not the definition we'll want to use in other sections, since
+effects should probably only ever apply to functions. In this section we're
+going to use &quot;effect&quot; as a catch-all term for &quot;things that sure seem effect-y&quot;.
+When discussion effects we'll differentiate between:</p>
+<ul>
+<li><strong>Scoped Effects</strong>: which are effects which apply to functions and scopes, such
+as <code>async fn</code> which are reified as traits or types such as <code>impl Iterator</code>.</li>
+<li><strong>Data-Type Effects</strong>: which are Effects which apply to data types, encoded as
+auto-traits. For example: the <code>Send</code> auto-trait is automatically implemented on structs
+as long as its contained types are <code>Send</code>, and marks it as &quot;thread-safe&quot;.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="asynchrony-scoped-effect"><a class="header" href="#asynchrony-scoped-effect">Asynchrony (Scoped Effect)</a></h1>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<p>Asynchrony in Rust enables non-blocking operations to be authored in an
+imperative fashion. This can be helpful for performance reasons, but
+feature-wise it enables &quot;arbitrary concurrency&quot; and &quot;arbitrary cancellation&quot; of
+computations. These can in turn be composed and leveraged by higher-level
+control-flow primitives such as &quot;arbitrary timeouts&quot; and &quot;arbitrary
+parallel execution&quot;.</p>
+<p>Asynchrony in Rust is implemented using a pair of keywords. <code>async</code> is used to
+create an async context which is reified into a state machine backed by the
+<code>Future</code> trait. And <code>.await</code> is used on the call-site to access the values
+inside of an async context. Because <code>.await</code> can only be called inside of
+<code>async</code> contexts, it eventually needs to be consumed by a top-level function
+which knows how to run a future to completion.</p>
+<h2 id="feature-status"><a class="header" href="#feature-status">Feature Status</a></h2>
+<p><code>async/.await</code> in Rust is considered &quot;MVP stable&quot;. This means the reification of
+the effect is stable, and both the <code>async</code> and <code>.await</code> keywords exist in the
+language, but not all keyword positions are available yet.</p>
+<h2 id="feature-categorization"><a class="header" href="#feature-categorization">Feature categorization</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Create</td><td><code>async</code></td></tr>
+<tr><td>Yield</td><td>N/A</td></tr>
+<tr><td>Forward</td><td><code>.await</code></td></tr>
+<tr><td>Consume</td><td><code>thread::block_on</code> †, <code>async fn main</code> ‡</td></tr>
+<tr><td>Reification</td><td><code>impl Future</code></td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>† <code>thread::block_on</code> is not yet part of the stdlib, and only exists as a
+library feature. An example implementation can be found in the
+<a href="https://doc.rust-lang.org/std/task/trait.Wake.html#examples"><code>Wake</code></a> docs.</p>
+</blockquote>
+<blockquote>
+<p>‡ <code>async fn main</code> is not yet part of the language, and only exists as a
+proc-macro extension as part of the ecosystem. It chiefly wraps the existing <code>fn main</code> logic in a <code>thread::block_on</code> call.</p>
+</blockquote>
+<h2 id="positions-available"><a class="header" href="#positions-available">Positions Available</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Available</th><th>Example</th></tr></thead><tbody>
+<tr><td>Manual trait impl</td><td>✅</td><td><code>impl Future for Cat {}</code></td></tr>
+<tr><td>Free functions</td><td>✅</td><td><code>async fn meow() {}</code></td></tr>
+<tr><td>Inherent functions</td><td>✅</td><td><code>impl Cat { async fn meow() {} } </code></td></tr>
+<tr><td>Trait methods</td><td>⏳</td><td><code>trait Cat { async fn meow() {} }</code></td></tr>
+<tr><td>Trait declarations</td><td>❌</td><td><code>async trait Cat {}</code></td></tr>
+<tr><td>Block scope</td><td>✅</td><td><code>fn meow() { async {} }</code></td></tr>
+<tr><td>Argument qualifiers</td><td>❌</td><td><code>fn meow(cat: impl async Cat) {}</code></td></tr>
+<tr><td>Data types †</td><td>❌</td><td><code>async struct Cat {}</code></td></tr>
+<tr><td>Drop †</td><td>❌</td><td><code>impl async Drop for Cat {}</code></td></tr>
+<tr><td>Closures</td><td>❌</td><td><code>async ǀǀ  {}</code></td></tr>
+<tr><td>Iterators</td><td>❌</td><td><code>for await cat in cats {}</code></td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>† In non-async Rust if you place a value which implements <code>Drop</code> inside of
+another type, the destructor of that value is run when the enclosing type is
+destructed. This is called <em>drop-forwarding</em>. In order for drop-forwarding to
+work with async drop, some form of &quot;async value&quot; notation will be required.</p>
+</blockquote>
+<h2 id="refinements"><a class="header" href="#refinements">Refinements</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Modifier</th><th>Description</th></tr></thead><tbody>
+<tr><td>cancellation-safe</td><td>Has no associated future-local state</td></tr>
+</tbody></table>
+</div>
+<h3 id="cancellation-safe-futures"><a class="header" href="#cancellation-safe-futures">Cancellation-Safe Futures</a></h3>
+<p>&quot;cancellation-safety&quot; is currently more like a term of art than an first-class
+term. It is a property used and relied upon by ecosystem APIs, but it is not
+represented in the type system anywhere. Which means APIs which rely on
+&quot;cancellation-safety&quot; do so without compiler-backing, which makes them a
+notorious source of bugs. This should probably be fixed, and when we do we
+probably will not want to call it &quot;cancellation-safety&quot; since it relates less to
+&quot;cancellation&quot; and more to the statefulness of futures, and whether or not they
+can be recreated without side-effects or data loss.</p>
+<h3 id="fused-futures"><a class="header" href="#fused-futures">Fused Futures</a></h3>
+<p>A <code>FusedFuture</code> super-trait also exists, but it does not meaningfully feel like
+a modifier of the &quot;async&quot; effect. It only adds an <code>is_terminated</code> method which
+returns a bool. It does not inherently change the semantic functioning of the
+underlying <code>Iterator</code> trait, or enhance it with behavior which is otherwise
+absent. This is different from e.g. <code>FusedIterator</code> which says something about
+the behavior of the <code>Iterator::next</code> function.</p>
+<p>It's also worth noting that the <code>FusedFuture</code> trait is mostly useful for the
+<code>select!</code> control-flow construct. Without that, <code>FusedFuture</code> would likely not
+see much use
+(<a href="https://blog.yoshuawuyts.com/futures-concurrency-3/#fuse-requirements">ref</a>).</p>
+<h2 id="interactions-with-other-effects"><a class="header" href="#interactions-with-other-effects">Interactions with other effects</a></h2>
+<h3 id="asynchrony"><a class="header" href="#asynchrony">Asynchrony</a></h3>
+<h3 id="compile-time-execution"><a class="header" href="#compile-time-execution">Compile-time Execution</a></h3>
+<h3 id="fallibility"><a class="header" href="#fallibility">Fallibility</a></h3>
+<h3 id="iterativity"><a class="header" href="#iterativity">Iterativity</a></h3>
+<h3 id="unwinding"><a class="header" href="#unwinding">Unwinding</a></h3>
+<h3 id="memory-safety"><a class="header" href="#memory-safety">Memory-Safety</a></h3>
+<h3 id="immovability"><a class="header" href="#immovability">Immovability</a></h3>
+<h3 id="object-safety"><a class="header" href="#object-safety">Object-Safety</a></h3>
+<h3 id="ownership"><a class="header" href="#ownership">Ownership</a></h3>
+<h3 id="thread-safety"><a class="header" href="#thread-safety">Thread-Safety</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="compile-time-execution-scoped-effect"><a class="header" href="#compile-time-execution-scoped-effect">Compile-time Execution (Scoped Effect)</a></h1>
+<h2 id="description-1"><a class="header" href="#description-1">Description</a></h2>
+<p>The <code>const</code> keyword marks functions as &quot;is allowed to be evaluated during
+compilation&quot;. When used in scope position its meaning changes slightly to: &quot;this
+<em>will</em> be evaluated during compilation&quot;. There is no way to declare &quot;must be
+evaluated at compilation&quot; functions, causing the meaning of &quot;const&quot; to be
+context-dependent.</p>
+<div class="table-wrapper"><table><thead><tr><th></th><th>declaration</th><th>usage</th></tr></thead><tbody>
+<tr><td><strong>keyword never applies</strong></td><td><code>fn meow() {}</code></td><td><code>fn hello() { meow() }</code></td></tr>
+<tr><td><strong>keyword always applies</strong></td><td>-</td><td><code>const CAT: () = {};</code></td></tr>
+<tr><td><strong>keyword conditionally applies</strong></td><td><code>const fn meow() {}</code></td><td><code>const fn hello() { meow() }</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="feature-status-1"><a class="header" href="#feature-status-1">Feature Status</a></h2>
+<p>The <code>const</code> feature is integrated in a lot of the stdlib and ecosystem already,
+but it's notoriously missing any form of const-traits. Because a lot of Rust's
+language features make use of traits, this means const contexts have no access
+to iteration, <code>Drop</code> handlers, closures, and more.</p>
+<h2 id="feature-categorization-1"><a class="header" href="#feature-categorization-1">Feature categorization</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Create</td><td><code>const fn</code></td></tr>
+<tr><td>Yield</td><td>N/A</td></tr>
+<tr><td>Forward</td><td>automatic</td></tr>
+<tr><td>Consume</td><td><code>const {}</code>, <code>const X: Ty = {}</code></td></tr>
+<tr><td>Reification</td><td>N/A</td></tr>
+</tbody></table>
+</div>
+<h2 id="positions-available-1"><a class="header" href="#positions-available-1">Positions Available</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Available</th><th>Example</th></tr></thead><tbody>
+<tr><td>Manual trait impl</td><td>❌</td><td>N/A</td></tr>
+<tr><td>Free functions</td><td>✅</td><td><code>const fn meow() {}</code></td></tr>
+<tr><td>Inherent functions</td><td>✅</td><td><code>impl Cat { const fn meow() {} } </code></td></tr>
+<tr><td>Trait methods</td><td>⏳</td><td><code>trait Cat { const fn meow() {} }</code></td></tr>
+<tr><td>Trait declarations</td><td>❌</td><td><code>const trait Cat {}</code></td></tr>
+<tr><td>Block scope</td><td>✅</td><td><code>fn meow() { const {} }</code></td></tr>
+<tr><td>Argument qualifiers</td><td>❌</td><td><code>fn meow(cat: impl const Cat) {}</code></td></tr>
+<tr><td>Data types</td><td>❌</td><td><code>const struct Cat {}</code></td></tr>
+<tr><td>Drop</td><td>❌</td><td><code>impl const Drop for Cat {}</code></td></tr>
+<tr><td>Closures</td><td>❌</td><td><code>const ǀǀ {}</code></td></tr>
+<tr><td>Iterators</td><td>❌</td><td><code>for cat in cats {}</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="refinements-1"><a class="header" href="#refinements-1">Refinements</a></h2>
+<p>There are currently no refiments to the compile-time execution effect.</p>
+<h2 id="interactions-with-other-effects-1"><a class="header" href="#interactions-with-other-effects-1">Interactions with other effects</a></h2>
+<h3 id="asynchrony-1"><a class="header" href="#asynchrony-1">Asynchrony</a></h3>
+<h3 id="compile-time-execution-1"><a class="header" href="#compile-time-execution-1">Compile-time Execution</a></h3>
+<h3 id="fallibility-1"><a class="header" href="#fallibility-1">Fallibility</a></h3>
+<h3 id="iterativity-1"><a class="header" href="#iterativity-1">Iterativity</a></h3>
+<h3 id="unwinding-1"><a class="header" href="#unwinding-1">Unwinding</a></h3>
+<h3 id="memory-safety-1"><a class="header" href="#memory-safety-1">Memory-Safety</a></h3>
+<h3 id="immovability-1"><a class="header" href="#immovability-1">Immovability</a></h3>
+<h3 id="object-safety-1"><a class="header" href="#object-safety-1">Object-Safety</a></h3>
+<h3 id="ownership-1"><a class="header" href="#ownership-1">Ownership</a></h3>
+<h3 id="thread-safety-1"><a class="header" href="#thread-safety-1">Thread-Safety</a></h3>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li><a href="https://blog.yoshuawuyts.com/const-syntax/">Keywords II: Const Syntax</a></li>
+<li><a href="https://without.boats/blog/const-as-an-auto-trait/">Const as an auto-trait</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="fallibility-scoped-effect"><a class="header" href="#fallibility-scoped-effect">Fallibility (Scoped Effect)</a></h1>
+<h2 id="feature-status-2"><a class="header" href="#feature-status-2">Feature Status</a></h2>
+<p>todo</p>
+<h2 id="description-2"><a class="header" href="#description-2">Description</a></h2>
+<p>todo</p>
+<h2 id="refinements-2"><a class="header" href="#refinements-2">Refinements</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Modifier</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>Option&lt;T&gt;</code></td><td>Used to describe optional values</td></tr>
+<tr><td><code>Result&lt;T, E&gt;</code></td><td>Used to describe errors or success values</td></tr>
+<tr><td><code>ControlFlow&lt;B, C&gt;</code></td><td>Used to represent control-flow loops</td></tr>
+<tr><td><code>Poll&lt;T&gt;</code></td><td>Used to describe the state of <code>Future</code> state machines</td></tr>
+</tbody></table>
+</div>
+<p>While the reification of the fallibility effect in bounds ought to be <code>impl Try</code>, it more commonly is the case that we see concrete types used.</p>
+<h2 id="feature-categorization-2"><a class="header" href="#feature-categorization-2">Feature categorization</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Create</td><td><code>try</code></td></tr>
+<tr><td>Yield</td><td><code>throw</code></td></tr>
+<tr><td>Forward</td><td><code>?</code></td></tr>
+<tr><td>Consume</td><td><code>match</code> / <code>fn main()</code> †</td></tr>
+<tr><td>Reification</td><td><code>impl Try</code></td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>† <code>fn main</code> implements effect polymorphism over the fallibility effect
+by making use of the <a href="https://doc.rust-lang.org/std/process/trait.Termination.html"><code>Termination</code> trait</a>. It stands to reason that <em>if</em> we
+had a <code>try</code> notation for functions, that it should be possible to write
+<code>try fn main</code> which desugars to a <code>Result</code> type being returned.</p>
+</blockquote>
+<h2 id="interactions-with-other-effects-2"><a class="header" href="#interactions-with-other-effects-2">Interactions with other effects</a></h2>
+<h3 id="asynchrony-2"><a class="header" href="#asynchrony-2">Asynchrony</a></h3>
+<h3 id="compile-time-execution-2"><a class="header" href="#compile-time-execution-2">Compile-time Execution</a></h3>
+<h3 id="fallibility-2"><a class="header" href="#fallibility-2">Fallibility</a></h3>
+<h3 id="iterativity-2"><a class="header" href="#iterativity-2">Iterativity</a></h3>
+<h3 id="may-panic"><a class="header" href="#may-panic">May Panic</a></h3>
+<h3 id="memory-unsafety"><a class="header" href="#memory-unsafety">Memory-Unsafety</a></h3>
+<h3 id="must-not-move"><a class="header" href="#must-not-move">Must-not Move</a></h3>
+<h3 id="object-safety-2"><a class="header" href="#object-safety-2">Object-Safety</a></h3>
+<h3 id="ownership-2"><a class="header" href="#ownership-2">Ownership</a></h3>
+<h3 id="thread-safety-2"><a class="header" href="#thread-safety-2">Thread-Safety</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iterativity-scoped-effect"><a class="header" href="#iterativity-scoped-effect">Iterativity (Scoped Effect)</a></h1>
+<h2 id="feature-status-3"><a class="header" href="#feature-status-3">Feature Status</a></h2>
+<p>The <code>Iterator</code> trait has been stable in Rust since 1.0, but the generator syntax
+is currently <em>unstable</em>. This document will assume that generators are created
+with the <code>gen</code> keyword, but that's for illustrative purposes only.</p>
+<h2 id="description-3"><a class="header" href="#description-3">Description</a></h2>
+<p>todo</p>
+<h2 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Create</td><td><code>gen</code></td></tr>
+<tr><td>Yield</td><td><code>yield</code></td></tr>
+<tr><td>Forward</td><td>N/A</td></tr>
+<tr><td>Consume</td><td><code>for..in</code></td></tr>
+<tr><td>Reification</td><td><code>impl Iterator</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="refinements-3"><a class="header" href="#refinements-3">Refinements</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Modifier</th><th>Description</th></tr></thead><tbody>
+<tr><td>step</td><td>Has a notion of successor and predecessor operations.</td></tr>
+<tr><td>trusted len †</td><td>Reports an accurate length using <code>size_hint</code>.</td></tr>
+<tr><td>trusted step</td><td>Upholds all invariants of <code>Step</code>.</td></tr>
+<tr><td>double-ended</td><td>Is able to yield elements from both ends.</td></tr>
+<tr><td>exact size †</td><td>Knows its exact length.</td></tr>
+<tr><td>fused</td><td>Always continues to yield <code>None</code> when exhausted.</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>† The difference between <code>TrustedLen</code> and <code>ExactSizeIterator</code> is that
+<code>TrustedLen</code> is marked as <code>unsafe</code> to implement while <code>ExactSizeIterator</code> is
+marked as <em>safe</em> to implement. This means that if <code>TrustedLen</code> is implemented,
+you can rely on it for safety purposes, while with <code>ExactSizeIterator</code> you
+cannot.</p>
+</blockquote>
+<h2 id="positions-available-2"><a class="header" href="#positions-available-2">Positions Available</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Available</th><th>Example</th></tr></thead><tbody>
+<tr><td>Manual trait impl</td><td>✅</td><td><code>impl Iterator for Cat {}</code></td></tr>
+<tr><td>Free functions</td><td>❌</td><td><code>gen fn meow() {}</code></td></tr>
+<tr><td>Inherent functions</td><td>❌</td><td><code>impl Cat { gen fn meow() {} } </code></td></tr>
+<tr><td>Trait methods</td><td>❌</td><td><code>trait Cat { gen fn meow() {} }</code></td></tr>
+<tr><td>Trait declarations</td><td>❌</td><td><code>gen trait Cat {}</code></td></tr>
+<tr><td>Block scope</td><td>❌</td><td>N/A</td></tr>
+<tr><td>Argument qualifiers</td><td>❌</td><td><code>fn meow(cat: impl gen Cat) {}</code></td></tr>
+<tr><td>Drop</td><td>❌</td><td><code>impl gen Drop for Cat {}</code></td></tr>
+<tr><td>Closures</td><td>❌</td><td><code>gen ǀǀ  {}</code></td></tr>
+<tr><td>Iterators</td><td>❌</td><td><code>for cat in cats {}</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="interactions-with-other-effects-3"><a class="header" href="#interactions-with-other-effects-3">Interactions with other effects</a></h2>
+<h3 id="asynchrony-3"><a class="header" href="#asynchrony-3">Asynchrony</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Overview</th><th>Description</th></tr></thead><tbody>
+<tr><td>Composition</td><td>iterator of futures</td></tr>
+<tr><td>Description</td><td>Creates an iterator of futures. The future takes the iterator by <code>&amp;mut self</code>, so only a single future may be executed concurrently</td></tr>
+<tr><td>Example</td><td><a href="https://docs.rs/async-iterator/latest/async_iterator/"><code>AsyncIterator</code></a></td></tr>
+<tr><td>Implementable as of Rust 1.70?</td><td>No, async functions in traits are unstable</td></tr>
+</tbody></table>
+</div>
+<h3 id="fallibility-3"><a class="header" href="#fallibility-3">Fallibility</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Overview</th><th>Description</th></tr></thead><tbody>
+<tr><td>Composition</td><td>iterator of tryables</td></tr>
+<tr><td>Description</td><td>Creates an iterator of tryables, typically an iterator of <code>Result</code></td></tr>
+<tr><td>Example</td><td><a href="https://docs.rs/fallible-iterator/latest/fallible_iterator/trait.FallibleIterator.html"><code>FallibleIterator</code></a></td></tr>
+<tr><td>Implementable as of Rust 1.70?</td><td>No, try in traits is not available</td></tr>
+</tbody></table>
+</div>
+<h3 id="compile-time-execution-3"><a class="header" href="#compile-time-execution-3">Compile-time Execution</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Overview</th><th>Description</th></tr></thead><tbody>
+<tr><td>Composition</td><td>const iterator</td></tr>
+<tr><td>Description</td><td>Creates an iterator which can be iterated over at compile-time</td></tr>
+<tr><td>Example</td><td>N/A</td></tr>
+<tr><td>Implementable as of Rust 1.70?</td><td>No, const traits are unstable</td></tr>
+</tbody></table>
+</div>
+<h3 id="thread-safety-3"><a class="header" href="#thread-safety-3">Thread-Safety</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Overview</th><th>Description</th></tr></thead><tbody>
+<tr><td>Composition</td><td>iterator of tryables</td></tr>
+<tr><td>Description</td><td>Creates an iterator whose items which can be sent across threads</td></tr>
+<tr><td>Example</td><td><code>where I: Iterator&lt;Item = T&gt;, T: Send</code></td></tr>
+<tr><td>Implementable as of Rust 1.70?</td><td>Yes, as a bound on use. And by unit-testing the <code>Send</code> auto-trait on decls.</td></tr>
+</tbody></table>
+</div>
+<h3 id="immovability-2"><a class="header" href="#immovability-2">Immovability</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Overview</th><th>Description</th></tr></thead><tbody>
+<tr><td>Composition</td><td>an iterator which takes <code>self: Pin&lt;&amp;mut Self&gt;</code></td></tr>
+<tr><td>Description</td><td>An iterator which itself holds onto self-referential data</td></tr>
+<tr><td>Example</td><td>N/A</td></tr>
+<tr><td>Implementable as of Rust 1.70?</td><td>Yes</td></tr>
+</tbody></table>
+</div>
+<h3 id="unwinding-2"><a class="header" href="#unwinding-2">Unwinding</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Overview</th><th>Description</th></tr></thead><tbody>
+<tr><td>Composition</td><td>iterator may panic instead of yield</td></tr>
+<tr><td>Description</td><td>Creates an iterator which may panic</td></tr>
+<tr><td>Example</td><td><code>Iterator</code> (may panic by default)</td></tr>
+<tr><td>Implementable as of Rust 1.70?</td><td>Yes, but cannot opt-out of &quot;may panic&quot; semantics</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="unwinding-scoped-effect"><a class="header" href="#unwinding-scoped-effect">Unwinding (Scoped Effect)</a></h1>
+<h2 id="feature-status-4"><a class="header" href="#feature-status-4">Feature Status</a></h2>
+<p>todo</p>
+<h2 id="description-4"><a class="header" href="#description-4">Description</a></h2>
+<p>todo</p>
+<h2 id="refinements-4"><a class="header" href="#refinements-4">Refinements</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Modifier</th><th>Description</th></tr></thead><tbody>
+</tbody></table>
+</div>
+<p>The <code>panic</code> effect currently has no refinements.</p>
+<h2 id="feature-categorization-3"><a class="header" href="#feature-categorization-3">Feature categorization</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Create</td><td>N/A</td></tr>
+<tr><td>Yield</td><td><code>panic!</code></td></tr>
+<tr><td>Forward</td><td><code>foo()</code> / <code>resume_unwind</code></td></tr>
+<tr><td>Consume</td><td><code>catch_unwind</code> / <code>fn main</code></td></tr>
+<tr><td>Reification</td><td>N/A</td></tr>
+</tbody></table>
+</div>
+<p>Panics differ from all other control-flow oriented effects because every
+function is assumed to potentially panic. This means that the syntax to forward
+a panic from a function is just a regular function call. Panics are not
+represented in the type system, instead they exist as a property <em>outside</em> of
+it.</p>
+<h2 id="interactions-with-other-effects-4"><a class="header" href="#interactions-with-other-effects-4">Interactions with other effects</a></h2>
+<h3 id="asynchrony-4"><a class="header" href="#asynchrony-4">Asynchrony</a></h3>
+<h3 id="compile-time-execution-4"><a class="header" href="#compile-time-execution-4">Compile-time Execution</a></h3>
+<h3 id="fallibility-4"><a class="header" href="#fallibility-4">Fallibility</a></h3>
+<h3 id="iterativity-3"><a class="header" href="#iterativity-3">Iterativity</a></h3>
+<h3 id="unwinding-3"><a class="header" href="#unwinding-3">Unwinding</a></h3>
+<h3 id="memory-safety-2"><a class="header" href="#memory-safety-2">Memory-Safety</a></h3>
+<h3 id="immovability-3"><a class="header" href="#immovability-3">Immovability</a></h3>
+<h3 id="object-safety-3"><a class="header" href="#object-safety-3">Object-Safety</a></h3>
+<h3 id="ownership-3"><a class="header" href="#ownership-3">Ownership</a></h3>
+<h3 id="thread-safety-4"><a class="header" href="#thread-safety-4">Thread-Safety</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="memory-safety-scoped-effect"><a class="header" href="#memory-safety-scoped-effect">Memory Safety (Scoped Effect)</a></h1>
+<h3 id="asynchrony-5"><a class="header" href="#asynchrony-5">Asynchrony</a></h3>
+<h3 id="compile-time-execution-5"><a class="header" href="#compile-time-execution-5">Compile-time Execution</a></h3>
+<h3 id="fallibility-5"><a class="header" href="#fallibility-5">Fallibility</a></h3>
+<h3 id="iterativity-4"><a class="header" href="#iterativity-4">Iterativity</a></h3>
+<h3 id="unwinding-4"><a class="header" href="#unwinding-4">Unwinding</a></h3>
+<h3 id="memory-safety-3"><a class="header" href="#memory-safety-3">Memory-Safety</a></h3>
+<h3 id="immovability-4"><a class="header" href="#immovability-4">Immovability</a></h3>
+<h3 id="object-safety-4"><a class="header" href="#object-safety-4">Object-Safety</a></h3>
+<h3 id="ownership-4"><a class="header" href="#ownership-4">Ownership</a></h3>
+<h3 id="thread-safety-5"><a class="header" href="#thread-safety-5">Thread-Safety</a></h3>
+<h2 id="references-1"><a class="header" href="#references-1">References</a></h2>
+<ul>
+<li><a href="https://blog.yoshuawuyts.com/unsafe-syntax/">Keywords I: Unsafe Syntax</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="immovability-data-type-effect"><a class="header" href="#immovability-data-type-effect">Immovability (Data-Type Effect)</a></h1>
+<h2 id="interactions-with-other-effects-5"><a class="header" href="#interactions-with-other-effects-5">Interactions with other effects</a></h2>
+<h3 id="asynchrony-6"><a class="header" href="#asynchrony-6">Asynchrony</a></h3>
+<h3 id="compile-time-execution-6"><a class="header" href="#compile-time-execution-6">Compile-time Execution</a></h3>
+<h3 id="fallibility-6"><a class="header" href="#fallibility-6">Fallibility</a></h3>
+<h3 id="iterativity-5"><a class="header" href="#iterativity-5">Iterativity</a></h3>
+<h3 id="unwinding-5"><a class="header" href="#unwinding-5">Unwinding</a></h3>
+<h3 id="memory-safety-4"><a class="header" href="#memory-safety-4">Memory-Safety</a></h3>
+<h3 id="immovability-5"><a class="header" href="#immovability-5">Immovability</a></h3>
+<h3 id="object-safety-5"><a class="header" href="#object-safety-5">Object-Safety</a></h3>
+<h3 id="ownership-5"><a class="header" href="#ownership-5">Ownership</a></h3>
+<h3 id="thread-safety-6"><a class="header" href="#thread-safety-6">Thread-Safety</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="object-safety-data-type-effect"><a class="header" href="#object-safety-data-type-effect">Object Safety (Data-Type Effect)</a></h1>
+<h3 id="asynchrony-7"><a class="header" href="#asynchrony-7">Asynchrony</a></h3>
+<h3 id="compile-time-execution-7"><a class="header" href="#compile-time-execution-7">Compile-time Execution</a></h3>
+<h3 id="fallibility-7"><a class="header" href="#fallibility-7">Fallibility</a></h3>
+<h3 id="iterativity-6"><a class="header" href="#iterativity-6">Iterativity</a></h3>
+<h3 id="unwinding-6"><a class="header" href="#unwinding-6">Unwinding</a></h3>
+<h3 id="memory-safety-5"><a class="header" href="#memory-safety-5">Memory-Safety</a></h3>
+<h3 id="immovability-6"><a class="header" href="#immovability-6">Immovability</a></h3>
+<h3 id="object-safety-6"><a class="header" href="#object-safety-6">Object-Safety</a></h3>
+<h3 id="ownership-6"><a class="header" href="#ownership-6">Ownership</a></h3>
+<h3 id="thread-safety-7"><a class="header" href="#thread-safety-7">Thread-Safety</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ownership-data-type-effect"><a class="header" href="#ownership-data-type-effect">Ownership (Data-Type Effect)</a></h1>
+<h2 id="description-5"><a class="header" href="#description-5">Description</a></h2>
+<h2 id="feature-status-5"><a class="header" href="#feature-status-5">Feature Status</a></h2>
+<h2 id="feature-categorization-4"><a class="header" href="#feature-categorization-4">Feature categorization</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
+<tr><td>Create</td><td></td></tr>
+<tr><td>Yield</td><td></td></tr>
+<tr><td>Forward</td><td></td></tr>
+<tr><td>Consume</td><td></td></tr>
+<tr><td>Reification</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="positions-available-3"><a class="header" href="#positions-available-3">Positions Available</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Position</th><th>Available</th><th>Example</th></tr></thead><tbody>
+<tr><td>Manual trait impl</td><td>✅</td><td><code>impl Future for Cat {}</code></td></tr>
+<tr><td>Free functions</td><td>✅</td><td><code>async fn meow() {}</code></td></tr>
+<tr><td>Inherent functions</td><td>✅</td><td><code>impl Cat { async fn meow() {} } </code></td></tr>
+<tr><td>Trait methods</td><td>⏳</td><td><code>trait Cat { async fn meow() {} }</code></td></tr>
+<tr><td>Trait declarations</td><td>❌</td><td><code>async trait Cat {}</code></td></tr>
+<tr><td>Block scope</td><td>✅</td><td><code>fn meow() { async {} }</code></td></tr>
+<tr><td>Argument qualifiers</td><td>❌</td><td><code>fn meow(cat: impl async Cat) {}</code></td></tr>
+<tr><td>Data types †</td><td>❌</td><td><code>async struct Cat {}</code></td></tr>
+<tr><td>Drop †</td><td>❌</td><td><code>impl async Drop for Cat {}</code></td></tr>
+<tr><td>Closures</td><td>❌</td><td><code>async ǀǀ  {}</code></td></tr>
+<tr><td>Iterators</td><td>❌</td><td><code>for await cat in cats {}</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="refinements-5"><a class="header" href="#refinements-5">Refinements</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Modifier</th><th>Description</th></tr></thead><tbody>
+</tbody></table>
+</div>
+<h2 id="interactions-with-other-effects-6"><a class="header" href="#interactions-with-other-effects-6">Interactions with other effects</a></h2>
+<h3 id="asynchrony-8"><a class="header" href="#asynchrony-8">Asynchrony</a></h3>
+<h3 id="compile-time-execution-8"><a class="header" href="#compile-time-execution-8">Compile-time Execution</a></h3>
+<h3 id="fallibility-8"><a class="header" href="#fallibility-8">Fallibility</a></h3>
+<h3 id="iterativity-7"><a class="header" href="#iterativity-7">Iterativity</a></h3>
+<h3 id="unwinding-7"><a class="header" href="#unwinding-7">Unwinding</a></h3>
+<h3 id="memory-safety-6"><a class="header" href="#memory-safety-6">Memory-Safety</a></h3>
+<h3 id="immovability-7"><a class="header" href="#immovability-7">Immovability</a></h3>
+<h3 id="object-safety-7"><a class="header" href="#object-safety-7">Object-Safety</a></h3>
+<h3 id="ownership-7"><a class="header" href="#ownership-7">Ownership</a></h3>
+<h3 id="thread-safety-8"><a class="header" href="#thread-safety-8">Thread-Safety</a></h3>
+<h2 id="references-2"><a class="header" href="#references-2">References</a></h2>
+<ul>
+<li><a href="https://blog.yoshuawuyts.com/const-syntax/">Keywords II: Const Syntax</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="thread-safety-data-type-effect"><a class="header" href="#thread-safety-data-type-effect">Thread-Safety (Data-Type Effect)</a></h1>
+<h2 id="interactions-with-other-effects-7"><a class="header" href="#interactions-with-other-effects-7">Interactions with other effects</a></h2>
+<h3 id="asynchrony-9"><a class="header" href="#asynchrony-9">Asynchrony</a></h3>
+<h3 id="compile-time-execution-9"><a class="header" href="#compile-time-execution-9">Compile-time Execution</a></h3>
+<h3 id="fallibility-9"><a class="header" href="#fallibility-9">Fallibility</a></h3>
+<h3 id="iterativity-8"><a class="header" href="#iterativity-8">Iterativity</a></h3>
+<h3 id="unwinding-8"><a class="header" href="#unwinding-8">Unwinding</a></h3>
+<h3 id="memory-safety-7"><a class="header" href="#memory-safety-7">Memory-Safety</a></h3>
+<h3 id="immovability-8"><a class="header" href="#immovability-8">Immovability</a></h3>
+<h3 id="object-safety-8"><a class="header" href="#object-safety-8">Object-Safety</a></h3>
+<h3 id="ownership-8"><a class="header" href="#ownership-8">Ownership</a></h3>
+<h3 id="thread-safety-9"><a class="header" href="#thread-safety-9">Thread-Safety</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="implications-of-the-effect-hierarchy"><a class="header" href="#implications-of-the-effect-hierarchy">Implications of the effect hierarchy</a></h1>
+<p>One implication of the subset-superset relationship is that code which is
+generic over effects will not be able to use all functionality of the superset
+in the subset case. Though it will need to use the <em>syntax</em> of the superset.</p>
+<p>Take for examle the following code. It takes two async closures, awaits them,
+and sums them:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sum the output of two async functions:
+~async fn sum&lt;T&gt;(
+    lhs: impl ~async FnMut() -&gt; T,
+    rhs: impl ~async FnMut() -&gt; T
+) -&gt; T {
+   let lhs = lhs().await; 
+   let rhs = rhs().await; 
+   lhs + rhs
+}
+<span class="boring">}</span></code></pre></pre>
+<p>One of the benefits of async execution is that we gain <em>ad-hoc concurrency</em>, so
+we might be tempted to perform the comptutation of <code>lhs</code> and <code>rhs</code> concurrently,
+and summing the output once both have completed. However this should not be
+possible solely using effect polymorphism since the generated code needs to work
+in both async and non-async contexts.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sum the output of two async functions:
+~async fn sum&lt;T&gt;(
+    lhs: impl ~async FnMut() -&gt; T,
+    rhs: impl ~async FnMut() -&gt; T
+) -&gt; T {
+   let (lhs, rhs) = (lhs(), rhs()).join().await;
+   //                             ^^^^^^^
+   // error: cannot call an `async fn` from a `~async` context
+   // hint: instead of calling `join` await the items sequentially
+   //       or consider writing an overload instead
+   lhs + rhs
+}
+<span class="boring">}</span></code></pre></pre>
+<p>And this is not unique to <code>async</code>: in maybe-<code>const</code> contexts we cannot call
+functions from the super-context (&quot;base Rust&quot;) since those cannot work during
+<code>const</code> execution. This leads to the following implication: <strong>Conditional effect
+implementations require the syntactic annotations of the super-context, but
+cannot call functions which exclusively work in the super-context.</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="grouping-keyword-generics"><a class="header" href="#grouping-keyword-generics">Grouping Keyword Generics</a></h1>
+<p>We expect it to be common that if a function takes generics and has conditional
+keywords on those, it will want to be conditional over <em>all</em> keywords on those
+generics. So in order to not have people repeat params over and over, we should
+provide shorthand syntax.</p>
+<p>Here is the &quot;base&quot; variant we're changing:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// without any effects
+fn find&lt;I&gt;(
+    iter: impl Iterator&lt;Item = I&gt;,
+    closure: impl FnMut(&amp;I) -&gt; bool,
+) -&gt; Option&lt;I&gt; {
+    ...    
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We could imagine wanting a fallible variant of this which can short-circuit
+based on whether an <code>Error</code> is returned or not. We could imagine the &quot;base&quot;
+version using a <code>TryTrait</code> notation, and the &quot;effect&quot; version using the <code>throws</code>
+keyword. Both variants would look something like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// fallible without effect notation
+fn try_find&lt;I, E&gt;(
+    iter: impl TryIterator&lt;Item = I, E&gt;,
+    closure: impl TryFnMut&lt;(&amp;I), E&gt; -&gt; bool,
+) -&gt; Result&lt;Option&lt;I&gt;, E&gt; {
+    ...
+}
+
+// fallible with effect notation
+fn try_find&lt;I, E&gt;(
+    iter: impl Iterator&lt;Item = I&gt; ~yeets E,
+    closure: impl FnMut(&amp;I) ~yeets E -&gt; bool,
+) -&gt; Option&lt;I&gt; ~yeets E {
+    ...
+}
+<span class="boring">}</span></code></pre></pre>
+<p>For <code>async</code> we could do something similar. The &quot;base&quot; version would use
+<code>AsyncTrait</code> variants. And the &quot;effect&quot; variant would use the <code>async</code> keyword:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// async without effect notation
+fn async_find&lt;I&gt;(
+    iter: impl AsyncIterator&lt;Item = I&gt;,
+    closure: impl AsyncFnMut(&amp;I) -&gt; bool,
+) -&gt; impl Future&lt;Output = Option&lt;I&gt;&gt; {
+    ...
+}
+
+// async with effect notation
+~async fn async_find&lt;I&gt;(
+    iter: impl ~async Iterator&lt;Item = I&gt;,
+    closure: impl ~async FnMut(&amp;I) -&gt; bool,
+) -&gt; Option&lt;I&gt; {
+    ...
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Both the &quot;fallible&quot; and &quot;async&quot; variants mirror each other closely. And it's
+easy to imagine we'd want to be conditional over both. However, if neither the
+&quot;base&quot; or the &quot;effect&quot; variants are particularly pleasant.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// async + fallible without effect notation
+fn try_async_find&lt;I, E&gt;(
+    iter: impl TryAsyncIterator&lt;Item = Result&lt;I, E&gt;&gt;,
+    closure: impl TryAsyncFnMut&lt;(&amp;I), E&gt; -&gt; bool,
+) -&gt; impl Future&lt;Output = Option&lt;Result&lt;I, E&gt;&gt;&gt; {
+    ...
+}
+
+// async + fallible with effect notation
+~async fn try async_find&lt;I, E&gt;(
+    iter: impl ~async Iterator&lt;Item = I&gt; ~yeets E,
+    closure: impl ~async FnMut(&amp;I) ~yeets E -&gt; bool,
+) -&gt; Option&lt;I&gt; ~yeets E {
+    ...
+}
+<span class="boring">}</span></code></pre></pre>
+<p>The &quot;base&quot; variant is entirely unworkable since it introduces a combinatorial
+explosion of effects (&quot;fallible&quot; and &quot;async&quot; are only two examples of effects).
+The &quot;effect&quot; variant is a little better because it composes, but even with just
+two effects it looks utterly overwhelming. Can you imagine what it would look
+like with three or four? Yikes.</p>
+<p>So what if we could instead treat effects as an actual generic parameter? As we
+discussed earlier, in order to lower effects we already need a new type of
+generic at the MIR layer. But what if we exposed that type of generics as user
+syntax too? We could imagine it to look something like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// conditional
+fn any_find&lt;I, effect F&gt;(
+    iter: impl F * Iterator&lt;Item = I&gt;,
+    closure: impl F * FnMut(&amp;I) -&gt; bool,
+) -&gt; F * Option&lt;I&gt; {
+    ...    
+}
+<span class="boring">}</span></code></pre></pre>
+<p>There are legitimate questions here though. Effects which provide a superset of
+base Rust may change the way we write Rust. The clearest example of this is
+<code>async</code>: would having an <code>effect F</code> require that we when we invoke our <code>closure</code>
+that we suffix it with <code>.await</code>? What about a <code>try</code> effect, would that require
+that we suffix it with a <code>?</code> operator? The effects passed to the function might
+need to change the way we author the function body <sup class="footnote-reference"><a href="#implication">1</a></sup>.</p>
+<div class="footnote-definition" id="implication"><sup class="footnote-definition-label">1</sup>
+<p>One interesting thing to keep in mind is that the total set of
+effects is strictly <em>bounded</em>. None of these mechanisms would be exposed to
+end-users to define their own effects, but only used by the Rust language. This
+means we can know which effects are part of the set. And any change in calling
+signature (e.g. adding <code>.await</code> or <code>?</code>, etc.) can be part of a Rust edition.</p>
+</div>
+<p>Another question is about <em>bounds</em>. Declaring an <code>effect F</code> is maximally
+inclusive: it would capture all effects. Should we be able to place restrictions
+on this effect, and if so what should that look like?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-new-keyword-generics"><a class="header" href="#adding-new-keyword-generics">Adding new keyword generics</a></h1>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo() { // maybe const context
+    let file = fs::open(&quot;hello&quot;).unwrap();
+    // compile error! =&gt; `fs::open` is not a maybe const function!
+}
+
+~base fn foo() { // assume `const` as the default; invert the relationship
+    let file = fs::open(&quot;hello&quot;).unwrap();
+    // compile error! =&gt; `fs::open` is
+    // a base function which cannot be
+    // called from a maybe base context
+}
+
+~async fn foo() {
+    let file = my_definitely_async_fn().await;
+    // compile error!
+}
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">fn foo&lt;effect F: const&gt;(f: impl F * Fn() -&gt; ()) {
+    f();
+}
+fn foo&lt;effect F: const&gt;(f: impl effect&lt;F&gt; Fn() -&gt; ()) {
+    f();
+}
+
+// compile error!
+// effect `F` is maximally inclusive!
+// missing `.await`
+
+// maximally inclusive effects are not forward compatible! - once
+// we add a new effect existing code will not compile!
+// The calling convention may change each time we add a new effect!
+
+fn main() {
+    foo(some_fn); // Infer all effects to Not*
+}</code></pre></pre>
+<p>Adding new effects to the language does not break anyone, because effects must
+be opted in. Adding a new effect to the opt-in effect generics of a function
+will break callers that infer the effect to be required.</p>
+<p>Editions can add new effects to the list of defaults. This is not a breaking
+change because calling crates can stay on old editions, even if the lib crate
+got updated to a newer edition. THe lower edition crates don't see the defaults
+and turn them off.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mir-desugaring"><a class="header" href="#mir-desugaring">MIR desugaring</a></h1>
+<p><a href="https://rust-lang.zulipchat.com/#narrow/stream/146212-t-compiler.2Fconst-eval/topic/complexity.20of.20constness.20in.20the.20type.20system">Recently</a>
+I (Oli) have proposed to add a magic generic parameter on all <code>const fn foo</code>,
+<code>impl const Foo for Bar</code> and <code>const trait Foo</code> declarations. This generic
+parameter (called <code>constness</code> henceforth) is forwarded automatically to all
+items used within the body of a const fn. The following code blocks demonstrates
+the way I envision this magic generic parameter to be created (TLDR: similar to
+desugarings).</p>
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<h4 id="trait-declarations"><a class="header" href="#trait-declarations">Trait declarations</a></h4>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const trait Foo {}
+<span class="boring">}</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Foo&lt;constness C&gt; {}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="generic-parameters"><a class="header" href="#generic-parameters">Generic parameters</a></h4>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo&lt;T: Bar + ~const Foo&gt;() {}
+<span class="boring">}</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;constness C, T: Bar + Foo&lt;C&gt;&gt;() {}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="function-bodies"><a class="header" href="#function-bodies">Function bodies</a></h4>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo() {
+    bar()
+}
+<span class="boring">}</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;constness C&gt;() {
+    bar::&lt;C&gt;()
+}
+<span class="boring">}</span></code></pre></pre>
+<h4 id="call-sites-outside-of-const-contexts"><a class="header" href="#call-sites-outside-of-const-contexts">Call sites outside of const contexts</a></h4>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    some_const_fn();
+}</code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    some_const_fn::&lt;constness::NotConst&gt;();
+}</code></pre></pre>
+<h4 id="call-sites-in-const-contexts"><a class="header" href="#call-sites-in-const-contexts">Call sites in const contexts</a></h4>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const MOO: () = {
+    some_const_fn();
+}
+<span class="boring">}</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const MOO: () = {
+    some_const_fn::&lt;constness::ConstRequired&gt;();
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="implementation-side"><a class="header" href="#implementation-side">Implementation side:</a></h3>
+<p>We add a fourth kind of generic parameter: <code>constness</code>. All <code>const trait Foo</code>
+implicitly get that parameter. In rustc we remove the <code>constness</code> field from
+<code>TraitPredicate</code> and instead rely on generic parameter substitutions to replace
+constness parameters. For now such a generic parameter can either be
+<code>Constness::Required</code>, <code>Constness::Not</code> or <code>Constness::Param</code>, where only the
+latter is replaced during substitutions, the other two variants are fixed.
+Making this work as generic parameter substitution should allow us to re-use all
+the existing logic for such substitutions instead of rolling them again. I am
+aware of a significant amount of hand-waving happening here, most notably around
+where the substitutions are coming from, but I'm hoping we can hash that out in
+an explorative implementation</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="overloading-keyword-generics"><a class="header" href="#overloading-keyword-generics">Overloading Keyword Generics</a></h1>
+<p>In the previous section we saw that we cannot use <code>join</code> to await two futures
+concurrently because in &quot;base Rust&quot; we cannot run two closures concurrently. The
+capabilities introduced by the superset (async) have no counterpart in the
+subset (&quot;base Rust&quot;), and therefor we cannot write it.</p>
+<p>But sometimes we <em>do</em> want to be able to specialize implementations for a
+specific context, making use of the capabilities they provide. In order to do
+this we need to be able to declare two different code paths, and we propose
+<em>effect overloading</em> as the mechanism to do that.</p>
+<p>This problem is not limited to async Rust either; const implementations may want
+to swap to platform-specific intrinsics at runtime, but keep using portable
+instructions during CTFE. This is only a difference in implementation, and
+should not require users to switch between APIs.</p>
+<p>The way we envision <em>effect overloading</em> to work would be similar to
+specialization. A base implementation would be declared, with an overload in the
+same scope using the same signature except for the effects. The compiler would
+pick up on that, and make it work as if the type was written in a polymorphic
+fashion. Taking our earlier example, we could imagine the <code>sum</code> function could
+then be written like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sum the output of two functions:
+default fn sum&lt;T&gt;(
+    lhs: impl FnMut() -&gt; T,
+    rhs: impl FnMut() -&gt; T
+) -&gt; T {
+   lhs() + rhs()
+}
+
+async fn sum&lt;T&gt;(
+    lhs: impl async FnMut() -&gt; T,
+    rhs: impl async FnMut() -&gt; T
+) -&gt; T {
+   let (lhs, rhs) = (lhs(), rhs()).join().await;
+   lhs + rhs
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We expect <em>effect overloading</em> to not only be useful for performance: we suspect
+it may also be required when defining the core (async) IO types in the stdlib
+(e.g. <code>TcpStream</code>, <code>File</code>). These types carry extra fields which their base
+counterparts do not. And operations such as reading and writing to them cannot
+be written in a polymorphic fashion.</p>
+<p><strong>While we expect a majority of ecosystem and stdlib code to be written using
+<em>effect polymorphism</em>, there is a point at which implementations do need to be
+specialized, and for that we need <em>effect overloading</em>.</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="prior-art"><a class="header" href="#prior-art">Prior Art</a></h1>
+<h2 id="c-noexceptnoexcept"><a class="header" href="#c-noexceptnoexcept">C++: <code>noexcept(noexcept(…))</code></a></h2>
+<p>C++'s <code>noexcept(noexcept(…))</code> pattern is used to declare something as <code>noexcept</code>
+if the evaluated pattern is also <code>noexcept</code>. This makes <code>noexcept</code> conditional
+on the pattern provided.</p>
+<p>This is most commonly used in generic templates to mark the output type as
+<code>noexcept</code> if all of the input types are <code>noexcept</code> as well.</p>
+<ul>
+<li><a href="https://devblogs.microsoft.com/oldnewthing/20220408-00/?p=106438">Raymond Chen, “Please Repeat Yourself: The Noexcept(Noexcept(…)) Idiom,” The Old New Thing, April 8, 2022</a></li>
+</ul>
+<h2 id="c-implicits-and-constexpr"><a class="header" href="#c-implicits-and-constexpr">C++: implicits and <code>constexpr</code></a></h2>
+<p><code>constexpr</code> can be applied based on a condition. The following example works:</p>
+<h4 id="c-11"><a class="header" href="#c-11">C++ 11</a></h4>
+<pre><code class="language-cpp">template &lt;
+class U = T,
+detail::enable_if_t&lt;std::is_convertible&lt;U &amp;&amp;, T&gt;::value&gt; * = nullptr,
+detail::enable_forward_value&lt;T, U&gt; * = nullptr&gt;
+constexpr optional(U &amp;&amp;u) : base(in_place, std::forward&lt;U&gt;(u)) {}
+
+template &lt;
+class U = T,
+detail::enable_if_t&lt;!std::is_convertible&lt;U &amp;&amp;, T&gt;::value&gt; * = nullptr,
+detail::enable_forward_value&lt;T, U&gt; * = nullptr&gt;
+constexpr explicit optional(U &amp;&amp;u) : base(in_place, std::forward&lt;U&gt;(u)) {}
+</code></pre>
+<h4 id="c-20"><a class="header" href="#c-20">C++ 20</a></h4>
+<pre><code class="language-cpp">template &lt;
+class U = T,
+detail::enable_forward_value&lt;T, U&gt; * = nullptr&gt;
+explicit(std::is_convertible&lt;U &amp;&amp;, T&gt;::value) constexpr optional(U &amp;&amp;u) : base(in_place, std::forward&lt;U&gt;(u)) {}
+</code></pre>
+<p><strong>todo:</strong> validate what this does exactly by someone who can actually read C++.</p>
+<h2 id="rust-maybe-async-crate"><a class="header" href="#rust-maybe-async-crate">Rust: <code>maybe-async</code> crate</a></h2>
+<ul>
+<li><a href="https://crates.io/crates/maybe-async">fmeow, “maybe-async crate,” January 15, 2020</a></li>
+</ul>
+<h2 id="rust-fn-main"><a class="header" href="#rust-fn-main">Rust: <code>fn main</code></a></h2>
+<p>Rust provides overloads for <code>async fn main</code> through the <code>Termination</code> trait. The
+<code>main</code> function can optionally be made fallible by defining <code>-&gt; Result&lt;()&gt;</code> as
+the return type. In the ecosystem it's common to extend <code>fn main</code> with async
+capabilities by annotating it with an attribute. And this mechanism has been
+shown to work in the compiler as well by implementing <code>Termination for F: Future</code>.</p>
+<p>The mechanism of overloading for <code>fn main</code> differs from what we're proposing,
+but the outcomes are functionally the same: greater flexibility in which
+function modifiers are accepted, and less need to duplicate / wrap code.</p>
+<h2 id="zig-async-functions"><a class="header" href="#zig-async-functions">Zig: async functions</a></h2>
+<blockquote>
+<p>Zig infers whether a function is async, and allows async/await on non-async
+functions, which means that Zig libraries are agnostic of blocking vs async I/O.
+Zig avoids function colors.</p>
+</blockquote>
+<p>— <a href="https://ziglang.org/learn/overview/#concurrency-via-async-functions">Zig contributors, “Zig In-Depth Overview: Concurrency via Async Functions,” October 1, 2019</a></p>
+<h2 id="swift-async-overloading"><a class="header" href="#swift-async-overloading">Swift: async overloading</a></h2>
+<pre><code class="language-swift">// Existing synchronous API
+func doSomethingElse() { ... }
+
+// New and enhanced asynchronous API
+func doSomethingElse() async { ... }
+</code></pre>
+<ul>
+<li>https://github.com/apple/swift-evolution/pull/1392</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-evaluation-1"><a class="header" href="#-evaluation-1">🔬 Evaluation</a></h1>
+<blockquote>
+<p>The <em>evaluation</em> surveys the various design approaches that are under consideration.
+It is not required for all initiatives, only those that begin with a problem statement
+but without a clear picture of the best solution. Often the evaluation will refer to topics
+in the <a href="evaluation/./design-discussions.html">design-discussions</a> for more detailed consideration.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-rfc"><a class="header" href="#-rfc">✨ RFC</a></h1>
+<blockquote>
+<p>When you're ready to start drafting, copy in the <a href="https://raw.githubusercontent.com/rust-lang/rfcs/master/0000-template.md">template text</a> from the <a href="https://github.com/rust-lang/rfcs">rfcs</a> repository.</p>
+</blockquote>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>TBD</p>
+<h2 id="design"><a class="header" href="#design">Design</a></h2>
+<h3 id="const"><a class="header" href="#const">Const</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo() {}
+<span class="boring">}</span></code></pre></pre>
+<p>desugars to</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const&lt;C&gt; fn foo() {}
+<span class="boring">}</span></code></pre></pre>
+<p>This means</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo&lt;T: const SomeTrait&gt;(t: T) {}
+<span class="boring">}</span></code></pre></pre>
+<p>desugars to this, which is just one character more:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const&lt;C&gt; fn foo&lt;T: SomeTrait * C&gt;(t: T) {}
+<span class="boring">}</span></code></pre></pre>
+<p>which allows you to call trait methods within the <code>const fn</code>.</p>
+<p>For the common case however, effects do not need to be named and can be referenced to by <code>_</code>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const&lt;_&gt; fn foo&lt;T: SomeTrait * _&gt;(t: T) {}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="async"><a class="header" href="#async">Async</a></h3>
+<p>In contrast to <code>const</code> (which is &quot;maybe&quot;-by-default) there is no
+sugared version.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;A&gt; fn foo() {}
+<span class="boring">}</span></code></pre></pre>
+<p>You can then pass this effect into other uses of <code>async</code> within
+the maybe-<code>async</code> function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;A&gt; fn foo&lt;T: SomeTrait * A&gt;(t: T) {
+    t.some_method()
+}
+<span class="boring">}</span></code></pre></pre>
+<p>which allows you to call trait methods within the <code>~async fn</code>.</p>
+<h3 id="combining-effects"><a class="header" href="#combining-effects">Combining effects</a></h3>
+<p>If you have both <code>async</code> and <code>const</code> modifiers, your function may not perform
+any non-const operations like accessing the file system or static items, but is
+allowed to use <code>await</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Can be const, async, both or neither
+const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
+where
+    effect X: async ^ const,
+{
+    t.bar().await
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>async</code> and <code>const</code> can mutually exclusive, because <code>async</code> is useful for non-blocking IO,
+but <code>const</code> doesn't have <em>any</em> IO at all. Thus we allow declaring arbitrary <em>exclusive-or</em>
+bounds for effects.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Can be const, async, both or neither
+const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
+where
+    effect X: async ^ const,
+{
+    t.bar().await
+}
+<span class="boring">}</span></code></pre></pre>
+<ul>
+<li>Yosh's brain error brain worms: we shouldn't have <code>try</code> functions, we should
+have functions which use <code>throws</code>, and it specifies which error we throw.</li>
+<li>Oli: the carried error from <code>try</code> could just be inferred from the call-site.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;E&gt; try&lt;E&gt; fn foo(t: impl SomeTrait * E, p: impl SomeTrait * E) {
+    t.some_method().await?;
+    p.some_method().await?;
+}
+<span class="boring">}</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;E1&gt; try&lt;E2&gt; fn foo(t: impl SomeTrait * E1, p: impl SomeTrait * E2, q: impl SomeTrait * E1 * E2) {
+    t.some_method().await;
+    p.some_method()?;
+    q.some_method().await?;
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="backwards-compatibility"><a class="header" href="#backwards-compatibility">Backwards Compatibility</a></h3>
+<p>One important part of keyword generics is that they will allow us to introduce them to the standard library without
+breaking any existing code. Right now we're already adding constness to many functions in the standard library.</p>
+<p>Take for example the method <code>Option::map</code>. This method takes a closure <code>f</code>. If we want to make this method <code>const</code> the closure must be <code>const</code> as well. This means the constness of the method and the constness of the input types are <em>linked</em>.</p>
+<p>Before constification, <code>Option::map</code> looked like this:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;T&gt; Option&lt;T&gt; {
+    fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U) -&gt; Option&lt;U&gt; {
+        match self {
+            None =&gt; None,
+            Some(x) =&gt; Some(f(x)),
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>We might be tempted to make the function &quot;maybe-const&quot; by adding a <code>const</code>
+keyword-generic to the function:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;T&gt; Option&lt;T&gt; {
+    const&lt;C&gt; fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U) -&gt; Option&lt;U&gt; {
+        match self {
+            None =&gt; None,
+            Some(x) =&gt; Some(f(x)),
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>But the compiler won't let us do this, because we're calling the closure <code>f</code>
+inside the function body, but <code>f</code> is not marked &quot;maybe-const&quot;:</p>
+<pre><code>error[E0000]: `f` is not const
+ --&gt; lib/option.rs:5:20
+  |
+5 |             Some(x) =&gt; Some(f(x)),
+  |                             ^ implements `FnOnce` but is lacking a `const` keyword
+  |
+hint: consider applying the `C` generic to the `FnOnce` bound:
+ --&gt; lib/option.rs:2:48
+  |
+2 |    const&lt;C&gt; fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U * C) -&gt; Option&lt;U&gt; {
+  |                                                   ++++
+</code></pre>
+<ul>
+<li>current use of map will keep working because any type which implements <code>FnOnce</code> will just keep working.</li>
+<li>Yosh question: so we base inference on the parameters we pass it?</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    my_opt.map(|x| x * 2);       // non-async
+}
+async&lt;A&gt; fn foo(i: i32) -&gt; i32 { i * 2 }
+async fn main() {
+    my_opt.map(async |x| x * 2).await; // async
+    //         ^               ^ or is it this?
+    //         | is it this?        
+    my_opt.map(foo).await;
+             //^^^ do we infer this to be `async` because of the `await`
+}</code></pre></pre>
+<ul>
+<li>Conclusion: we must infer based on the <code>.await</code>
+<ul>
+<li>Because: if we infer based on the argument then in the case of a <code>maybe async</code> type <code>foo</code> we'd need to 
+start turbofishing arguments. In contrast: <code>.await</code> here is unambiguous!</li>
+<li>But, we want to go further: if the function and the argument are both
+<code>maybe async</code>, and you're inside of an <code>async fn</code>, then <em>not</em> <code>.await</code>ing
+should trigger a warning.
+- And: the default should fall back to the !async variant.
+- TODO: create an example for this!</li>
+</ul>
+</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">// we cannot base inference on the type of the outer function. This code is valid
+// today, but if we made it infer based on the enclosing function's type we'd get:
+async fn main() {
+    my_opt.map(|x| x * 2);
+    // compile error!
+}</code></pre></pre>
+<p>The repeated use of <code>const&lt;C&gt;</code> enforces that if <code>map</code> is called with &quot;not const&quot; (so called
+from a base Rust function), then the <code>FnOnce</code> bound can be satisfied by any type that
+implements <code>FnOnce</code>, irrespective of its constness.</p>
+<p>Thus backwards compatibility is preserved for <code>const</code>.</p>
+<p>If <code>Option::map</code> is called from another <code>const fn</code> or from within a true <code>const</code>
+context (like a const item's initializer), then the <code>C</code> is either &quot;maybe const&quot; or &quot;definitely const&quot;,
+but either way, only types that implement <code>const FnOnce</code> are allowed for <code>f</code>.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;T&gt; Option&lt;T&gt; {
+    const&lt;C&gt; fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U * C) -&gt; Option&lt;U&gt; {
+    //    ^  is  linked   with   this   right   here  ^
+        match self {
+            None =&gt; None,
+            Some(x) =&gt; Some(f(x)),
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h3 id="multiple-different-effects"><a class="header" href="#multiple-different-effects">Multiple different effects</a></h3>
+<p>We don't have a decision yet on how <code>try</code> or (<code>throws</code>) is supposed to work, which may need to provide a way to define N-copies of the same effect.
+This RFC does not address this, however it is forward compatible with adding multiple independent effects of a single keyword:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>try&lt;E1, E2&gt; fn foo(t: impl SomeTrait * E1 * E2) {
+    t.some_method()??;
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="alternatives"><a class="header" href="#alternatives">Alternatives</a></h2>
+<h2 id="future-extensions"><a class="header" href="#future-extensions">Future Extensions</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-frequently-asked-questions"><a class="header" href="#-frequently-asked-questions">😕 Frequently asked questions</a></h1>
+<blockquote>
+<p>This page lists frequently asked questions about the design. It often redirects to the other pages on the site.</p>
+</blockquote>
+<h2 id="what-is-the-goal-of-this-initiative"><a class="header" href="#what-is-the-goal-of-this-initiative">What is the goal of this initiative?</a></h2>
+<p>See the <a href="./CHARTER.html">Charter</a>.</p>
+<h2 id="who-is-working-on-it"><a class="header" href="#who-is-working-on-it">Who is working on it!</a></h2>
+<p>See the <a href="./CHARTER.html">Charter</a>.</p>
+<h2 id="does-this-overlap-with-the-contexts-capabilities-initiative"><a class="header" href="#does-this-overlap-with-the-contexts-capabilities-initiative">Does this overlap with the contexts-capabilities initiative?</a></h2>
+<p>The <a href="https://nikomatsakis.github.io/context-capabilities-initiative/index.html">contexts-capabilities
+initiative</a>
+is another initiative working on extending Rust's type system. Those extensions
+are orthogonal to the extensions proposed by this initiative. Though if both
+extensions make it into the language, we expect people will want to use them
+together.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

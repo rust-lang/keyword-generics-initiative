@@ -1,0 +1,16 @@
+[book]
+authors = ["keyword generics Members"]
+language = "en"
+multilingual = false
+src = "."
+title = "keyword generics initiative"
+
+[output.html]
+no-section-label=true
+git-repository-url="https://github.com/yoshuawuyts/keyword-generics-initiative"
+edit-url-template="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/{path}"
+site-url="/keyword-generics-initiative/"
+
+[output.html.fold]
+enable = true
+level = 0

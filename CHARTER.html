@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>📜 Charter - keyword generics initiative</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item expanded "><a href="CHARTER.html" class="active">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">keyword generics initiative</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./CHARTER.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="-keyword-generics-charter"><a class="header" href="#-keyword-generics-charter">📜 keyword generics Charter</a></h1>
+<p>One of Rust's defining features is the ability to write functions which are
+<em>generic</em> over their input types. That allows us to write a function once,
+leaving it up to the compiler to generate the right implementations for us.</p>
+<p>When we introduce a new keyword for something which used to be a trait, we not
+only gain new functionality - we also lose the ability to be generic over that
+keyword. This proposal seeks to change that by introducing keyword generics: the
+ability to be generic over specific keywords.</p>
+<p>This proposal is scoped to the <code>const</code> and <code>async</code> keywords only, but is designed
+to be leveraged by other keywords as well in the future. Keywords are valuable,
+generics are valuable, users of Rust shouldn't have to choose between the two.</p>
+<!--
+ Provide an introduction summarising the goals and motivation behind your
+ initiative.
+-->
+<h2 id="proposal"><a class="header" href="#proposal">Proposal</a></h2>
+<p>We're in the process of adding new features to Rust. The Const WG is creating an
+extension to Rust which enables arbitrary computation at compile time.
+While the Async WG is in the process of adding capabilities for asynchronous
+computation. We've noticed that both these efforts have a lot in common, and may
+in fact require similar solutions. This document describes a framework for
+thinking about these language features, describes their individual needs, and
+makes the case that we should be considering a generalized language design for
+&quot;keywords&quot; (aka &quot;definitely not effects&quot;), so that we can ensure that the Rust
+language and standard library remain consistent in the face of extensions.</p>
+<h2 id="a-broad-perspective-on-language-extensions"><a class="header" href="#a-broad-perspective-on-language-extensions">A broad perspective on language extensions</a></h2>
+<p><code>const fn</code> and <code>async fn</code> are similar language extensions, but the way they
+extend the language is different:</p>
+<ul>
+<li><code>const fn</code> creates a <em>subset</em> of &quot;base Rust&quot;, enabling functions to be
+executed during compilation. <code>const</code> functions can be executed in &quot;base&quot;
+contexts, while the other way around isn't possible.</li>
+<li><code>async fn</code> creates a <em>superset</em> of &quot;base Rust&quot;, enabling functions to be
+executed asynchronously. <code>async</code> types cannot be executed in &quot;base&quot; contexts
+<sup class="footnote-reference"><a href="#bridge">1</a></sup>, but &quot;base&quot; in <code>async</code> contexts <em>is</em> possible.</li>
+</ul>
+<div class="footnote-definition" id="bridge"><sup class="footnote-definition-label">1</sup>
+<p>In order to bridge async and non-async Rust, functionality such as
+<code>thread::block_on</code> or <code>async fn</code> must be used, which runs a future to completion
+from a synchronous context. <code>const</code> Rust does not require such a bridge, since
+the difference in contexts is &quot;compile time&quot; and &quot;run-time&quot;.</p>
+</div>
+<pre><code>                      +---------------------------+                               
+                      | +-----------------------+ |     Compute values:
+                      | | +-------------------+ | |     - types
+                      | | |                   | | |     - numbers
+                      | | |    const Rust     |-------{ - functions               
+                      | | |                   | | |     - control flow            
+ Access to the host:  | | +-------------------+ | |     - traits (planned)                 
+ - networking         | |                       | |     - containers (planned)
+ - filesystem  }--------|      &quot;base&quot; Rust      | |                               
+ - threads            | |                       | |                               
+ - system time        | +-----------------------+ |     
+                      |                           |     Control over execution:      
+                      |         async Rust        |---{ - ad-hoc concurrency      
+                      |                           |     - ad-hoc cancellation     
+                      +---------------------------+     - ad-hoc pausing/resumption
+
+</code></pre>
+<p>In terms of standard library these relationships also mirror each other. &quot;Base&quot;
+Rust will want to do everything during runtime what <code>const</code> rust can do, but in
+addition to that also things like network and filesystem IO. Async Rust will in
+turn want to do everything &quot;base&quot; Rust can do, but in addition to that will also
+want to introduce methods for ad-hoc concurrency, cancellation, and execution
+control. It will also want to do things which are blocking in &quot;base&quot; Rust as
+non-blocking in async Rust.</p>
+<p>And it doesn't stop with <code>const</code> and <code>async</code> Rust; it's not hard to imagine that
+other annotations for &quot;can this panic&quot;, &quot;can this return an error&quot;, &quot;can this
+yield values&quot; may want to exist as well. All of which would present extensions
+to the &quot;base&quot; Rust language, which would need to be introduced in a way which
+keeps it feeling like a single language - instead of several disjoint languages
+in a trenchcoat.</p>
+<h2 id="membership"><a class="header" href="#membership">Membership</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Role</th><th>Github</th></tr></thead><tbody>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/yoshuawuyts">Yosh Wuyts</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/oli-obk">Oli Scherer</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/liaison.html">Liaison</a></td><td><a href="https://github.com/nikomatsakis">Niko Matsakis?</a></td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="updates/progress-report-february-2023.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="evaluation/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="updates/progress-report-february-2023.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="evaluation/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
