@@ -4,43 +4,44 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Progress Report February 2023 - keyword generics initiative</title>
-
+                
 
         <!-- Custom HTML head -->
         
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="icon" href="../favicon.svg">
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
         <link rel="stylesheet" href="../css/general.css">
         <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
-
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
         <!-- Fonts -->
         <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../fonts/fonts.css">
-
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="../highlight.css">
         <link rel="stylesheet" href="../tomorrow-night.css">
         <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-
-    </head>
+        
+            </head>
     <body>
-    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script>
+        <script type="text/javascript">
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script>
+        <script type="text/javascript">
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -56,7 +57,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script>
+        <script type="text/javascript">
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -68,14 +69,12 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script>
+        <script type="text/javascript">
             var html = document.querySelector('html');
-            var sidebar = null;
+            var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
-            } else {
-                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -83,15 +82,15 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="../index.html">👋 Welcome</a></li><li class="chapter-item expanded "><a href="../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../updates/progress-report-february-2023.html" class="active">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="../evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="../RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="../FAQ.html">😕 FAQ</a></li></ol>
-            </div>
+                <ol class="chapter"><li class="chapter-item "><a href="../index.html">👋 Welcome</a></li><li class="chapter-item expanded "><a href="../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../updates/progress-report-february-2023.html" class="active">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="../evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="../RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="../FAQ.html">😕 FAQ</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -101,34 +100,34 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                    </div>
+                                            </div>
 
                     <h1 class="menu-title">keyword generics initiative</h1>
 
                     <div class="right-buttons">
-                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./updates/progress-report-february-2023.md" title="Suggest an edit" aria-label="Suggest an edit">
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./updates/progress-report-february-2023.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
-
+                        
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
+                                <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
@@ -138,9 +137,9 @@
                         </ul>
                     </div>
                 </div>
-
+                
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script>
+                <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -186,7 +185,8 @@ async. We also refer to these as &quot;maybe-async&quot; functions.</p>
 <p>Time for an example. Say we took the <a href="https://doc.rust-lang.org/std/io/trait.Read.html"><code>Read</code> trait</a> and the
 <a href="https://doc.rust-lang.org/std/io/fn.read_to_string.html">read_to_string_methods</a>. In the stdlib their implementations look somewhat
 like this today:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait Read {
     fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
@@ -199,10 +199,12 @@ fn read_to_string(reader: &amp;mut impl Read) -&gt; std::io::Result&lt;String&gt
     reader.read_to_string(&amp;mut string)?;
     Ok(string)
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>Now, what if we wanted to make these async in the future? Using <code>?async</code>
 notation we could change them to look like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait ?async Read {
     ?async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
@@ -215,7 +217,8 @@ notation we could change them to look like this:</p>
     reader.read_to_string(&amp;mut string).await?;
     Ok(string)
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>The way this would work is that <code>Read</code> and <code>read_to_string</code> would become generic over
 their &quot;asyncness&quot;. When compiled for an <code>async</code> context, they will behave
 asynchronously. When compiled in a non-async context, they will behave
@@ -234,7 +237,8 @@ write different logic for async and non-async modes. This means you can choose
 to use async concurrency in the async version, but keep things sequential in the
 non-async version.</p>
 </div>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// `read_to_string` is inferred to be `!async` because
 // we didn't `.await` it, nor expected a future of any kind.
@@ -249,7 +253,8 @@ fn sync_call() {
 async fn async_call() {
     let _string = read_to_string(&quot;file.txt&quot;).await?;
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>We expect <code>?async</code> notation would be most useful for library code which doesn't
 do anything particularly specific to async Rust. Think: most of the stdlib, and
 ecosystem libraries such as parsers, encoders, and drivers. We expect most
@@ -271,23 +276,27 @@ of declaring a &quot;maybe-const&quot; function, and there isn't a way to declar
 &quot;always-const&quot; function. More on that later in this post.</p>
 <p>Taking the <code>Read</code> example we used earlier, we could imagine a &quot;maybe-const&quot; version
 of the <code>Read</code> trait to look very similar:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait ?const Read {
     ?const fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
     ?const fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>Which we could then use use as a bound in the const <code>read_to_string</code> function,
 like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn read_to_string(reader: &amp;mut impl ?const Read) -&gt; std::io::Result&lt;String&gt; {
     let mut string = String::new();
     reader.read_to_string(&amp;mut string)?;
     Ok(string)
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>Just like with <code>?async</code> traits, <code>?const</code> traits would also need to be labeled as
 <code>?const</code> when used as a bound. This is important to surface at the trait level,
 because it's allowed to pass non-const bounds to maybe-const functions, as long
@@ -303,7 +312,8 @@ make <code>?const</code> and <code>?async</code> traits behave similarly using t
 <p>We've covered <code>?async</code>, and we've covered <code>?const</code>. Now what happens if we were
 to use them together? Let's take a look at what the <code>Read</code> trait would look like
 when if we extended it using our designs for <code>?const</code> and <code>?async</code>:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait ?const ?async Read {
     ?const ?async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
@@ -316,7 +326,8 @@ when if we extended it using our designs for <code>?const</code> and <code>?asyn
     reader.read_to_string(&amp;mut string).await?;
     Ok(string)
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>That's sure starting to feel like a lot of keywords, right? We've accurately
 described exactly what's going on, but there's a lot of repetition. We know that
 if we're dealing with a <code>?const ?async fn</code>, most arguments probably will also
@@ -334,7 +345,8 @@ and we don't intend to formally propose this until after we're done with some of
 the other proposals. But we think it's an important part of the entire vision,
 so we wanted to make sure we shared it here. And with that out of the way,
 here's the same example we had above, but this time using the <code>effect/.do</code>-notation:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait ?effect Read {
     ?effect fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
@@ -347,7 +359,8 @@ here's the same example we had above, but this time using the <code>effect/.do</
     reader.read_to_string(&amp;mut string).do;  // note the singular `.do` here
     string
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>One of the things we would like to figure out as part of <code>effect/.do</code> is a way
 to enable writing conditional effect-bounds. For example: there may be a
 function which is always async, may never panic, and is generic over the
@@ -368,7 +381,8 @@ system calls. But we think we may have a solution for that too in the form of
 the <code>is_async</code> compiler built-in method.</p>
 <p>Say we wanted to implement <code>?async File</code> with a single <code>?async open</code> method. The
 way we expect this to look will be something like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>/// A file which may or may not be async
 struct ?async File {
@@ -387,7 +401,8 @@ impl ?async File {
         }
     }
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>This would enable authors to use different fields depending on whether they're
 compiling for async or not, while still sharing a common core. And within
 function bodies it would be possible to provide different behaviors depending on
@@ -417,7 +432,8 @@ meanings. So for that reason we're wondering whether perhaps it would make more
 sense if we changed <code>const fn</code> to <code>?const fn</code>.  This would make it clear that
 it's a function which <em>may</em> be const-evaluated, but doesn't necessarily have to -
 and can also be called from non-<code>const</code> contexts.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>//! Define a function which may be evaluated both at runtime and during
 //! compilation.
@@ -427,14 +443,16 @@ const fn meow() -&gt; String { .. }
 
 // Proposed
 ?const fn meow() -&gt; String { .. }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>For <code>async</code> we're considering some similar surface-level changes.  The Async WG
 is in the process of expanding the &quot;async functions in traits&quot; design into an
 design covering &quot;async traits&quot; entirely, largely motivated by the desire to be
 able to add <code>+ Send</code> bound to anonymous futures. There are more details about
 this in [&quot;Lightweight, Predictable Async Send Bounds&quot;][bounds-post] by Eric
 Holk. But it would roughly become the following notation:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>struct File { .. }
 impl async Read for File {                                                // async trait declaration
@@ -446,7 +464,8 @@ async fn read_to_string(reader: &amp;mut impl async Read) -&gt; io::Result&lt;St
     reader.read_to_string(&amp;mut string).await?;
     Ok(string)
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>This would make <code>impl ?async Read</code> and <code>impl async Read</code> consistent with each
 other. And it would open the door for <code>trait ?async</code> traits to be passed to
 <code>impl async Read</code> and be guaranteed to be always interpreted as <code>trait async</code>.
@@ -456,7 +475,8 @@ inherent <code>?async</code> methods on types, our current design requires the t
 be marked as <code>?async</code>. In order to bring <code>?async</code> and <code>async</code> closer together,
 we're exploring whether it might also make sense to require types to be marked
 as <code>async</code> as well:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>//! Proposed: define a method on a maybe-async type
 struct ?async File { .. }
@@ -475,13 +495,16 @@ struct async File { .. }
 impl async File {
     async fn open(path: PathBuf) -&gt; io::Result&lt;Self&gt; { .. }
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>We already have something similar going on for &quot;always-const&quot; arguments via the
 const-generics system. These look something like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn foo&lt;const N: usize&gt;() {}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>Every &quot;always-const&quot; argument to the function must always be marked by <code>const</code>,
 so it wouldn't be entirely without precedent for every &quot;always-async&quot; type to
 always require to be marked using <code>async</code>. So we're exploring some of what might
@@ -521,50 +544,49 @@ incredibly excited for!</p>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../updates/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="../updates/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-
-                            <a rel="next" href="../CHARTER.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        
+                                                    <a rel="next" href="../CHARTER.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-
+                        
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../updates/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="../updates/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-
-                    <a rel="next" href="../CHARTER.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                
+                                    <a rel="next" href="../CHARTER.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-            </nav>
+                            </nav>
 
         </div>
 
-
-
-
-        <script>
+        
+        
+        
+                <script type="text/javascript">
             window.playground_copyable = true;
         </script>
-
-
-        <script src="../elasticlunr.min.js"></script>
-        <script src="../mark.min.js"></script>
-        <script src="../searcher.js"></script>
-
-        <script src="../clipboard.min.js"></script>
-        <script src="../highlight.js"></script>
-        <script src="../book.js"></script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
-
-
-    </div>
+        
+        
     </body>
 </html>

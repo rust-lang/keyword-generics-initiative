@@ -4,43 +4,44 @@
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>✨ RFC - keyword generics initiative</title>
-
+                
 
         <!-- Custom HTML head -->
         
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
+                <link rel="icon" href="favicon.svg">
+                        <link rel="shortcut icon" href="favicon.png">
+                <link rel="stylesheet" href="css/variables.css">
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
-
+                <link rel="stylesheet" href="css/print.css" media="print">
+        
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
-
+                <link rel="stylesheet" href="fonts/fonts.css">
+        
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-
-    </head>
+        
+            </head>
     <body>
-    <div id="body-container">
         <!-- Provide site root to javascript -->
-        <script>
+        <script type="text/javascript">
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script>
+        <script type="text/javascript">
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -56,7 +57,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script>
+        <script type="text/javascript">
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -68,14 +69,12 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script>
+        <script type="text/javascript">
             var html = document.querySelector('html');
-            var sidebar = null;
+            var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
-            } else {
-                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -83,15 +82,15 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item expanded "><a href="RFC.html" class="active">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>
-            </div>
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item expanded "><a href="RFC.html" class="active">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -101,34 +100,34 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
-                    </div>
+                                            </div>
 
                     <h1 class="menu-title">keyword generics initiative</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                                                <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./RFC.md" title="Suggest an edit" aria-label="Suggest an edit">
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./RFC.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
-
+                        
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
+                                <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
                         <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
@@ -138,9 +137,9 @@
                         </ul>
                     </div>
                 </div>
-
+                
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script>
+                <script type="text/javascript">
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -158,52 +157,67 @@
 <p>TBD</p>
 <h2 id="design"><a class="header" href="#design">Design</a></h2>
 <h3 id="const"><a class="header" href="#const">Const</a></h3>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo() {}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>desugars to</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const&lt;C&gt; fn foo() {}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>This means</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo&lt;T: const SomeTrait&gt;(t: T) {}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>desugars to this, which is just one character more:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const&lt;C&gt; fn foo&lt;T: SomeTrait * C&gt;(t: T) {}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>which allows you to call trait methods within the <code>const fn</code>.</p>
 <p>For the common case however, effects do not need to be named and can be referenced to by <code>_</code>:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const&lt;_&gt; fn foo&lt;T: SomeTrait * _&gt;(t: T) {}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <h3 id="async"><a class="header" href="#async">Async</a></h3>
 <p>In contrast to <code>const</code> (which is &quot;maybe&quot;-by-default) there is no
 sugared version.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;A&gt; fn foo() {}
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>You can then pass this effect into other uses of <code>async</code> within
 the maybe-<code>async</code> function:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;A&gt; fn foo&lt;T: SomeTrait * A&gt;(t: T) {
     t.some_method()
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>which allows you to call trait methods within the <code>~async fn</code>.</p>
 <h3 id="combining-effects"><a class="header" href="#combining-effects">Combining effects</a></h3>
 <p>If you have both <code>async</code> and <code>const</code> modifiers, your function may not perform
 any non-const operations like accessing the file system or static items, but is
 allowed to use <code>await</code>.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Can be const, async, both or neither
 const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
@@ -212,11 +226,13 @@ where
 {
     t.bar().await
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p><code>async</code> and <code>const</code> can mutually exclusive, because <code>async</code> is useful for non-blocking IO,
 but <code>const</code> doesn't have <em>any</em> IO at all. Thus we allow declaring arbitrary <em>exclusive-or</em>
 bounds for effects.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Can be const, async, both or neither
 const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
@@ -225,33 +241,39 @@ where
 {
     t.bar().await
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <ul>
 <li>Yosh's brain error brain worms: we shouldn't have <code>try</code> functions, we should
 have functions which use <code>throws</code>, and it specifies which error we throw.</li>
 <li>Oli: the carried error from <code>try</code> could just be inferred from the call-site.</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;E&gt; try&lt;E&gt; fn foo(t: impl SomeTrait * E, p: impl SomeTrait * E) {
     t.some_method().await?;
     p.some_method().await?;
 }
-<span class="boring">}</span></code></pre></pre>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;E1&gt; try&lt;E2&gt; fn foo(t: impl SomeTrait * E1, p: impl SomeTrait * E2, q: impl SomeTrait * E1 * E2) {
     t.some_method().await;
     p.some_method()?;
     q.some_method().await?;
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <h3 id="backwards-compatibility"><a class="header" href="#backwards-compatibility">Backwards Compatibility</a></h3>
 <p>One important part of keyword generics is that they will allow us to introduce them to the standard library without
 breaking any existing code. Right now we're already adding constness to many functions in the standard library.</p>
 <p>Take for example the method <code>Option::map</code>. This method takes a closure <code>f</code>. If we want to make this method <code>const</code> the closure must be <code>const</code> as well. This means the constness of the method and the constness of the input types are <em>linked</em>.</p>
 <p>Before constification, <code>Option::map</code> looked like this:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T&gt; Option&lt;T&gt; {
     fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U) -&gt; Option&lt;U&gt; {
@@ -261,10 +283,12 @@ breaking any existing code. Right now we're already adding constness to many fun
         }
     }
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>We might be tempted to make the function &quot;maybe-const&quot; by adding a <code>const</code>
 keyword-generic to the function:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T&gt; Option&lt;T&gt; {
     const&lt;C&gt; fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U) -&gt; Option&lt;U&gt; {
@@ -274,7 +298,8 @@ keyword-generic to the function:</p>
         }
     }
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <p>But the compiler won't let us do this, because we're calling the closure <code>f</code>
 inside the function body, but <code>f</code> is not marked &quot;maybe-const&quot;:</p>
 <pre><code>error[E0000]: `f` is not const
@@ -303,7 +328,8 @@ async fn main() {
     //         | is it this?        
     my_opt.map(foo).await;
              //^^^ do we infer this to be `async` because of the `await`
-}</code></pre></pre>
+}
+</code></pre></pre>
 <ul>
 <li>Conclusion: we must infer based on the <code>.await</code>
 <ul>
@@ -322,7 +348,8 @@ should trigger a warning.
 async fn main() {
     my_opt.map(|x| x * 2);
     // compile error!
-}</code></pre></pre>
+}
+</code></pre></pre>
 <p>The repeated use of <code>const&lt;C&gt;</code> enforces that if <code>map</code> is called with &quot;not const&quot; (so called
 from a base Rust function), then the <code>FnOnce</code> bound can be satisfied by any type that
 implements <code>FnOnce</code>, irrespective of its constness.</p>
@@ -330,7 +357,8 @@ implements <code>FnOnce</code>, irrespective of its constness.</p>
 <p>If <code>Option::map</code> is called from another <code>const fn</code> or from within a true <code>const</code>
 context (like a const item's initializer), then the <code>C</code> is either &quot;maybe const&quot; or &quot;definitely const&quot;,
 but either way, only types that implement <code>const FnOnce</code> are allowed for <code>f</code>.</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T&gt; Option&lt;T&gt; {
     const&lt;C&gt; fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U * C) -&gt; Option&lt;U&gt; {
@@ -341,16 +369,19 @@ but either way, only types that implement <code>const FnOnce</code> are allowed 
         }
     }
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <h3 id="multiple-different-effects"><a class="header" href="#multiple-different-effects">Multiple different effects</a></h3>
 <p>We don't have a decision yet on how <code>try</code> or (<code>throws</code>) is supposed to work, which may need to provide a way to define N-copies of the same effect.
 This RFC does not address this, however it is forward compatible with adding multiple independent effects of a single keyword:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>try&lt;E1, E2&gt; fn foo(t: impl SomeTrait * E1 * E2) {
     t.some_method()??;
 }
-<span class="boring">}</span></code></pre></pre>
+<span class="boring">}
+</span></code></pre></pre>
 <h2 id="alternatives"><a class="header" href="#alternatives">Alternatives</a></h2>
 <h2 id="future-extensions"><a class="header" href="#future-extensions">Future Extensions</a></h2>
 
@@ -358,50 +389,49 @@ This RFC does not address this, however it is forward compatible with adding mul
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="evaluation/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="evaluation/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-
-                            <a rel="next" href="FAQ.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        
+                                                    <a rel="next" href="FAQ.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-
+                        
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="evaluation/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="evaluation/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-
-                    <a rel="next" href="FAQ.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                
+                                    <a rel="next" href="FAQ.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
-            </nav>
+                            </nav>
 
         </div>
 
-
-
-
-        <script>
+        
+        
+        
+                <script type="text/javascript">
             window.playground_copyable = true;
         </script>
-
-
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
-
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        
+        
+                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
-
-
-    </div>
+        
+        
     </body>
 </html>
