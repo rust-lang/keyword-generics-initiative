@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/gen.html">Iterativity</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/gen.html">Iteration</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -805,7 +805,7 @@ see much use
 <h3 id="asynchrony"><a class="header" href="#asynchrony">Asynchrony</a></h3>
 <h3 id="compile-time-execution"><a class="header" href="#compile-time-execution">Compile-time Execution</a></h3>
 <h3 id="fallibility"><a class="header" href="#fallibility">Fallibility</a></h3>
-<h3 id="iterativity"><a class="header" href="#iterativity">Iterativity</a></h3>
+<h3 id="iteration"><a class="header" href="#iteration">Iteration</a></h3>
 <h3 id="unwinding"><a class="header" href="#unwinding">Unwinding</a></h3>
 <h3 id="memory-safety"><a class="header" href="#memory-safety">Memory-Safety</a></h3>
 <h3 id="immovability"><a class="header" href="#immovability">Immovability</a></h3>
@@ -857,7 +857,7 @@ to iteration, <code>Drop</code> handlers, closures, and more.</p>
 <h3 id="asynchrony-1"><a class="header" href="#asynchrony-1">Asynchrony</a></h3>
 <h3 id="compile-time-execution-1"><a class="header" href="#compile-time-execution-1">Compile-time Execution</a></h3>
 <h3 id="fallibility-1"><a class="header" href="#fallibility-1">Fallibility</a></h3>
-<h3 id="iterativity-1"><a class="header" href="#iterativity-1">Iterativity</a></h3>
+<h3 id="iteration-1"><a class="header" href="#iteration-1">Iteration</a></h3>
 <h3 id="unwinding-1"><a class="header" href="#unwinding-1">Unwinding</a></h3>
 <h3 id="memory-safety-1"><a class="header" href="#memory-safety-1">Memory-Safety</a></h3>
 <h3 id="immovability-1"><a class="header" href="#immovability-1">Immovability</a></h3>
@@ -900,14 +900,14 @@ had a <code>try</code> notation for functions, that it should be possible to wri
 <h3 id="asynchrony-2"><a class="header" href="#asynchrony-2">Asynchrony</a></h3>
 <h3 id="compile-time-execution-2"><a class="header" href="#compile-time-execution-2">Compile-time Execution</a></h3>
 <h3 id="fallibility-2"><a class="header" href="#fallibility-2">Fallibility</a></h3>
-<h3 id="iterativity-2"><a class="header" href="#iterativity-2">Iterativity</a></h3>
+<h3 id="iteration-2"><a class="header" href="#iteration-2">Iteration</a></h3>
 <h3 id="may-panic"><a class="header" href="#may-panic">May Panic</a></h3>
 <h3 id="memory-unsafety"><a class="header" href="#memory-unsafety">Memory-Unsafety</a></h3>
 <h3 id="must-not-move"><a class="header" href="#must-not-move">Must-not Move</a></h3>
 <h3 id="object-safety-2"><a class="header" href="#object-safety-2">Object-Safety</a></h3>
 <h3 id="ownership-2"><a class="header" href="#ownership-2">Ownership</a></h3>
 <h3 id="thread-safety-2"><a class="header" href="#thread-safety-2">Thread-Safety</a></h3>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="iterativity-scoped-effect"><a class="header" href="#iterativity-scoped-effect">Iterativity (Scoped Effect)</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="iteration-scoped-effect"><a class="header" href="#iteration-scoped-effect">Iteration (Scoped Effect)</a></h1>
 <h2 id="feature-status-3"><a class="header" href="#feature-status-3">Feature Status</a></h2>
 <p>The <code>Iterator</code> trait has been stable in Rust since 1.0, but the generator syntax
 is currently <em>unstable</em>. This document will assume that generators are created
@@ -1020,7 +1020,7 @@ it.</p>
 <h3 id="asynchrony-4"><a class="header" href="#asynchrony-4">Asynchrony</a></h3>
 <h3 id="compile-time-execution-4"><a class="header" href="#compile-time-execution-4">Compile-time Execution</a></h3>
 <h3 id="fallibility-4"><a class="header" href="#fallibility-4">Fallibility</a></h3>
-<h3 id="iterativity-3"><a class="header" href="#iterativity-3">Iterativity</a></h3>
+<h3 id="iteration-3"><a class="header" href="#iteration-3">Iteration</a></h3>
 <h3 id="unwinding-3"><a class="header" href="#unwinding-3">Unwinding</a></h3>
 <h3 id="memory-safety-2"><a class="header" href="#memory-safety-2">Memory-Safety</a></h3>
 <h3 id="immovability-3"><a class="header" href="#immovability-3">Immovability</a></h3>
@@ -1031,7 +1031,7 @@ it.</p>
 <h3 id="asynchrony-5"><a class="header" href="#asynchrony-5">Asynchrony</a></h3>
 <h3 id="compile-time-execution-5"><a class="header" href="#compile-time-execution-5">Compile-time Execution</a></h3>
 <h3 id="fallibility-5"><a class="header" href="#fallibility-5">Fallibility</a></h3>
-<h3 id="iterativity-4"><a class="header" href="#iterativity-4">Iterativity</a></h3>
+<h3 id="iteration-4"><a class="header" href="#iteration-4">Iteration</a></h3>
 <h3 id="unwinding-4"><a class="header" href="#unwinding-4">Unwinding</a></h3>
 <h3 id="memory-safety-3"><a class="header" href="#memory-safety-3">Memory-Safety</a></h3>
 <h3 id="immovability-4"><a class="header" href="#immovability-4">Immovability</a></h3>
@@ -1047,7 +1047,7 @@ it.</p>
 <h3 id="asynchrony-6"><a class="header" href="#asynchrony-6">Asynchrony</a></h3>
 <h3 id="compile-time-execution-6"><a class="header" href="#compile-time-execution-6">Compile-time Execution</a></h3>
 <h3 id="fallibility-6"><a class="header" href="#fallibility-6">Fallibility</a></h3>
-<h3 id="iterativity-5"><a class="header" href="#iterativity-5">Iterativity</a></h3>
+<h3 id="iteration-5"><a class="header" href="#iteration-5">Iteration</a></h3>
 <h3 id="unwinding-5"><a class="header" href="#unwinding-5">Unwinding</a></h3>
 <h3 id="memory-safety-4"><a class="header" href="#memory-safety-4">Memory-Safety</a></h3>
 <h3 id="immovability-5"><a class="header" href="#immovability-5">Immovability</a></h3>
@@ -1058,7 +1058,7 @@ it.</p>
 <h3 id="asynchrony-7"><a class="header" href="#asynchrony-7">Asynchrony</a></h3>
 <h3 id="compile-time-execution-7"><a class="header" href="#compile-time-execution-7">Compile-time Execution</a></h3>
 <h3 id="fallibility-7"><a class="header" href="#fallibility-7">Fallibility</a></h3>
-<h3 id="iterativity-6"><a class="header" href="#iterativity-6">Iterativity</a></h3>
+<h3 id="iteration-6"><a class="header" href="#iteration-6">Iteration</a></h3>
 <h3 id="unwinding-6"><a class="header" href="#unwinding-6">Unwinding</a></h3>
 <h3 id="memory-safety-5"><a class="header" href="#memory-safety-5">Memory-Safety</a></h3>
 <h3 id="immovability-6"><a class="header" href="#immovability-6">Immovability</a></h3>
@@ -1097,7 +1097,7 @@ it.</p>
 <h3 id="asynchrony-8"><a class="header" href="#asynchrony-8">Asynchrony</a></h3>
 <h3 id="compile-time-execution-8"><a class="header" href="#compile-time-execution-8">Compile-time Execution</a></h3>
 <h3 id="fallibility-8"><a class="header" href="#fallibility-8">Fallibility</a></h3>
-<h3 id="iterativity-7"><a class="header" href="#iterativity-7">Iterativity</a></h3>
+<h3 id="iteration-7"><a class="header" href="#iteration-7">Iteration</a></h3>
 <h3 id="unwinding-7"><a class="header" href="#unwinding-7">Unwinding</a></h3>
 <h3 id="memory-safety-6"><a class="header" href="#memory-safety-6">Memory-Safety</a></h3>
 <h3 id="immovability-7"><a class="header" href="#immovability-7">Immovability</a></h3>
@@ -1113,7 +1113,7 @@ it.</p>
 <h3 id="asynchrony-9"><a class="header" href="#asynchrony-9">Asynchrony</a></h3>
 <h3 id="compile-time-execution-9"><a class="header" href="#compile-time-execution-9">Compile-time Execution</a></h3>
 <h3 id="fallibility-9"><a class="header" href="#fallibility-9">Fallibility</a></h3>
-<h3 id="iterativity-8"><a class="header" href="#iterativity-8">Iterativity</a></h3>
+<h3 id="iteration-8"><a class="header" href="#iteration-8">Iteration</a></h3>
 <h3 id="unwinding-8"><a class="header" href="#unwinding-8">Unwinding</a></h3>
 <h3 id="memory-safety-7"><a class="header" href="#memory-safety-7">Memory-Safety</a></h3>
 <h3 id="immovability-8"><a class="header" href="#immovability-8">Immovability</a></h3>
