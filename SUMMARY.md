@@ -9,7 +9,7 @@
     - [Asynchrony](./evaluation/effects-in-rust/async.md)
     - [Compile-Time Execution](./evaluation/effects-in-rust/const.md)
     - [Fallibility](./evaluation/effects-in-rust/try.md)
-    - [Iterativity](./evaluation/effects-in-rust/gen.md)
+    - [Iteration](./evaluation/effects-in-rust/gen.md)
     - [Unwinding](./evaluation/effects-in-rust/panic.md)
     - [Memory-Safety](./evaluation/effects-in-rust/unsafe.md)
     - [Immovability](./evaluation/effects-in-rust/pin.md)

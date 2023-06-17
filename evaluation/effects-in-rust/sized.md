@@ -3,7 +3,7 @@
 ### Asynchrony
 ### Compile-time Execution
 ### Fallibility
-### Iterativity
+### Iteration
 ### Unwinding
 ### Memory-Safety
 ### Immovability

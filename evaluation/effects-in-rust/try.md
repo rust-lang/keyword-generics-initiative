@@ -43,7 +43,7 @@ Try`, it more commonly is the case that we see concrete types used.
 ### Asynchrony
 ### Compile-time Execution
 ### Fallibility
-### Iterativity
+### Iteration
 ### May Panic
 ### Memory-Unsafety
 ### Must-not Move
