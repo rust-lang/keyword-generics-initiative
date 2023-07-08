@@ -402,7 +402,7 @@ in them will they become available on stable Rust.
 We're intentionally not yet including `effect/.do` notation on this roadmap. We
 expect to only be able to start this work once we have `?async` on nightly,
 which we don't yet have. So for now we'll continue work on designing it within
-the iniatiative, and hold off on making plans to introduce it quiet yet.
+the iniatiative, and hold off on making plans to introduce it quite yet.
 
 ## Conclusion
 
