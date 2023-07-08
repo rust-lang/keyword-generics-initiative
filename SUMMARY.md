@@ -22,6 +22,6 @@
   - [MIR desugaring](./evaluation/mir-desugaring.md)
   - [Overloading](./evaluation/overloading-keyword-generics.md)
   - [Prior Art](./evaluation/prior-art.md)
-- [📚 Explainer](./evaluation/README.md)
+- [📚 Explainer](./explainer/README.md)
 - [✨ RFC](./RFC.md)
 - [😕 FAQ](./FAQ.md)
