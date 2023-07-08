@@ -3,7 +3,7 @@
 In the previous section we saw that we cannot use `join` to await two futures
 concurrently because in "base Rust" we cannot run two closures concurrently. The
 capabilities introduced by the superset (async) have no counterpart in the
-subset ("base Rust"), and therefor we cannot write it.
+subset ("base Rust"), and therefore we cannot write it.
 
 But sometimes we _do_ want to be able to specialize implementations for a
 specific context, making use of the capabilities they provide. In order to do
