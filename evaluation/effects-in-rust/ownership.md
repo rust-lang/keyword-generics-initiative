@@ -8,9 +8,9 @@
 
 | Position    | Syntax |
 | ----------- | ------ |
-| Create      |        |
+| Effect      |        |
 | Yield       |        |
-| Forward     |        |
+| Apply       |        |
 | Consume     |        |
 | Reification |        |
 
@@ -32,8 +32,8 @@
 
 ## Refinements
 
-| Modifier          | Description                          |
-| ----------------- | ------------------------------------ |
+| Modifier | Description |
+| -------- | ----------- |
 
 ## Interactions with other effects
 

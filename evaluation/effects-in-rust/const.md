@@ -24,9 +24,9 @@ to iteration, `Drop` handlers, closures, and more.
 
 | Position    | Syntax                         |
 | ----------- | ------------------------------ |
-| Create      | `const fn`                     |
+| Effect      | `const fn`                     |
 | Yield       | N/A                            |
-| Forward     | automatic                      |
+| Apply       | automatic                      |
 | Consume     | `const {}`, `const X: Ty = {}` |
 | Reification | N/A                            |
 
