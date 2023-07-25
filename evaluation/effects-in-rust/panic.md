@@ -19,9 +19,9 @@ The `panic` effect currently has no refinements.
 
 | Position    | Syntax                     |
 | ----------- | -------------------------- |
-| Create      | N/A                        |
+| Context       | N/A                        |
 | Yield       | `panic!`                   |
-| Forward     | `foo()` / `resume_unwind`  |
+| Apply      | `foo()` / `resume_unwind`  |
 | Consume     | `catch_unwind` / `fn main` |
 | Reification | N/A                        |
 

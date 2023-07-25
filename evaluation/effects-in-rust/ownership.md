@@ -8,9 +8,9 @@
 
 | Position    | Syntax |
 | ----------- | ------ |
-| Create      |        |
+| Context       |        |
 | Yield       |        |
-| Forward     |        |
+| Apply      |        |
 | Consume     |        |
 | Reification |        |
 

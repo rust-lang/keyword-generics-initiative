@@ -24,9 +24,9 @@ Try`, it more commonly is the case that we see concrete types used.
 
 | Position    | Syntax                            |
 | ----------- | --------------------------------- |
-| Create      | `try`                             |
+| Context       | `try`                             |
 | Yield       | `throw`                           |
-| Forward     | `?`                               |
+| Apply      | `?`                               |
 | Consume     | `match` / `fn main()` † |
 | Reification | `impl Try`                        |
 
