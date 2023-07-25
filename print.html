@@ -742,9 +742,9 @@ the effect is stable, and both the <code>async</code> and <code>.await</code> ke
 language, but not all keyword positions are available yet.</p>
 <h2 id="feature-categorization"><a class="header" href="#feature-categorization">Feature categorization</a></h2>
 <table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
-<tr><td>Create</td><td><code>async</code></td></tr>
+<tr><td>Effect</td><td><code>async</code></td></tr>
 <tr><td>Yield</td><td>N/A</td></tr>
-<tr><td>Forward</td><td><code>.await</code></td></tr>
+<tr><td>Apply</td><td><code>.await</code></td></tr>
 <tr><td>Consume</td><td><code>thread::block_on</code> †, <code>async fn main</code> ‡</td></tr>
 <tr><td>Reification</td><td><code>impl Future</code></td></tr>
 </tbody></table>
@@ -831,9 +831,9 @@ language features make use of traits, this means const contexts have no access
 to iteration, <code>Drop</code> handlers, closures, and more.</p>
 <h2 id="feature-categorization-1"><a class="header" href="#feature-categorization-1">Feature categorization</a></h2>
 <table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
-<tr><td>Create</td><td><code>const fn</code></td></tr>
+<tr><td>Effect</td><td><code>const fn</code></td></tr>
 <tr><td>Yield</td><td>N/A</td></tr>
-<tr><td>Forward</td><td>automatic</td></tr>
+<tr><td>Apply</td><td>automatic</td></tr>
 <tr><td>Consume</td><td><code>const {}</code>, <code>const X: Ty = {}</code></td></tr>
 <tr><td>Reification</td><td>N/A</td></tr>
 </tbody></table>
@@ -884,9 +884,9 @@ to iteration, <code>Drop</code> handlers, closures, and more.</p>
 <p>While the reification of the fallibility effect in bounds ought to be <code>impl Try</code>, it more commonly is the case that we see concrete types used.</p>
 <h2 id="feature-categorization-2"><a class="header" href="#feature-categorization-2">Feature categorization</a></h2>
 <table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
-<tr><td>Create</td><td><code>try</code></td></tr>
+<tr><td>Effect</td><td><code>try</code></td></tr>
 <tr><td>Yield</td><td><code>throw</code></td></tr>
-<tr><td>Forward</td><td><code>?</code></td></tr>
+<tr><td>Apply</td><td><code>?</code></td></tr>
 <tr><td>Consume</td><td><code>match</code> / <code>fn main()</code> †</td></tr>
 <tr><td>Reification</td><td><code>impl Try</code></td></tr>
 </tbody></table>
@@ -916,9 +916,9 @@ with the <code>gen</code> keyword, but that's for illustrative purposes only.</p
 <p>todo</p>
 <h2 id="technical-overview"><a class="header" href="#technical-overview">Technical Overview</a></h2>
 <table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
-<tr><td>Create</td><td><code>gen</code></td></tr>
+<tr><td>Effect</td><td><code>gen</code></td></tr>
 <tr><td>Yield</td><td><code>yield</code></td></tr>
-<tr><td>Forward</td><td>N/A</td></tr>
+<tr><td>Apply</td><td>N/A</td></tr>
 <tr><td>Consume</td><td><code>for..in</code></td></tr>
 <tr><td>Reification</td><td><code>impl Iterator</code></td></tr>
 </tbody></table>
@@ -1005,9 +1005,9 @@ cannot.</p>
 <p>The <code>panic</code> effect currently has no refinements.</p>
 <h2 id="feature-categorization-3"><a class="header" href="#feature-categorization-3">Feature categorization</a></h2>
 <table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
-<tr><td>Create</td><td>N/A</td></tr>
+<tr><td>Effect</td><td>N/A</td></tr>
 <tr><td>Yield</td><td><code>panic!</code></td></tr>
-<tr><td>Forward</td><td><code>foo()</code> / <code>resume_unwind</code></td></tr>
+<tr><td>Apply</td><td><code>foo()</code> / <code>resume_unwind</code></td></tr>
 <tr><td>Consume</td><td><code>catch_unwind</code> / <code>fn main</code></td></tr>
 <tr><td>Reification</td><td>N/A</td></tr>
 </tbody></table>
@@ -1070,9 +1070,9 @@ it.</p>
 <h2 id="feature-status-5"><a class="header" href="#feature-status-5">Feature Status</a></h2>
 <h2 id="feature-categorization-4"><a class="header" href="#feature-categorization-4">Feature categorization</a></h2>
 <table><thead><tr><th>Position</th><th>Syntax</th></tr></thead><tbody>
-<tr><td>Create</td><td></td></tr>
+<tr><td>Effect</td><td></td></tr>
 <tr><td>Yield</td><td></td></tr>
-<tr><td>Forward</td><td></td></tr>
+<tr><td>Apply</td><td></td></tr>
 <tr><td>Consume</td><td></td></tr>
 <tr><td>Reification</td><td></td></tr>
 </tbody></table>
