@@ -14,9 +14,9 @@ todo
 
 | Position    | Syntax          |
 | ----------- | --------------- |
-| Context       | `gen`           |
+| Effect      | `gen`           |
 | Yield       | `yield`         |
-| Apply      | N/A             |
+| Apply       | N/A             |
 | Consume     | `for..in`       |
 | Reification | `impl Iterator` |
 

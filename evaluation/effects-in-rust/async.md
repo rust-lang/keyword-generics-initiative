@@ -25,7 +25,7 @@ language, but not all keyword positions are available yet.
 
 | Position    | Syntax                                  |
 | ----------- | --------------------------------------- |
-| Context       | `async`                                 |
+| Effect          | `async`                                 |
 | Yield       | N/A                                     |
 | Apply      | `.await`                                |
 | Consume     | `thread::block_on` †, `async fn main` ‡ |

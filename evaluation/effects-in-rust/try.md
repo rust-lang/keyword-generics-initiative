@@ -22,13 +22,13 @@ Try`, it more commonly is the case that we see concrete types used.
 
 ## Feature categorization
 
-| Position    | Syntax                            |
-| ----------- | --------------------------------- |
-| Context       | `try`                             |
-| Yield       | `throw`                           |
-| Apply      | `?`                               |
+| Position    | Syntax                  |
+| ----------- | ----------------------- |
+| Effect      | `try`                   |
+| Yield       | `throw`                 |
+| Apply       | `?`                     |
 | Consume     | `match` / `fn main()` † |
-| Reification | `impl Try`                        |
+| Reification | `impl Try`              |
 
 > † `fn main` implements effect polymorphism over the fallibility effect
 > by making use of the [`Termination` trait]. It stands to reason that _if_ we
