@@ -14,7 +14,7 @@ copy of the same things is considered an effect in this space.
 This is probably not the definition we'll want to use in other sections, since
 effects should probably only ever apply to functions. In this section we're
 going to use "effect" as a catch-all term for "things that sure seem effect-y".
-When discussion effects we'll differentiate between:
+When discussing effects we'll differentiate between:
 
 - **Scoped Effects**: which are effects which apply to functions and scopes, such
    as `async fn` which are reified as traits or types such as `impl Iterator`.
