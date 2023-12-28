@@ -23,5 +23,5 @@
   - [Overloading](./evaluation/overloading-keyword-generics.md)
   - [Prior Art](./evaluation/prior-art.md)
 - [📚 Explainer](./explainer/README.md)
-- [✨ RFC](./RFC.md)
+  - [Effect Generic Trait Declarations](./explainer/effect-generic-trait-declarations.md)
 - [😕 FAQ](./FAQ.md)
