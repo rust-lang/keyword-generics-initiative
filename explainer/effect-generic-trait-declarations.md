@@ -35,7 +35,7 @@ trait AsyncInto<T>: Sized {
 # Motivation
 [motivation]: #motivation
 
-## TODO: Language-Level Coherence
+## TODO: Evolution and Coherence
 
 - Duplication across effects has to exist somewhere: right now it's mostly
   user-space.
@@ -52,6 +52,16 @@ trait AsyncInto<T>: Sized {
 - Every single function (const)
 - Every single trait (const, try, async, gen)
 - All interacting with each other
+
+Numbers estimated for Rust 1.70:
+
+| Effect | Trait Defs | Trait Impls | Functions     | Types      |
+| ------ | ---------- | ----------- | ------------- | ---------- |
+| -      | 129 (100%) | 3780 (100%) | 1965   (100%) | 343 (100%) |
+| const  | 129 (100%) |             |               |            |
+| async  |            |             |               |            |
+| try    |            |             |               |            |
+| gen    |            |             |               |            |
 
 # Guide-level explanation
 [guide-level-explanation]: #guide-level-explanation
