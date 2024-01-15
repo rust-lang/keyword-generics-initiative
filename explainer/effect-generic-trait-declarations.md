@@ -248,11 +248,90 @@ impl Into<Loaf, true> for Cat { // IS_ASYNC = true
 }
 ```
 
-## TODO: lifetimes
+## Effect lowering with lifetimes
 
-- requires generic over GATs
-- we can probably figure that out in the trait definition, since it doesn't need
-  to be generalized (yet)
+Things become more interesting when lifetimes are involved in the effectful
+lowering of a trait. The return type of an `async fn` which takes a reference
+has to be a future with a lifetime. Which means it's in our lowering our
+associated type can't be a plain future - it has to be a future with a lifetime
+attached. And this requires lifetime GATs to work.
+
+Say instead of the async version of `Into`, we tried to write the maybe-async
+version of [`AsRef`](https://doc.rust-lang.org/std/convert/trait.AsRef.html)
+[^asref]. We could define it as follows:
+
+[^asref]: this is just for the purpose of an example; I don't actually know of
+any cases which want an async version of `AsRef`. But never say never.
+
+```rust
+/// The trait definition
+#[maybe(async)]
+pub trait AsRef<T>
+where
+    T: ?Sized,
+{
+    #[maybe(async)]
+    fn as_ref(&self) -> &T;
+}
+
+/// The lowering of the trait definition
+pub trait AsRef<T, const IS_ASYNC: bool>
+where
+    T: ?Sized,
+{
+    type Ret<'a>
+        where Self: 'a;
+    fn as_ref(&self) -> Ret<'a>;
+}
+```
+
+We could then implement it like we did with our `Into` impl. The non-async impl
+would look like this:
+
+```rust
+/// The base implementation
+impl AsRef<Loaf> for Cat {
+    fn as_ref(&self) -> &Loaf {
+        self.nap_ref()
+    }
+}
+
+/// Lowering of the base implementation
+impl AsRef<Loaf, false> for Cat { // IS_ASYNC = false
+    type Ret<'a> = &'a Loaf
+        where Self: 'a;
+    fn as_ref(&self) -> Ret<'a> {
+        self.nap_ref()
+    }
+}
+```
+
+And the async implementation would look like this:
+
+```rust
+/// The base implementation
+impl async AsRef<Loaf> for Cat {
+    async fn as_ref(&self) -> &Loaf {
+        self.async_nap_ref().await
+    }
+}
+
+/// Lowering of the base implementation
+impl AsRef<Loaf, true> for Cat { // IS_ASYNC = true
+    type Ret<'a> = impl Future<Output = &'a Loaf> + 'a
+        where Self: 'a;
+    fn as_ref(&self) -> Ret<'a> {
+        async {
+            self.async_nap_ref().await
+        }
+    }
+}
+```
+
+While effect-generic trait definitions with lifetimes do rely on GATs in their
+lowering, crucially they don't rely on any potential notion of lifetime-generics to
+function. The right lifetime GATs can be emitted by the compiler during
+lowering, and should therefor always be accurate.
 
 ## Effect Modes
 
@@ -279,7 +358,7 @@ Methods which may or may not be async are labeled `#[maybe(async)]`. Methods
 which are never async are labeled `#[never(async)]`. All other methods are
 unlabeled, and are not made available to the async implementation of the trait.
 
-## Unique Selection
+## Conflicting Implementations
 
 With the eye on forward-compatibility, and a potential future where types can
 themselves also be generic over effects, for now types may only implement either
@@ -301,12 +380,71 @@ error[E0119]: conflicting implementations of trait `Into` for type `Cat`
   | help: types can't both implement the sync and async variant of a trait
 ```
 
+## TODO: prerequisites
+
+- ask oli about which compiler features we're missing to implement this
+
 ## TODO: Extensions and super traits
+
+Super-trait hierarchies should be supported, as long as they are appropriately
+annotated. Say we wanted to define a maybe-async version of
+[`BufRead`](https://doc.rust-lang.org/std/io/trait.BufRead.html) which has
+`Read` as a supertrait. For that to work, the `Read` trait would also need to be
+marked maybe-async. That way if we implement the async version of `BufRead` we
+also require the async version of `Read` - idem for the non-async variants.
+
+```rust
+#[maybe(async)]
+pub trait BufRead: #[maybe(async)] Read {
+    #[maybe(async)]
+    fn fill_buf(&mut self) -> Result<&[u8]>;
+    #[maybe(async)]
+    fn consume(&mut self, amt: usize);
+}
+```
+
+If a trait wants to have a non-async super-trait, it has to mark the super-trait
+as never being async. In the case that the supertrait eventually becomes generic
+over an effect, it's clear from the beginning which variant we 've chosen. 
+
+```rust
+#[maybe(async)]
+pub trait Inner {}
+
+#[maybe(async)]
+pub trait Outer: #[not(async)] Inner { }
+```
+
+Certain traits may want to guarantee ahead of time that they will never support
+a certain effect. For these traits it is possible to omit the effect marker, as
+the state of the effect is already unambiguous. It is expected most marker
+traits will want to be unambiguously never support for example the `async`
+effect.
+
+```rust
+// The trait `Sized` guarantees it
+// will never be an `async trait`… 
+#[not(async)]
+trait Sized {}
+
+// …which means it does not require annotations
+// when used as a supertrait.
+#[maybe(async)]
+trait Into<T>: Sized { .. }
+```
 
 # Drawbacks
 [drawbacks]: #drawbacks
 
-None so far.
+## TODO: additional syntax
+
+- we're adding some new syntax, that's going to be A Thing
+
+## TODO: direction
+
+- while not inherently closing any doors, we are kind of committing to the idea
+  that we want to extend the stdlib to be effectful - that's the point
+- this has repercussions for how we structure our base traits and interfaces too
 
 # Prior art
 [prior-art]: #prior-art
@@ -329,6 +467,15 @@ TODO:
 - `~async` is sigil-heavy, and also reserves a new sigil
 - `if/else` at the trait level does not create bidirectional relationships
 - `async<A>` is less clear and verbose
+
+# Alternatives
+[alternatives]: #alternatives
+
+## TODO: Do nothing (null hypothesis)
+
+- effect differences are inherent, which means they have to be solved somewhere
+- effect composition is where it gets bad; we have an async version of the stdlib, not an async + fallible version
+- things like linearity seem quite far out of reach right without this
 
 # Future possibilities
 [future-possibilities]: #future-possibilities
