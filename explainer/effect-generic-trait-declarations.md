@@ -7,66 +7,91 @@
 [summary]: #summary
 
 This RFC introduces Effect-Generic Trait Declarations. These are traits which
-can be generic over Rust's built-in effect keywords such as `async` and `const`.
-Unlike the current status quo where manually duplicting traits to different
-effects is the norm, this enables the type system and compiler to directly
-reason about the presence of effects.
+are generic over Rust's built-in effect keywords such as `async` and `const`.
+Instead of defining two near-identical traits per effect, this RFC allows a
+single trait to be declared which is generic over the effect. Here is a variant
+of the `Into` trait which can be implemented as either async or not.
 
 ```rust
-/// A basic "into" trait, as defined in the stdlib today.
+#[maybe(async)]
 trait Into<T>: Sized {
+    #[maybe(async)]
     fn into(self) -> T;
 }
+```
 
-/// A hypothetical async version of the `Into` trait, copying the interface but
-/// adding `async` in front of the methods.
-trait AsyncInto<T>: Sized {
-    async fn into(self) -> T;
+Implementers can then choose whether to implement the base version or the
+effectful version of the trait. If they want the base version they don't include
+the `async` effect. If they want the `async` version they can include the
+`async` keyword.
+
+```rust
+/// The base implementation
+impl Into<Loaf> for Cat {
+    fn into(self) -> Loaf {
+        self.nap()
+    }
 }
 
-/// With this RFC we could define a single implementation, which can be
-/// implemented as either the sync or async variant, sharing a single
-/// implementation.
-#[maybe(async)] trait Into<T>: Sized {
-    #[maybe(async)] fn into(self) -> T;
+/// The async implementation
+impl async Into<Loaf> for Cat {
+    async fn into(self) -> Loaf {
+        self.async_nap().await
+    }
 }
 ```
 
 # Motivation
 [motivation]: #motivation
 
-## TODO: Evolution and Coherence
+Rust is a single language that's made up of several different sub-languages.
+There are the macro languages, as well as the generics language, patterns,
+const, unsafe, and async sub-languages. Rust works anywhere from a
+micro-controller to Windows, and even browsers. One of the biggest challenges we
+have is to not only keep the language as easy to use as we can, it's to ensure
+it works relatively consistently on all the different platforms we support.
 
-- Duplication across effects has to exist somewhere: right now it's mostly
-  user-space.
-- This is error-prone: we got the API of `TryInto` wrong lol
-- Tokio went off the rails and did its own thing, creating subtly different APIs
-  which isn't a great reason
-- We got it right with `const` though, gradually constifying the stdlib with
-  relatively little additional burden for stdlib maintainers.
-- Think of it as portability: shared core, extensions only where needed
+We're currently in the process of adding support for the `const` and `async`
+language features to Rust. But we're looking at various other extensions as
+well, such as generator functions, fallible functions, linearity, and more.
+These are really big extensions to the language, whose implementation will take
+on the order of years. If we want to successfully introduce these features,
+they'll need to be integrated with every other part of the language. As well as
+having wide support in the stdlib.
 
-## TODO: Exponential API Surface
+Effect Generic Trait Declarations are a minimal language feature which enable
+traits to add support for new effects, without needing to duplicate the trait
+itself. So rather than having a trait `Into`, `TryInto`, `AsyncInto`, and the
+inevitable `TryAsyncInto` - we would declare a single trait `Into` once, which
+has support for any combination of `async` and `try` effects. This is
+backwards-compatible by design, and should be able to support any number of
+effect extensions we come up with in the future. Ensuring the language can keep
+evolving to our needs.
 
-- Every single generic
-- Every single function (const)
-- Every single trait (const, try, async, gen)
-- All interacting with each other
+## Effects gone wrong
 
-Numbers estimated for Rust 1.70:
+Evolving a programming language and stdlib is pretty difficult. We have to pay
+close attention to details. And in Rust specifically: once we make a mistake
+it's pretty hard to roll back. And we've made mistakes with effects in the past,
+which we now have to work with.
 
-| Effect | Trait Defs | Trait Impls | Functions     | Types      |
-| ------ | ---------- | ----------- | ------------- | ---------- |
-| -      | 129 (100%) | 3780 (100%) | 1965   (100%) | 343 (100%) |
-| const  | 129 (100%) |             |               |            |
-| async  |            |             |               |            |
-| try    |            |             |               |            |
-| gen    |            |             |               |            |
+In Rust 1.34 we stabilized a new trait: `TryInto`. This was supposed to be the
+fallible version of the `Into` trait, containing a new associated type `Error`.
+However since Rust 1.0 we've also hadd the
+[`FromStr`](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait, which
+*also* provides a fallible conversion, but has an associated type `Err`. This
+means that when writing a fallible conversion trait, it's unclear whether the
+associated type should be called `Err` or `Error`.
+
+This might seem minor, but without automation these subtle
+similar-but-not-quite-the-same kinds of differences stand out. The only way to
+ensure that different APIs in different contexts work consistently is via
+automation. And the best automation we have for this is the type system.
 
 # Guide-level explanation
 [guide-level-explanation]: #guide-level-explanation
 
-## TODO: trait definitions
+## Trait definitions
 
 ## TODO: trait implementations
 
