@@ -177,7 +177,7 @@ pub trait Read {
 # Reference-level explanation
 [reference-level-explanation]: #reference-level-explanation
 
-## Effect Lowering
+## Effect lowering
 
 At the MIR level the lowering of `#[maybe(effect)]` is shared with `const`, and
 is essentially implemented via const bools. Take the following maybe-async
@@ -333,7 +333,7 @@ lowering, crucially they don't rely on any potential notion of lifetime-generics
 function. The right lifetime GATs can be emitted by the compiler during
 lowering, and should therefor always be accurate.
 
-## Effect Modes
+## Effect modes
 
 This RFC reasons about effects as being in one of four states:
 
@@ -358,7 +358,7 @@ Methods which may or may not be async are labeled `#[maybe(async)]`. Methods
 which are never async are labeled `#[not(async)]`. All other methods are
 unlabeled, and are not made available to the async implementation of the trait.
 
-## Conflicting Implementations
+## Conflicting implementations
 
 With the eye on forward-compatibility, and a potential future where types can
 themselves also be generic over effects, for now types may only implement either
@@ -474,11 +474,11 @@ trait Into<T>: Sized { .. }
 # Drawbacks
 [drawbacks]: #drawbacks
 
-## TODO: additional syntax
+## TODO: Additional syntax
 
 - we're adding some new syntax, that's going to be A Thing
 
-## TODO: direction
+## TODO: Direction
 
 - while not inherently closing any doors, we are kind of committing to the idea
   that we want to extend the stdlib to be effectful - that's the point
@@ -524,12 +524,12 @@ TODO:
 - generator functions
 - linearity
 
-## TODO: Effect-Generic Types and Bodies
+## TODO: Effect-generic types and bodies
 
 - types
 - functions
 
-## TODO: Effect Sets
+## TODO: Effect sets
 
 - named effect sets
 - unify `core` and `std` via sets
