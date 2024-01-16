@@ -34,8 +34,8 @@ impl Into<Loaf> for Cat {
 }
 
 /// The async implementation
-impl async Into<Loaf> for AsyncCat {
-    async fn into(self) -> Loaf {
+impl async Into<AsyncLoaf> for AsyncCat {
+    async fn into(self) -> AsyncLoaf {
         self.async_nap().await
     }
 }
@@ -231,14 +231,14 @@ as return an anonymous `async {}` block from the function.
 
 ```rust
 /// The async implementation
-impl async Into<Loaf> for AsyncCat {
-    async fn into(self) -> Loaf {
+impl async Into<AsyncLoaf> for AsyncCat {
+    async fn into(self) -> AsyncLoaf {
         self.async_nap().await
     }
 }
 
 // Lowered async trait impl
-impl Into<Loaf, true> for AsyncCat { // IS_ASYNC = true
+impl Into<AsyncLoaf, true> for AsyncCat { // IS_ASYNC = true
     type Ret = impl Future<Output = T>;
     fn into(self) -> Self::Ret {
         async move {
@@ -317,7 +317,7 @@ impl async AsRef<Loaf> for AsyncCat {
 }
 
 /// Lowering of the base implementation
-impl AsRef<Loaf, true> for AsyncCat { // IS_ASYNC = true
+impl AsRef<AsyncLoaf, true> for AsyncCat { // IS_ASYNC = true
     type Ret<'a> = impl Future<Output = &'a Loaf> + 'a
         where Self: 'a;
     fn as_ref(&self) -> Self::Ret<'_> {
@@ -528,6 +528,27 @@ TODO:
 
 - types
 - functions
+
+```rust
+/// Before: the base implementation
+impl Into<Loaf> for Cat {
+    fn into(self) -> Loaf {
+        self.nap()
+    }
+}
+
+/// Before: the async implementation
+impl async Into<AsyncLoaf> for AsyncCat {
+    async fn into(self) -> AsyncLoaf {
+        self.async_nap().await
+    }
+}
+```
+
+```rust
+// After: a single implementation
+...
+```
 
 ## TODO: Effect sets
 
