@@ -158,7 +158,7 @@ pub trait Read {
 
 Because `chain` is not marked as `maybe(async)`, when implementing `async Read`,
 it will not be available. If a synchronous method has to be available in an
-async context, it should be possible to mark it as `never(async)`, so that it's
+async context, it should be possible to mark it as `not(async)`, so that it's
 clear it's part of the API contract for the async implementation - and is never
 async.
 
@@ -217,8 +217,8 @@ impl Into<Loaf> for Cat {
 
 // Lowered base trait impl
 impl Into<Loaf, false> for Cat { // IS_ASYNC = false
-    type Ret<'a> = T;
-    fn into(self) -> Self::Ret<'static> {
+    type Ret = T;
+    fn into(self) -> Self::Ret {
         self.nap()
     }
 }
@@ -281,7 +281,7 @@ where
 {
     type Ret<'a>
         where Self: 'a;
-    fn as_ref(&self) -> Ret<'a>;
+    fn as_ref(&self) -> Self::Ret<'_>;
 }
 ```
 
@@ -300,7 +300,7 @@ impl AsRef<Loaf> for Cat {
 impl AsRef<Loaf, false> for Cat { // IS_ASYNC = false
     type Ret<'a> = &'a Loaf
         where Self: 'a;
-    fn as_ref(&self) -> Ret<'a> {
+    fn as_ref(&self) -> Self::Ret<'_> {
         self.nap_ref()
     }
 }
@@ -320,7 +320,7 @@ impl async AsRef<Loaf> for Cat {
 impl AsRef<Loaf, true> for Cat { // IS_ASYNC = true
     type Ret<'a> = impl Future<Output = &'a Loaf> + 'a
         where Self: 'a;
-    fn as_ref(&self) -> Ret<'a> {
+    fn as_ref(&self) -> Self::Ret<'a> {
         async {
             self.async_nap_ref().await
         }
@@ -355,7 +355,7 @@ This RFC reasons about effects as being in one of four states:
 
 For the `async` effect methods which are always async are labeled `async fn`.
 Methods which may or may not be async are labeled `#[maybe(async)]`. Methods
-which are never async are labeled `#[never(async)]`. All other methods are
+which are never async are labeled `#[not(async)]`. All other methods are
 unlabeled, and are not made available to the async implementation of the trait.
 
 ## Conflicting Implementations
@@ -404,7 +404,7 @@ pub trait BufRead: #[maybe(async)] Read {
 ```
 
 If a trait wants to have a non-async super-trait, it has to mark the super-trait
-as never being async. In the case that the supertrait eventually becomes generic
+as not being async. In the case that the supertrait eventually becomes generic
 over an effect, it's clear from the beginning which variant we 've chosen. 
 
 ```rust
@@ -423,7 +423,7 @@ effect.
 
 ```rust
 // The trait `Sized` guarantees it
-// will never be an `async trait`… 
+// will not ever be an `async trait`… 
 #[not(async)]
 trait Sized {}
 
