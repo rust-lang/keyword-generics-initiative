@@ -77,7 +77,7 @@ which we now have to work with.
 
 In Rust 1.34 we stabilized a new trait: `TryInto`. This was supposed to be the
 fallible version of the `Into` trait, containing a new associated type `Error`.
-However since Rust 1.0 we've also hadd the
+However since Rust 1.0 we've also had the
 [`FromStr`](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait, which
 *also* provides a fallible conversion, but has an associated type `Err`. This
 means that when writing a fallible conversion trait, it's unclear whether the
