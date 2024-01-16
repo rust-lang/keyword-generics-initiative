@@ -34,7 +34,7 @@ impl Into<Loaf> for Cat {
 }
 
 /// The async implementation
-impl async Into<Loaf> for Cat {
+impl async Into<Loaf> for AsyncCat {
     async fn into(self) -> Loaf {
         self.async_nap().await
     }
@@ -126,7 +126,7 @@ impl Read for Reader {
 }
 
 /// The async implementation
-impl async Read for Reader {
+impl async Read for AsyncReader {
     async fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         // ...
     }
@@ -231,14 +231,14 @@ as return an anonymous `async {}` block from the function.
 
 ```rust
 /// The async implementation
-impl async Into<Loaf> for Cat {
+impl async Into<Loaf> for AsyncCat {
     async fn into(self) -> Loaf {
         self.async_nap().await
     }
 }
 
 // Lowered async trait impl
-impl Into<Loaf, true> for Cat { // IS_ASYNC = true
+impl Into<Loaf, true> for AsyncCat { // IS_ASYNC = true
     type Ret = impl Future<Output = T>;
     fn into(self) -> Self::Ret {
         async move {
@@ -310,14 +310,14 @@ And the async implementation would look like this:
 
 ```rust
 /// The base implementation
-impl async AsRef<Loaf> for Cat {
+impl async AsRef<Loaf> for AsyncCat {
     async fn as_ref(&self) -> &Loaf {
         self.async_nap_ref().await
     }
 }
 
 /// Lowering of the base implementation
-impl AsRef<Loaf, true> for Cat { // IS_ASYNC = true
+impl AsRef<Loaf, true> for AsyncCat { // IS_ASYNC = true
     type Ret<'a> = impl Future<Output = &'a Loaf> + 'a
         where Self: 'a;
     fn as_ref(&self) -> Self::Ret<'a> {
@@ -337,18 +337,18 @@ lowering, and should therefor always be accurate.
 
 This RFC reasons about effects as being in one of four states:
 
-- __always:__ This is when an effect is always present. For example: if a
+- __Always:__ This is when an effect is always present. For example: if a
     function implements some kind of concurrency operations, it may always want to
     be async. This is signaled by the existing meaning of the `async fn` notation.
-- __sometimes:__ This is when an effect may sometimes be present. This will
+- __Maybe__: This is when an effect may sometimes be present. This will
   apply to most traits in the stdlib. For example, if we want to write an async
   version of the `Read` trait its associated methods will also want to be `async`.
-- __never:__ This is when an effect is never present. For example:
+- __Not__: This is when an effect is never present. For example:
   `Iterator::size_hint` will likely *never* want to be async, even if the trait
   and most methods are async. In order for methods to be available in the
   effectful implementatin of the trait, they have to be marked as never
   carrying the effect.
-- __skip:__ This RFC represents an MVP for effect generics. Some methods will
+- __Skip:__ This RFC represents an MVP for effect generics. Some methods will
   want to return concrete types which themselves may want to carry an effect. By
   default these are ignored until we're ready to define an effectful version of
   the trait.
@@ -384,7 +384,7 @@ error[E0119]: conflicting implementations of trait `Into` for type `Cat`
 
 - ask oli about which compiler features we're missing to implement this
 
-## TODO: Extensions and super traits
+## Super traits
 
 Super-trait hierarchies should be supported, as long as they are appropriately
 annotated. Say we wanted to define a maybe-async version of
@@ -409,10 +409,10 @@ over an effect, it's clear from the beginning which variant we 've chosen.
 
 ```rust
 #[maybe(async)]
-pub trait Inner {}
+pub trait SuperTrait {}
 
 #[maybe(async)]
-pub trait Outer: #[not(async)] Inner { }
+pub trait SubTrait: #[not(async)] SuperTrait { }
 ```
 
 Certain traits may want to guarantee ahead of time that they will never support
@@ -432,6 +432,44 @@ trait Sized {}
 #[maybe(async)]
 trait Into<T>: Sized { .. }
 ```
+
+## Trait bounds
+
+Using effect generic trait definitions in trait bounds should be no problem,
+assuming the bounds are concrete. Unlike concrete types, generic bounds may
+implement both effecful and uneffectful implementations for the same bounds as
+long as they target non-overlapping sets of traits. For example, assuming we had
+a maybe-async version of `Into`, introducing a maybe-async version of `From`
+would allow us to write the following non-overlapping generic bounds.
+
+```rust
+/// If we also introduce a maybe-async
+/// version of the `From` trait…
+#[maybe(async)]
+pub trait From<T>: Sized {
+    #[maybe(async)]
+    fn from(value: T) -> Self;
+}
+
+/// …we can implement the synchronous
+/// variant for any type `T, U: From<T>`…
+impl<T, U> Into<U> for T
+where
+    U: From<T> {}
+
+/// …as well as the asynchronous variant for
+/// any type `T, U: async From<T>`.
+impl<T, U> async Into<U> for T
+where
+    U: async From<T> {}
+```
+
+For the purpose of the trait resolver, `From` and `async From` should be
+considered non-overlapping bounds. This is a new capability which we'll need to
+introduce, and effectively comes down to treating `U: From<T, false>` and `U:
+From<T, true>` as non-overlapping bounds. Effect-generic trait bounds
+(conditional effects in bounds) are not introduced by this RFC, but may be introduced
+by a future extension.
 
 # Drawbacks
 [drawbacks]: #drawbacks
