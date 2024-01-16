@@ -320,7 +320,7 @@ impl async AsRef<Loaf> for AsyncCat {
 impl AsRef<Loaf, true> for AsyncCat { // IS_ASYNC = true
     type Ret<'a> = impl Future<Output = &'a Loaf> + 'a
         where Self: 'a;
-    fn as_ref(&self) -> Self::Ret<'a> {
+    fn as_ref(&self) -> Self::Ret<'_> {
         async {
             self.async_nap_ref().await
         }
