@@ -380,9 +380,43 @@ error[E0119]: conflicting implementations of trait `Into` for type `Cat`
   | help: types can't both implement the sync and async variant of a trait
 ```
 
-## TODO: prerequisites
+## Trait bounds and coherence
 
-- ask oli about which compiler features we're missing to implement this
+Using effect generic trait definitions in trait bounds should be no problem,
+assuming the bounds are concrete. Unlike concrete types, generic bounds may
+implement both effecful and uneffectful implementations for the same bounds as
+long as they target non-overlapping sets of traits. For example, assuming we had
+a maybe-async version of `Into`, introducing a maybe-async version of `From`
+would allow us to write the following non-overlapping generic bounds.
+
+```rust
+/// If we also introduce a maybe-async
+/// version of the `From` trait…
+#[maybe(async)]
+pub trait From<T>: Sized {
+    #[maybe(async)]
+    fn from(value: T) -> Self;
+}
+
+/// …we can implement the synchronous
+/// variant for any type `T, U: From<T>`…
+impl<T, U> Into<U> for T
+where
+    U: From<T> {}
+
+/// …as well as the asynchronous variant for
+/// any type `T, U: async From<T>`.
+impl<T, U> async Into<U> for T
+where
+    U: async From<T> {}
+```
+
+For the purpose of the trait resolver, `From` and `async From` should be
+considered non-overlapping bounds. This is a new capability which we'll need to
+introduce, and effectively comes down to treating `U: From<T, false>` and `U:
+From<T, true>` as non-overlapping bounds. Effect-generic trait bounds
+(conditional effects in bounds) are not introduced by this RFC, but may be introduced
+by a future extension.
 
 ## Super traits
 
@@ -433,43 +467,9 @@ trait Sized {}
 trait Into<T>: Sized { .. }
 ```
 
-## Trait bounds
+## TODO: prerequisites
 
-Using effect generic trait definitions in trait bounds should be no problem,
-assuming the bounds are concrete. Unlike concrete types, generic bounds may
-implement both effecful and uneffectful implementations for the same bounds as
-long as they target non-overlapping sets of traits. For example, assuming we had
-a maybe-async version of `Into`, introducing a maybe-async version of `From`
-would allow us to write the following non-overlapping generic bounds.
-
-```rust
-/// If we also introduce a maybe-async
-/// version of the `From` trait…
-#[maybe(async)]
-pub trait From<T>: Sized {
-    #[maybe(async)]
-    fn from(value: T) -> Self;
-}
-
-/// …we can implement the synchronous
-/// variant for any type `T, U: From<T>`…
-impl<T, U> Into<U> for T
-where
-    U: From<T> {}
-
-/// …as well as the asynchronous variant for
-/// any type `T, U: async From<T>`.
-impl<T, U> async Into<U> for T
-where
-    U: async From<T> {}
-```
-
-For the purpose of the trait resolver, `From` and `async From` should be
-considered non-overlapping bounds. This is a new capability which we'll need to
-introduce, and effectively comes down to treating `U: From<T, false>` and `U:
-From<T, true>` as non-overlapping bounds. Effect-generic trait bounds
-(conditional effects in bounds) are not introduced by this RFC, but may be introduced
-by a future extension.
+- ask oli about which compiler features we're missing to implement this
 
 # Drawbacks
 [drawbacks]: #drawbacks
