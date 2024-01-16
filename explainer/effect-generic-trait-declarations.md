@@ -333,9 +333,9 @@ lowering, crucially they don't rely on any potential notion of lifetime-generics
 function. The right lifetime GATs can be emitted by the compiler during
 lowering, and should therefor always be accurate.
 
-## Effect modes
+## Effect logic
 
-This RFC reasons about effects as being in one of four states:
+This RFC reasons about effects as being in one of four logical states:
 
 - __Always:__ This is when an effect is always present. For example: if a
     function implements some kind of concurrency operations, it may always want to
@@ -348,17 +348,17 @@ This RFC reasons about effects as being in one of four states:
   and most methods are async. In order for methods to be available in the
   effectful implementatin of the trait, they have to be marked as never
   carrying the effect.
-- __Skip:__ This RFC represents an MVP for effect generics. Some methods will
-  want to return concrete types which themselves may want to carry an effect. By
-  default these are ignored until we're ready to define an effectful version of
-  the trait.
+- __Unknown:__ Methods which haven't explicitly declared which logical state
+  they're in are *unknown*. This is a distinct state from *not*, because a method
+  may be converted from *unknown* to *maybe* without breaking backwards
+  compatibility.
 
 For the `async` effect methods which are always async are labeled `async fn`.
 Methods which may or may not be async are labeled `#[maybe(async)]`. Methods
 which are never async are labeled `#[not(async)]`. All other methods are
 unlabeled, and are not made available to the async implementation of the trait.
 
-## Conflicting implementations
+## Concrete impls and coherence
 
 With the eye on forward-compatibility, and a potential future where types can
 themselves also be generic over effects, for now types may only implement either
@@ -380,7 +380,7 @@ error[E0119]: conflicting implementations of trait `Into` for type `Cat`
   | help: types can't both implement the sync and async variant of a trait
 ```
 
-## Trait bounds and coherence
+## Trait bounds
 
 Using effect generic trait definitions in trait bounds should be no problem,
 assuming the bounds are concrete. Unlike concrete types, generic bounds may
