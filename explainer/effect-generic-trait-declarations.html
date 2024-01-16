@@ -1,0 +1,746 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Effect Generic Trait Declarations - keyword generics initiative</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../index.html">👋 Welcome</a></li><li class="chapter-item "><a href="../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/gen.html">Iteration</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item expanded "><a href="../explainer/index.html">📚 Explainer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../explainer/effect-generic-trait-declarations.html" class="active">Effect Generic Trait Declarations</a></li></ol></li><li class="chapter-item "><a href="../FAQ.html">😕 FAQ</a></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">keyword generics initiative</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./explainer/effect-generic-trait-declarations.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <ul>
+<li>Feature Name: <code>effect-generic-trait-decls</code></li>
+<li>Start Date: (2024-01-01)</li>
+<li>RFC PR: <a href="https://github.com/rust-lang/rfcs/pull/0000">rust-lang/rfcs#0000</a></li>
+<li>Rust Issue: <a href="https://github.com/rust-lang/rust/issues/0000">rust-lang/rust#0000</a></li>
+</ul>
+<h1 id="summary"><a class="header" href="#summary">Summary</a></h1>
+<p>This RFC introduces Effect-Generic Trait Declarations. These are traits which
+are generic over Rust's built-in effect keywords such as <code>async</code> and <code>const</code>.
+Instead of defining two near-identical traits per effect, this RFC allows a
+single trait to be declared which is generic over the effect. Here is a variant
+of the <code>Into</code> trait which can be implemented as either async or not.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[maybe(async)]
+trait Into&lt;T&gt;: Sized {
+    #[maybe(async)]
+    fn into(self) -&gt; T;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Implementers can then choose whether to implement the base version or the
+effectful version of the trait. If they want the base version they don't include
+the <code>async</code> effect. If they want the <code>async</code> version they can include the
+<code>async</code> keyword.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The base implementation
+impl Into&lt;Loaf&gt; for Cat {
+    fn into(self) -&gt; Loaf {
+        self.nap()
+    }
+}
+
+/// The async implementation
+impl async Into&lt;AsyncLoaf&gt; for AsyncCat {
+    async fn into(self) -&gt; AsyncLoaf {
+        self.async_nap().await
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1 id="motivation"><a class="header" href="#motivation">Motivation</a></h1>
+<p>Rust is a single language that's made up of several different sub-languages.
+There are the macro languages, as well as the generics language, patterns,
+const, unsafe, and async sub-languages. Rust works anywhere from a
+micro-controller to Windows, and even browsers. One of the biggest challenges we
+have is to not only keep the language as easy to use as we can, it's to ensure
+it works relatively consistently on all the different platforms we support.</p>
+<p>We're currently in the process of adding support for the <code>const</code> and <code>async</code>
+language features to Rust. But we're looking at various other extensions as
+well, such as generator functions, fallible functions, linearity, and more.
+These are really big extensions to the language, whose implementation will take
+on the order of years. If we want to successfully introduce these features,
+they'll need to be integrated with every other part of the language. As well as
+having wide support in the stdlib.</p>
+<p>Effect Generic Trait Declarations are a minimal language feature which enable
+traits to add support for new effects, without needing to duplicate the trait
+itself. So rather than having a trait <code>Into</code>, <code>TryInto</code>, <code>AsyncInto</code>, and the
+inevitable <code>TryAsyncInto</code> - we would declare a single trait <code>Into</code> once, which
+has support for any combination of <code>async</code> and <code>try</code> effects. This is
+backwards-compatible by design, and should be able to support any number of
+effect extensions we come up with in the future. Ensuring the language can keep
+evolving to our needs.</p>
+<h2 id="guaranteeing-api-consistency"><a class="header" href="#guaranteeing-api-consistency">Guaranteeing API consistency</a></h2>
+<p>Evolving a programming language and stdlib is pretty difficult. We have to pay
+close attention to details. And in Rust specifically: once we make a mistake
+it's pretty hard to roll back. And we've made mistakes with effects in the past,
+which we now have to work with.</p>
+<p>In Rust 1.34 we stabilized a new trait: <code>TryInto</code>. This was supposed to be the
+fallible version of the <code>Into</code> trait, containing a new associated type <code>Error</code>.
+However since Rust 1.0 we've also had the
+<a href="https://doc.rust-lang.org/std/str/trait.FromStr.html"><code>FromStr</code></a> trait, which
+<em>also</em> provides a fallible conversion, but has an associated type <code>Err</code>. This
+means that when writing a fallible conversion trait, it's unclear whether the
+associated type should be called <code>Err</code> or <code>Error</code>.</p>
+<p>This might seem minor, but without automation these subtle
+similar-but-not-quite-the-same kinds of differences stand out. The only way to
+ensure that different APIs in different contexts work consistently is via
+automation. And the best automation we have for this is the type system.</p>
+<h1 id="guide-level-explanation"><a class="header" href="#guide-level-explanation">Guide-level explanation</a></h1>
+<h2 id="trait-definitions"><a class="header" href="#trait-definitions">Trait definitions</a></h2>
+<p>The base of Effect Generic Trait Declarations is the ability to declare traits
+as being generic over effects. This RFC currently only considers the <code>async</code>
+effect, but should be applicable to most other effects (modulo <code>unsafe</code> and
+<code>const</code>, more on that later). The way a trait is defined is by adding a
+<code>#[maybe(effect)]</code> notation.  This signals that a trait may be implemented as
+carrying the effect.  For example, a version of the <code>Into</code> trait which may or
+may not be <code>async</code> would be defined as:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[maybe(async)]
+pub trait Read {
+    #[maybe(async)]
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="trait-implementations"><a class="header" href="#trait-implementations">Trait implementations</a></h2>
+<p>Traits can be implemented as either async or non-async.  The trait-level
+<code>#[maybe(async)]</code> can be thought of as a const-generic bool which determines the
+value of the method-level <code>#[maybe(async)]</code> declarations.  So if a trait is
+implemented as <code>async</code>, all methods tagged as <code>#[maybe(async)]</code> have to be async
+too.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The base implementation
+impl Read for Reader {
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt; {
+        // ...
+    }
+}
+
+/// The async implementation
+impl async Read for AsyncReader {
+    async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt; {
+        // ...
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="method-markers"><a class="header" href="#method-markers">Method markers</a></h2>
+<p>This RFC only covers trait methods which carry an effect or not. It does not
+cover types which may or may not have effects. The intent is to add this via a
+future extension, so for the scope of this RFC we have to be able to declare
+certain methods as not being generic over effects. This is the default behavior;
+no extra annotations are needed for this.</p>
+<p>Taking the <code>Read</code> trait example again; the <code>chain</code> method returns a type <code>Chain</code>
+which implements <code>Iterator</code>. Accounting for the <code>chain</code> method, the declaration
+of <code>Read</code> would be:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[maybe(async)]
+pub trait Read {
+    ...
+
+    // This method is not available for `impl async Read`
+    fn chain&lt;R: Read&gt;(self, next: R) -&gt; Chain&lt;Self, R&gt;
+       where Self: Sized { .. }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Because <code>chain</code> is not marked as <code>maybe(async)</code>, when implementing <code>async Read</code>,
+it will not be available. If a synchronous method has to be available in an
+async context, it should be possible to mark it as <code>not(async)</code>, so that it's
+clear it's part of the API contract for the async implementation - and is never
+async.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[maybe(async)]
+pub trait Read {
+    ...
+
+    // This method would be available for `impl async Read`
+    #[not(async)]
+    fn chain&lt;R: Read&gt;(self, next: R) -&gt; Chain&lt;Self, R&gt;
+       where Self: Sized { .. }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h1 id="reference-level-explanation"><a class="header" href="#reference-level-explanation">Reference-level explanation</a></h1>
+<h2 id="effect-lowering"><a class="header" href="#effect-lowering">Effect lowering</a></h2>
+<p>At the MIR level the lowering of <code>#[maybe(effect)]</code> is shared with <code>const</code>, and
+is essentially implemented via const bools. Take the following maybe-async
+definition of <code>Into</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Trait definition
+#[maybe(async)]
+trait Into&lt;T&gt;: Sized {
+    #[maybe(async)]
+    fn into(self) -&gt; T;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>At the MIR level the <code>#[maybe(async)]</code> system is lowered to a const bool which
+determines whether the function should be async. If the trait is implemented as
+async, the bool is set to true. If it isn't, it's set to false.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Lowered trait definition
+trait Into&lt;T, const IS_ASYNC: bool&gt;: Sized {
+    type Ret = T;
+    fn into(self) -&gt; Self::Ret;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>By default the const bool should be set to false. The return type of the
+function here is the base return type of the definition:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The base implementation
+impl Into&lt;Loaf&gt; for Cat {
+    fn into(self) -&gt; Loaf {
+        self.nap()
+    }
+}
+
+// Lowered base trait impl
+impl Into&lt;Loaf, false&gt; for Cat { // IS_ASYNC = false
+    type Ret = T;
+    fn into(self) -&gt; Self::Ret {
+        self.nap()
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>However if we implement the async version of the trait things change a little.
+In the lowering the const bool is set to <code>true</code> to indicate we are in fact
+async. And in the lowering we wrap the return type in an <code>impl Future</code>, as well
+as return an anonymous <code>async {}</code> block from the function.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The async implementation
+impl async Into&lt;AsyncLoaf&gt; for AsyncCat {
+    async fn into(self) -&gt; AsyncLoaf {
+        self.async_nap().await
+    }
+}
+
+// Lowered async trait impl
+impl Into&lt;AsyncLoaf, true&gt; for AsyncCat { // IS_ASYNC = true
+    type Ret = impl Future&lt;Output = T&gt;;
+    fn into(self) -&gt; Self::Ret {
+        async move {
+            self.async_nap().await
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="effect-lowering-with-lifetimes"><a class="header" href="#effect-lowering-with-lifetimes">Effect lowering with lifetimes</a></h2>
+<p>Things become more interesting when lifetimes are involved in the effectful
+lowering of a trait. The return type of an <code>async fn</code> which takes a reference
+has to be a future with a lifetime. Which means it's in our lowering our
+associated type can't be a plain future - it has to be a future with a lifetime
+attached. And this requires lifetime GATs to work.</p>
+<p>Say instead of the async version of <code>Into</code>, we tried to write the maybe-async
+version of <a href="https://doc.rust-lang.org/std/convert/trait.AsRef.html"><code>AsRef</code></a>
+<sup class="footnote-reference"><a href="#asref">1</a></sup>. We could define it as follows:</p>
+<div class="footnote-definition" id="asref"><sup class="footnote-definition-label">1</sup>
+<p>this is just for the purpose of an example; I don't actually know of
+any cases which want an async version of <code>AsRef</code>. But never say never.</p>
+</div>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The trait definition
+#[maybe(async)]
+pub trait AsRef&lt;T&gt;
+where
+    T: ?Sized,
+{
+    #[maybe(async)]
+    fn as_ref(&amp;self) -&gt; &amp;T;
+}
+
+/// The lowering of the trait definition
+pub trait AsRef&lt;T, const IS_ASYNC: bool&gt;
+where
+    T: ?Sized,
+{
+    type Ret&lt;'a&gt;
+        where Self: 'a;
+    fn as_ref(&amp;self) -&gt; Self::Ret&lt;'_&gt;;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We could then implement it like we did with our <code>Into</code> impl. The non-async impl
+would look like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The base implementation
+impl AsRef&lt;Loaf&gt; for Cat {
+    fn as_ref(&amp;self) -&gt; &amp;Loaf {
+        self.nap_ref()
+    }
+}
+
+/// Lowering of the base implementation
+impl AsRef&lt;Loaf, false&gt; for Cat { // IS_ASYNC = false
+    type Ret&lt;'a&gt; = &amp;'a Loaf
+        where Self: 'a;
+    fn as_ref(&amp;self) -&gt; Self::Ret&lt;'_&gt; {
+        self.nap_ref()
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And the async implementation would look like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// The base implementation
+impl async AsRef&lt;Loaf&gt; for AsyncCat {
+    async fn as_ref(&amp;self) -&gt; &amp;Loaf {
+        self.async_nap_ref().await
+    }
+}
+
+/// Lowering of the base implementation
+impl AsRef&lt;AsyncLoaf, true&gt; for AsyncCat { // IS_ASYNC = true
+    type Ret&lt;'a&gt; = impl Future&lt;Output = &amp;'a Loaf&gt; + 'a
+        where Self: 'a;
+    fn as_ref(&amp;self) -&gt; Self::Ret&lt;'_&gt; {
+        async {
+            self.async_nap_ref().await
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>While effect-generic trait definitions with lifetimes do rely on GATs in their
+lowering, crucially they don't rely on any potential notion of lifetime-generics to
+function. The right lifetime GATs can be emitted by the compiler during
+lowering, and should therefor always be accurate.</p>
+<h2 id="effect-logic"><a class="header" href="#effect-logic">Effect logic</a></h2>
+<p>This RFC reasons about effects as being in one of four logical states:</p>
+<ul>
+<li><strong>Always:</strong> This is when an effect is always present. For example: if a
+function implements some kind of concurrency operations, it may always want to
+be async. This is signaled by the existing meaning of the <code>async fn</code> notation.</li>
+<li><strong>Maybe</strong>: This is when an effect may sometimes be present. This will
+apply to most traits in the stdlib. For example, if we want to write an async
+version of the <code>Read</code> trait its associated methods will also want to be <code>async</code>.</li>
+<li><strong>Not</strong>: This is when an effect is never present. For example:
+<code>Iterator::size_hint</code> will likely <em>never</em> want to be async, even if the trait
+and most methods are async. In order for methods to be available in the
+effectful implementatin of the trait, they have to be marked as never
+carrying the effect.</li>
+<li><strong>Unknown:</strong> Methods which haven't explicitly declared which logical state
+they're in are <em>unknown</em>. This is a distinct state from <em>not</em>, because a method
+may be converted from <em>unknown</em> to <em>maybe</em> without breaking backwards
+compatibility.</li>
+</ul>
+<p>For the <code>async</code> effect methods which are always async are labeled <code>async fn</code>.
+Methods which may or may not be async are labeled <code>#[maybe(async)]</code>. Methods
+which are never async are labeled <code>#[not(async)]</code>. All other methods are
+unlabeled, and are not made available to the async implementation of the trait.</p>
+<h2 id="concrete-impls-and-coherence"><a class="header" href="#concrete-impls-and-coherence">Concrete impls and coherence</a></h2>
+<p>With the eye on forward-compatibility, and a potential future where types can
+themselves also be generic over effects, for now types may only implement either
+the effectful or the base variant of the trait. This ensures that the door is
+kept open for effect generic implementations later on. As well as ensures that
+during trait selection the trait variant remains unambiguous. The diagnostics
+for this case should clearly communicate that only a single trait variant can be
+implemented per type.</p>
+<pre><code class="language-text">error[E0119]: conflicting implementations of trait `Into` for type `Cat`
+ --&gt; src/lib.rs:5:1
+  |
+4 | impl Into for Cat {}
+  | ----------------- first implementation here
+5 | impl async Into for Cat {}
+  | ^^^^^^^^^^^^^^^^^ conflicting implementation for `Cat`
+  |
+  | help: types can't both implement the sync and async variant of a trait
+</code></pre>
+<h2 id="trait-bounds"><a class="header" href="#trait-bounds">Trait bounds</a></h2>
+<p>Using effect generic trait definitions in trait bounds should be no problem,
+assuming the bounds are concrete. Unlike concrete types, generic bounds may
+implement both effecful and uneffectful implementations for the same bounds as
+long as they target non-overlapping sets of traits. For example, assuming we had
+a maybe-async version of <code>Into</code>, introducing a maybe-async version of <code>From</code>
+would allow us to write the following non-overlapping generic bounds.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// If we also introduce a maybe-async
+/// version of the `From` trait…
+#[maybe(async)]
+pub trait From&lt;T&gt;: Sized {
+    #[maybe(async)]
+    fn from(value: T) -&gt; Self;
+}
+
+/// …we can implement the synchronous
+/// variant for any type `T, U: From&lt;T&gt;`…
+impl&lt;T, U&gt; Into&lt;U&gt; for T
+where
+    U: From&lt;T&gt; {}
+
+/// …as well as the asynchronous variant for
+/// any type `T, U: async From&lt;T&gt;`.
+impl&lt;T, U&gt; async Into&lt;U&gt; for T
+where
+    U: async From&lt;T&gt; {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>For the purpose of the trait resolver, <code>From</code> and <code>async From</code> should be
+considered non-overlapping bounds. This is a new capability which we'll need to
+introduce, and effectively comes down to treating <code>U: From&lt;T, false&gt;</code> and <code>U: From&lt;T, true&gt;</code> as non-overlapping bounds. Effect-generic trait bounds
+(conditional effects in bounds) are not introduced by this RFC, but may be introduced
+by a future extension.</p>
+<h2 id="super-traits"><a class="header" href="#super-traits">Super traits</a></h2>
+<p>Super-trait hierarchies should be supported, as long as they are appropriately
+annotated. Say we wanted to define a maybe-async version of
+<a href="https://doc.rust-lang.org/std/io/trait.BufRead.html"><code>BufRead</code></a> which has
+<code>Read</code> as a supertrait. For that to work, the <code>Read</code> trait would also need to be
+marked maybe-async. That way if we implement the async version of <code>BufRead</code> we
+also require the async version of <code>Read</code> - idem for the non-async variants.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[maybe(async)]
+pub trait BufRead: #[maybe(async)] Read {
+    #[maybe(async)]
+    fn fill_buf(&amp;mut self) -&gt; Result&lt;&amp;[u8]&gt;;
+    #[maybe(async)]
+    fn consume(&amp;mut self, amt: usize);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>If a trait wants to have a non-async super-trait, it has to mark the super-trait
+as not being async. In the case that the supertrait eventually becomes generic
+over an effect, it's clear from the beginning which variant we 've chosen. </p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[maybe(async)]
+pub trait SuperTrait {}
+
+#[maybe(async)]
+pub trait SubTrait: #[not(async)] SuperTrait { }
+<span class="boring">}
+</span></code></pre></pre>
+<p>Certain traits may want to guarantee ahead of time that they will never support
+a certain effect. For these traits it is possible to omit the effect marker, as
+the state of the effect is already unambiguous. It is expected most marker
+traits will want to be unambiguously never support for example the <code>async</code>
+effect.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// The trait `Sized` guarantees it
+// will not ever be an `async trait`… 
+#[not(async)]
+trait Sized {}
+
+// …which means it does not require annotations
+// when used as a supertrait.
+#[maybe(async)]
+trait Into&lt;T&gt;: Sized { .. }
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="todo-prerequisites"><a class="header" href="#todo-prerequisites">TODO: prerequisites</a></h2>
+<ul>
+<li>ask oli about which compiler features we're missing to implement this</li>
+</ul>
+<h1 id="drawbacks"><a class="header" href="#drawbacks">Drawbacks</a></h1>
+<h2 id="todo-additional-syntax"><a class="header" href="#todo-additional-syntax">TODO: Additional syntax</a></h2>
+<ul>
+<li>we're adding some new syntax, that's going to be A Thing</li>
+</ul>
+<h2 id="todo-direction"><a class="header" href="#todo-direction">TODO: Direction</a></h2>
+<ul>
+<li>while not inherently closing any doors, we are kind of committing to the idea
+that we want to extend the stdlib to be effectful - that's the point</li>
+<li>this has repercussions for how we structure our base traits and interfaces too</li>
+</ul>
+<h1 id="prior-art"><a class="header" href="#prior-art">Prior art</a></h1>
+<p>TODO:</p>
+<ul>
+<li>swift: async polymorphism + rethrow</li>
+<li>c++: noexcept + constexpr</li>
+<li>koka: effect handlers (free monad)</li>
+<li>rust: const fn</li>
+<li>zig: maybe async functions</li>
+</ul>
+<h1 id="unresolved-questions"><a class="header" href="#unresolved-questions">Unresolved questions</a></h1>
+<h2 id="todo-syntax"><a class="header" href="#todo-syntax">TODO: Syntax</a></h2>
+<ul>
+<li><code>#[maybe(async)]</code> is a placeholder</li>
+<li><code>maybe(async)</code> is clear but is verbose</li>
+<li><code>?async</code> is sigil-heavy, but has precedence in the trait system</li>
+<li><code>~async</code> is sigil-heavy, and also reserves a new sigil</li>
+<li><code>if/else</code> at the trait level does not create bidirectional relationships</li>
+<li><code>async&lt;A&gt;</code> is less clear and verbose</li>
+</ul>
+<h1 id="alternatives"><a class="header" href="#alternatives">Alternatives</a></h1>
+<h2 id="todo-do-nothing-null-hypothesis"><a class="header" href="#todo-do-nothing-null-hypothesis">TODO: Do nothing (null hypothesis)</a></h2>
+<ul>
+<li>effect differences are inherent, which means they have to be solved somewhere</li>
+<li>effect composition is where it gets bad; we have an async version of the stdlib, not an async + fallible version</li>
+<li>things like linearity seem quite far out of reach right without this</li>
+</ul>
+<h1 id="future-possibilities"><a class="header" href="#future-possibilities">Future possibilities</a></h1>
+<h2 id="todo-integration-with-other-keywords"><a class="header" href="#todo-integration-with-other-keywords">TODO: Integration with other keywords</a></h2>
+<ul>
+<li>fallible functions</li>
+<li>generator functions</li>
+<li>linearity</li>
+</ul>
+<h2 id="todo-effect-generic-types-and-bodies"><a class="header" href="#todo-effect-generic-types-and-bodies">TODO: Effect-generic types and bodies</a></h2>
+<ul>
+<li>types</li>
+<li>functions</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Before: the base implementation
+impl Into&lt;Loaf&gt; for Cat {
+    fn into(self) -&gt; Loaf {
+        self.nap()
+    }
+}
+
+/// Before: the async implementation
+impl async Into&lt;AsyncLoaf&gt; for AsyncCat {
+    async fn into(self) -&gt; AsyncLoaf {
+        self.async_nap().await
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// After: a single implementation
+...
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="todo-effect-sets"><a class="header" href="#todo-effect-sets">TODO: Effect sets</a></h2>
+<ul>
+<li>named effect sets</li>
+<li>unify <code>core</code> and <code>std</code> via sets</li>
+</ul>
+<h2 id="todo-normalize-const"><a class="header" href="#todo-normalize-const">TODO: Normalize const</a></h2>
+<ul>
+<li><code>const fn</code> is maybe-const</li>
+<li><code>const {}</code> is always const</li>
+<li>this is super annoying lol, and that's why this system doesn't work for <code>const</code> right now</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../explainer/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../FAQ.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../explainer/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../FAQ.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>
