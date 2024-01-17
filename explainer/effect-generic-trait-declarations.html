@@ -238,7 +238,7 @@ as being generic over effects. This RFC currently only considers the <code>async
 effect, but should be applicable to most other effects (modulo <code>unsafe</code> and
 <code>const</code>, more on that later). The way a trait is defined is by adding a
 <code>#[maybe(effect)]</code> notation.  This signals that a trait may be implemented as
-carrying the effect.  For example, a version of the <code>Into</code> trait which may or
+carrying the effect.  For example, a version of the <code>Read</code> trait which may or
 may not be <code>async</code> would be defined as:</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
