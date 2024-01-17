@@ -98,7 +98,7 @@ as being generic over effects. This RFC currently only considers the `async`
 effect, but should be applicable to most other effects (modulo `unsafe` and
 `const`, more on that later). The way a trait is defined is by adding a
 `#[maybe(effect)]` notation.  This signals that a trait may be implemented as
-carrying the effect.  For example, a version of the `Into` trait which may or
+carrying the effect.  For example, a version of the `Read` trait which may or
 may not be `async` would be defined as:
 
 ```rust
