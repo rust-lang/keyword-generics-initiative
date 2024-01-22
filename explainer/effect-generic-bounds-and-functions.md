@@ -102,7 +102,10 @@ methods which may returns errors rather than panics if an allocation fails.
 [guide-level-explanation]: #guide-level-explanation
 
 ## TODO: Effect-generic functions
-## TODO: Eliminating effect forwarding notations
+
+This RFC enables functions to be written on 
+The main addition of this RFC is the ability to write functions
+The core of the system this PR proposes is the ability to b
 
 - strip the `.await` / `?` etc
 - can only call other effect-generic functions
@@ -129,18 +132,79 @@ methods which may returns errors rather than panics if an allocation fails.
 # Reference-level explanation
 [reference-level-explanation]: #reference-level-explanation
 
-## Desugaring
+## Carried effects as non-destructive code transformations
+
+The reason why this RFC is able to write function bodies which are generic over
+effects is because effects such as `async` are non-destructive. Adding the
+`async` notation to a function does not lose any information - meaning you can
+arrive at the function signature and body you might had had before simply by removing the
+`async` and `.await` notation.
+
+Take this simple async function. It calls the method `meow` on some type
+`cat`, returning `String`.
+
+```rust
+/// 1. Our base `meow` function
+fn meow() -> String {
+    cat.meow()
+}
+```
+
+Say `cat.meow` was `async` instead. We could change our function to support it
+simply by adding the necessary `async` and `.await` notations.
+
+```rust
+/// 2. The async version of `meow`
+async fn meow() -> String {
+    cat.meow().await
+}
+```
+
+Because adding `async` and `.await` does not erase any information from the base
+function, it is non-destructive. Meaning we can always reverse it by removing
+all the calls to `async` and `.await`, arriving back at the function we
+initially had.
+
+```rust
+/// 3. Stripping the `async/.await` notations
+/// yields our base function again
+fn meow() -> String {
+    cat.meow()
+}
+```
+
+Uncarried effects such as `const` don't require any forwarding notations, and so
+are by definition non-destructive in their transformation. In addition to
+`async`, Rust has two other carried effects: `gen` and `try`. Parts of both of
+these effects are unstable or undecided, but there is no reason we should
+require their notation to be destructive. Given the unstable nature of these
+effects, we'll cover them in more detail in the "future possibilities" section
+of this RFC.
+
+| effect name | forwarding notation | desugaring                            | output | carried type |
+| ----------- | ------------------- | ------------------------------------- | ------ | ------------ |
+| `async`     | `.await`            | `impl Future<Output = T>`             | `T`    | `!`          |
+| `try`†      | `?`                 | `impl Try<Output = T, Residual = R>`† | `T`    | `R`          |
+| `gen`†      | `yield from` ‡      | `impl Iterator<Item = U>`             | `()`   | `U`          |
+
+_The "carried type" in this context means: the additional type param introduced by the effect._
+
+_† These items exist in Rust, but are unstable._
+
+_‡ These items might be included in Rust in the future, but as of writing have not yet been included._
+
+## TODO: Desugaring
 
 - how do function bodies desugar?
 - how is the effect generic param passed around?
 
 ## TODO: Effect-generic bodies logic
 
-|                                 | caller does not have effect | caller may have an effect | caller always has effect |
-| ------------------------------: | ----------------------------------- | --------------------------------- | -------------------------------- |
-| **callee does not have effect** | ✅ allowed to evaluate              | ✅ allowed to evaluate            | ✅ allowed to evaluate           |
-|      **callee may have effect** | ✅ allowed to evaluate              | ✅ allowed to evaluate            | ✅ allowed to evaluate           |
-|    **callee always has effect** | ❌ not allowed to evaluate          | ❌ not allowed to evaluate        | ✅ allowed to evaluate           |
+|                                 | caller does not have effect | caller may have an effect  | caller always has effect |
+| ------------------------------: | --------------------------- | -------------------------- | ------------------------ |
+| **callee does not have effect** | ✅ allowed to evaluate      | ✅ allowed to evaluate     | ✅ allowed to evaluate   |
+|      **callee may have effect** | ✅ allowed to evaluate      | ✅ allowed to evaluate     | ✅ allowed to evaluate   |
+|    **callee always has effect** | ❌ not allowed to evaluate  | ❌ not allowed to evaluate | ✅ allowed to evaluate   |
 
 Evaluating an async function in a non-async context is not possible.
 
@@ -175,10 +239,18 @@ fn caller() {
 # Rationale and alternatives
 [rationale-and-alternatives]: #rationale-and-alternatives
 
-## Don't require forwarding notation
+## TODO: Don't require forwarding notation
 
 - important though; as that's where control flow may happen
 - the possibility of something happening is the entire point of annotating it
+
+## TODO: Flattened compositional hierarchy
+
+- requires a `do` notation / `.await?` / `?.await` become a single operation
+- ends up with a single `Coroutine` uber trait from which all other traits are derived
+- only covers carried effects, not uncarried ones
+- unclear how it would enable effect-generic functions to be authored
+- results in a system of trait aliases
 
 # Prior art
 [prior-art]: #prior-art
@@ -199,3 +271,20 @@ implementations, for example by leveraging platform-specific SIMD capabilities.
 
 # Future possibilities
 [future-possibilities]: #future-possibilities
+
+
+## `try/?` contexts
+
+- is already non-destructive
+- just unstable right now
+
+## `gen/yield from` contexts
+
+- Recognize that the return type is not the yield type
+- An additional `yield from` type of syntax would be helpful here
+
+## Composition of `gen/yield from`, `async/.await` and `try/?`
+
+- 2/3 of these effects have unstable components
+- but they would compose Just Fine
+- this should be its own RFC though
