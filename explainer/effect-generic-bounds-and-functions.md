@@ -137,8 +137,8 @@ The core of the system this PR proposes is the ability to b
 The reason why this RFC is able to write function bodies which are generic over
 effects is because effects such as `async` are non-destructive. Adding the
 `async` notation to a function does not lose any information - meaning you can
-arrive at the function signature and body you might had had before simply by removing the
-`async` and `.await` notation.
+arrive at the function signature and body you might had had before simply by
+removing the `async` and `.await` notation.
 
 Take this simple async function. It calls the method `meow` on some type
 `cat`, returning `String`.
@@ -191,7 +191,7 @@ _The "carried type" in this context means: the additional type param introduced 
 
 _† These items exist in Rust, but are unstable._
 
-_‡ These items might be included in Rust in the future, but as of writing have not yet been included._
+_‡ These items have been discussed for inclusion, but have not yet been included on nightly._
 
 ## TODO: Desugaring
 
@@ -233,8 +233,20 @@ fn caller() {
 }
 ```
 
+## TODO: Prerequisites
+
+- ask oli about which compiler features we're missing to implement this
+
 # Drawbacks
 [drawbacks]: #drawbacks
+
+## Limits the future effects we can add
+
+- Being able to add N new carried effects for various different purposes is out of the cards
+- But we're specifically fine with the carried effects we have, uncarried
+  effects are more interesting as they provide more features by constraining the
+  design space
+- Arbitrary user-defined effects can likely be defined by contexts/capabilities + yield
 
 # Rationale and alternatives
 [rationale-and-alternatives]: #rationale-and-alternatives
@@ -273,18 +285,27 @@ implementations, for example by leveraging platform-specific SIMD capabilities.
 [future-possibilities]: #future-possibilities
 
 
-## `try/?` contexts
+## TODO: `try/?` contexts
 
 - is already non-destructive
 - just unstable right now
 
-## `gen/yield from` contexts
+## TODO: `gen/yield from` contexts
 
 - Recognize that the return type is not the yield type
-- An additional `yield from` type of syntax would be helpful here
+- An additional `yield from`-alike syntax would be helpful here
+    - preferred notation: `for yield..in expr;`
 
-## Composition of `gen/yield from`, `async/.await` and `try/?`
+## TODO: Composition of `gen/yield from`, `async/.await` and `try/?`
 
 - 2/3 of these effects have unstable components
 - but they would compose Just Fine
 - this should be its own RFC though
+
+## TODO: Arbitrary user-defined carried effects
+
+- composition of `yield`, contexts/capabilities, and concrete types
+- a handler can be expressed as a context or capability
+- we can yield N values to it by passing it a generator function
+- See also: "capabilities: effects for free" which applies this idea
+- Removes the need for arbitrary built-in control-flow effects
