@@ -119,6 +119,8 @@ Say we wanted to write a function `copy` which takes an `impl Read` and an `impl
 Write`, and copies all bytes from the reader to the writer. When completed, it
 either returns `Ok(())` or `io::Error`. We could implement it like so:
 
+TODO: replace with a function `sum` which takes an iterator of numbers.
+
 ```rust
 /// The `Read` trait
 pub trait Read {
