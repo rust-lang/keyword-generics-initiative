@@ -366,11 +366,11 @@ require their notation to be destructive. Given the unstable nature of these
 effects, we'll cover them in more detail in the "future possibilities" section
 of this RFC.
 
-| effect name | forwarding notation | desugaring                            | output | carried type |
-| ----------- | ------------------- | ------------------------------------- | ------ | ------------ |
-| `async`     | `.await`            | `impl Future<Output = T>`             | `T`    | `!`          |
-| `try`†      | `?`                 | `impl Try<Output = T, Residual = R>`† | `T`    | `R`          |
-| `gen`†      | `yield from` ‡      | `impl Iterator<Item = U>`             | `()`   | `U`          |
+| effect name | forwarding notation | desugaring                            | output type | carried type |
+| ----------- | ------------------- | ------------------------------------- | ----------- | ------------ |
+| `async`     | `.await`            | `impl Future<Output = T>`             | `T`         | `!`          |
+| `try`†      | `?`                 | `impl Try<Output = T, Residual = R>`† | `T`         | `R`          |
+| `gen`†      | `yield from` ‡      | `impl Iterator<Item = U>`             | `()`        | `U`          |
 
 _The "carried type" in this context means: the additional type param introduced by the effect._
 
