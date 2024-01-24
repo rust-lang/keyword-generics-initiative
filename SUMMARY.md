@@ -12,7 +12,6 @@
     - [Effect as a clause](./evaluation/syntax/effect-as-a-clause.md)
     - [Postfix question mark](./evaluation/syntax/postfix-question-mark.md)
     - [Where effect bounds](./evaluation/syntax/where-effect-bounds.md)
-  - [Progress report feb 2023](./evaluation/progress-report-feb-2023.md)
 - [📚 Explainer](./explainer/README.md)
   - [Effect Generic Trait Declarations](./explainer/effect-generic-trait-declarations.md)
 - [📦 Archive](./archive/README.md)
