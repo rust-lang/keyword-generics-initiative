@@ -7,7 +7,7 @@
 [summary]: #summary
 
 This RFC introduces Effect-Generic Trait Declarations. These are traits which
-are generic over Rust's built-in effect keywords such as `async` and `const`.
+are generic over Rust's built-in effect keywords such as `async`.
 Instead of defining two near-identical traits per effect, this RFC allows a
 single trait to be declared which is generic over the effect. Here is a variant
 of the `Into` trait which can be implemented as either async or not.
@@ -333,7 +333,8 @@ lowering, crucially they don't rely on any potential notion of lifetime-generics
 function. The right lifetime GATs can be emitted by the compiler during
 lowering, and should therefor always be accurate.
 
-## Effect logic
+## Effect states
+[effect states]: #effect-states
 
 This RFC reasons about effects as being in one of four logical states:
 
@@ -473,6 +474,19 @@ trait Into<T>: Sized { .. }
 
 # Drawbacks
 [drawbacks]: #drawbacks
+
+## Const effect states
+
+The `const` keyword in Rust has two meanings: 
+
+- `const {}` blocks are always const-evaluated ("always" semantics)
+- `const fn` functions may be const evaluated ("maybe" semantics)
+
+Notably `const` does not provide a way to declare functions which must always
+const-evaluated. This RFC determines all traits and methods can be in one of
+four [states][#effect-states], including "always async" and "maybe async". As a
+result declaring a function which is "maybe-async" will syntactically appear
+different from a function which is "maybe-const".
 
 ## TODO: Additional syntax
 
