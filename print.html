@@ -1619,7 +1619,8 @@ evolving to our needs.</p>
 <p>Evolving a programming language and stdlib is pretty difficult. We have to pay
 close attention to details. And in Rust specifically: once we make a mistake
 it's pretty hard to roll back. And we've made mistakes with effects in the past,
-which we now have to work with.</p>
+which we now have to work with <sup class="footnote-reference"><a href="#1">1</a></sup>.</p>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
 <p>In Rust 1.34 we stabilized a new trait: <code>TryInto</code>. This was supposed to be the
 fallible version of the <code>Into</code> trait, containing a new associated type <code>Error</code>.
 However since Rust 1.0 we've also had the
@@ -1627,10 +1628,12 @@ However since Rust 1.0 we've also had the
 <em>also</em> provides a fallible conversion, but has an associated type <code>Err</code>. This
 means that when writing a fallible conversion trait, it's unclear whether the
 associated type should be called <code>Err</code> or <code>Error</code>.</p>
-<p>This might seem minor, but without automation these subtle
+</div>
+<pre><code>This might seem minor, but without automation these subtle
 similar-but-not-quite-the-same kinds of differences stand out. The only way to
 ensure that different APIs in different contexts work consistently is via
-automation. And the best automation we have for this is the type system.</p>
+automation. And the best automation we have for this is the type system.
+</code></pre>
 <h1 id="guide-level-explanation"><a class="header" href="#guide-level-explanation">Guide-level explanation</a></h1>
 <h2 id="trait-definitions"><a class="header" href="#trait-definitions">Trait definitions</a></h2>
 <p>The base of Effect Generic Trait Declarations is the ability to declare traits
@@ -1718,7 +1721,7 @@ pub trait Read {
 <h1 id="reference-level-explanation"><a class="header" href="#reference-level-explanation">Reference-level explanation</a></h1>
 <h2 id="effect-lowering"><a class="header" href="#effect-lowering">Effect lowering</a></h2>
 <p>At the MIR level the lowering of <code>#[maybe(effect)]</code> is shared with <code>const</code>, and
-is essentially implemented via const bools. Take the following maybe-async
+is essentially implemented via const generic bools. Take the following maybe-async
 definition of <code>Into</code>:</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
@@ -1731,20 +1734,20 @@ trait Into&lt;T&gt;: Sized {
 }
 <span class="boring">}
 </span></code></pre></pre>
-<p>At the MIR level the <code>#[maybe(async)]</code> system is lowered to a const bool which
+<p>At the type level the <code>#[maybe(async)]</code> system is lowered to a const bool which
 determines whether the function should be async. If the trait is implemented as
 async, the bool is set to true. If it isn't, it's set to false.</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Lowered trait definition
-trait Into&lt;T, const IS_ASYNC: bool&gt;: Sized {
+trait Into&lt;T, const IS_ASYNC: bool = false&gt;: Sized {
     type Ret = T;
     fn into(self) -&gt; Self::Ret;
 }
 <span class="boring">}
 </span></code></pre></pre>
-<p>By default the const bool should be set to false. The return type of the
+<p>By default the const bool is set to false. The return type of the
 function here is the base return type of the definition:</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
@@ -1798,8 +1801,8 @@ associated type can't be a plain future - it has to be a future with a lifetime
 attached. And this requires lifetime GATs to work.</p>
 <p>Say instead of the async version of <code>Into</code>, we tried to write the maybe-async
 version of <a href="https://doc.rust-lang.org/std/convert/trait.AsRef.html"><code>AsRef</code></a>
-<sup class="footnote-reference"><a href="#asref">1</a></sup>. We could define it as follows:</p>
-<div class="footnote-definition" id="asref"><sup class="footnote-definition-label">1</sup>
+<sup class="footnote-reference"><a href="#asref">2</a></sup>. We could define it as follows:</p>
+<div class="footnote-definition" id="asref"><sup class="footnote-definition-label">2</sup>
 <p>this is just for the purpose of an example; I don't actually know of
 any cases which want an async version of <code>AsRef</code>. But never say never.</p>
 </div>
@@ -1817,11 +1820,11 @@ where
 }
 
 /// The lowering of the trait definition
-pub trait AsRef&lt;T, const IS_ASYNC: bool&gt;
+pub trait AsRef&lt;T, const IS_ASYNC: bool = false&gt;
 where
     T: ?Sized,
 {
-    type Ret&lt;'a&gt;
+    type Ret&lt;'a&gt; = &amp;'a T
         where Self: 'a;
     fn as_ref(&amp;self) -&gt; Self::Ret&lt;'_&gt;;
 }
@@ -2006,7 +2009,10 @@ trait Into&lt;T&gt;: Sized { .. }
 </span></code></pre></pre>
 <h2 id="todo-prerequisites"><a class="header" href="#todo-prerequisites">TODO: prerequisites</a></h2>
 <ul>
-<li>ask oli about which compiler features we're missing to implement this</li>
+<li>associated type defaults</li>
+<li>complex where bounds on associated items removing the need for them to get implemented</li>
+<li>a working demo of the constness effect</li>
+<li>T-types buy-in (not before the old solver got removed)</li>
 </ul>
 <h1 id="drawbacks"><a class="header" href="#drawbacks">Drawbacks</a></h1>
 <h2 id="const-effect-states"><a class="header" href="#const-effect-states">Const effect states</a></h2>
@@ -2040,6 +2046,9 @@ that we want to extend the stdlib to be effectful - that's the point</li>
 <li>zig: maybe async functions</li>
 </ul>
 <h1 id="unresolved-questions"><a class="header" href="#unresolved-questions">Unresolved questions</a></h1>
+<ul>
+<li>may want to use an associated const instead of a const generic</li>
+</ul>
 <h2 id="todo-syntax"><a class="header" href="#todo-syntax">TODO: Syntax</a></h2>
 <ul>
 <li><code>#[maybe(async)]</code> is a placeholder</li>
