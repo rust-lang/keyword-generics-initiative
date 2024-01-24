@@ -180,7 +180,7 @@ pub trait Read {
 ## Effect lowering
 
 At the MIR level the lowering of `#[maybe(effect)]` is shared with `const`, and
-is essentially implemented via const bools. Take the following maybe-async
+is essentially implemented via const generic bools. Take the following maybe-async
 definition of `Into`:
 
 ```rust
@@ -192,19 +192,19 @@ trait Into<T>: Sized {
 }
 ```
 
-At the MIR level the `#[maybe(async)]` system is lowered to a const bool which
+At the type level the `#[maybe(async)]` system is lowered to a const bool which
 determines whether the function should be async. If the trait is implemented as
 async, the bool is set to true. If it isn't, it's set to false.
 
 ```rust
 // Lowered trait definition
-trait Into<T, const IS_ASYNC: bool>: Sized {
+trait Into<T, const IS_ASYNC: bool = false>: Sized {
     type Ret = T;
     fn into(self) -> Self::Ret;
 }
 ```
 
-By default the const bool should be set to false. The return type of the
+By default the const bool is set to false. The return type of the
 function here is the base return type of the definition:
 
 ```rust
@@ -275,11 +275,11 @@ where
 }
 
 /// The lowering of the trait definition
-pub trait AsRef<T, const IS_ASYNC: bool>
+pub trait AsRef<T, const IS_ASYNC: bool = false>
 where
     T: ?Sized,
 {
-    type Ret<'a>
+    type Ret<'a> = &'a T
         where Self: 'a;
     fn as_ref(&self) -> Self::Ret<'_>;
 }
@@ -470,7 +470,10 @@ trait Into<T>: Sized { .. }
 
 ## TODO: prerequisites
 
-- ask oli about which compiler features we're missing to implement this
+- associated type defaults
+- complex where bounds on associated items removing the need for them to get implemented
+- a working demo of the constness effect
+- T-types buy-in (not before the old solver got removed)
 
 # Drawbacks
 [drawbacks]: #drawbacks
@@ -510,6 +513,8 @@ TODO:
 
 # Unresolved questions
 [unresolved-questions]: #unresolved-questions
+
+* may want to use an associated const instead of a const generic
 
 ## TODO: Syntax
 
