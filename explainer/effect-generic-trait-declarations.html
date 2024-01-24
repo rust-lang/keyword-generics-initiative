@@ -157,7 +157,7 @@
 </ul>
 <h1 id="summary"><a class="header" href="#summary">Summary</a></h1>
 <p>This RFC introduces Effect-Generic Trait Declarations. These are traits which
-are generic over Rust's built-in effect keywords such as <code>async</code> and <code>const</code>.
+are generic over Rust's built-in effect keywords such as <code>async</code>.
 Instead of defining two near-identical traits per effect, this RFC allows a
 single trait to be declared which is generic over the effect. Here is a variant
 of the <code>Into</code> trait which can be implemented as either async or not.</p>
@@ -476,7 +476,7 @@ impl AsRef&lt;AsyncLoaf, true&gt; for AsyncCat { // IS_ASYNC = true
 lowering, crucially they don't rely on any potential notion of lifetime-generics to
 function. The right lifetime GATs can be emitted by the compiler during
 lowering, and should therefor always be accurate.</p>
-<h2 id="effect-logic"><a class="header" href="#effect-logic">Effect logic</a></h2>
+<h2 id="effect-states"><a class="header" href="#effect-states">Effect states</a></h2>
 <p>This RFC reasons about effects as being in one of four logical states:</p>
 <ul>
 <li><strong>Always:</strong> This is when an effect is always present. For example: if a
@@ -609,6 +609,17 @@ trait Into&lt;T&gt;: Sized { .. }
 <li>ask oli about which compiler features we're missing to implement this</li>
 </ul>
 <h1 id="drawbacks"><a class="header" href="#drawbacks">Drawbacks</a></h1>
+<h2 id="const-effect-states"><a class="header" href="#const-effect-states">Const effect states</a></h2>
+<p>The <code>const</code> keyword in Rust has two meanings: </p>
+<ul>
+<li><code>const {}</code> blocks are always const-evaluated (&quot;always&quot; semantics)</li>
+<li><code>const fn</code> functions may be const evaluated (&quot;maybe&quot; semantics)</li>
+</ul>
+<p>Notably <code>const</code> does not provide a way to declare functions which must always
+const-evaluated. This RFC determines all traits and methods can be in one of
+four [states][#effect-states], including &quot;always async&quot; and &quot;maybe async&quot;. As a
+result declaring a function which is &quot;maybe-async&quot; will syntactically appear
+different from a function which is &quot;maybe-const&quot;.</p>
 <h2 id="todo-additional-syntax"><a class="header" href="#todo-additional-syntax">TODO: Additional syntax</a></h2>
 <ul>
 <li>we're adding some new syntax, that's going to be A Thing</li>
