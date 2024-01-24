@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Where effect bounds - keyword generics initiative</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../../favicon.svg">
+                        <link rel="shortcut icon" href="../../favicon.png">
+                <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+                <link rel="stylesheet" href="../../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">👋 Welcome</a></li><li class="chapter-item "><a href="../../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../../CHARTER.html">📜 Charter</a></li><li class="chapter-item expanded "><a href="../../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../evaluation/syntax/index.html">Syntax</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../evaluation/syntax/_template.html">Template</a></li><li class="chapter-item "><a href="../../evaluation/syntax/attributes.html">Attributes</a></li><li class="chapter-item "><a href="../../evaluation/syntax/const-bool-like-effects.html">Const-bool like effects</a></li><li class="chapter-item "><a href="../../evaluation/syntax/effect-as-a-clause.html">Effect as a clause</a></li><li class="chapter-item "><a href="../../evaluation/syntax/postfix-question-mark.html">Postfix question mark</a></li><li class="chapter-item expanded "><a href="../../evaluation/syntax/where-effect-bounds.html" class="active">Where effect bounds</a></li></ol></li><li class="chapter-item "><a href="../../evaluation/progress-report-feb-2023.html">Progress report feb 2023</a></li></ol></li><li class="chapter-item "><a href="../../explainer/index.html">📚 Explainer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../explainer/effect-generic-trait-declarations.html">Effect Generic Trait Declarations</a></li></ol></li><li class="chapter-item "><a href="../../archive/index.html">📦 Archive</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/gen.html">Iteration</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../../archive/evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../../archive/evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../../archive/evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../../archive/evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../../archive/evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../../archive/evaluation/prior-art.html">Prior Art</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">keyword generics initiative</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./evaluation/syntax/where-effect-bounds.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <ul>
+<li>Name: <code>where effect bounds</code></li>
+<li>Proposed by: <a href="https://github.com/CaioOliveira793">@CaioOliveira793</a></li>
+<li>Original proposal: None</li>
+</ul>
+<h1 id="design"><a class="header" href="#design">Design</a></h1>
+<p>This syntax focus on being simple and recognizable rust code, with the possibility to incrementally extend the capabilities that keyewords generic may provide.</p>
+<h2 id="base-reference"><a class="header" href="#base-reference">base (reference)</a></h2>
+<!-- This is the snippet which is being translated to various scenarios we're
+translating from. Please keep this as-is, so we can reference it later.-->
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// A trimmed-down version of the `std::Iterator` trait.
+pub trait Iterator {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+/// An adaptation of `Iterator::find` to a free-function
+pub fn find&lt;I, T, P&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T&gt; + Sized,
+    P: FnMut(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="always-async"><a class="header" href="#always-async">always async</a></h2>
+<!-- A variant where all items are always `async` -->
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect&gt;
+where
+    effect: async
+{
+    type Item;
+
+    // opt-in for a always async effect
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;
+    where
+        effect: async;
+
+    // the size_hint is left unchanged, since the effect is opt-in
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub fn find&lt;I, T, P, effect&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    effect: async,
+    I: Iterator&lt;Item = T&gt; + Sized,
+    &lt;I as Iterator&gt;::effect: async,
+    P: FnMut(&amp;T) -&gt; bool,
+    &lt;P as FnMut&gt;::effect: async;
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="maybe-async"><a class="header" href="#maybe-async">maybe async</a></h2>
+<!-- A variant where all items are generic over `async` -->
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect&gt;
+where
+    effect: ?async
+{
+    type Item;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;
+    where
+        effect: ?async;
+
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub fn find&lt;I, T, P, effect&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    effect: ?async,
+    I: Iterator&lt;Item = T&gt; + Sized,
+    &lt;I as Iterator&gt;::effect: ?async,
+    P: FnMut(&amp;T) -&gt; bool,
+    &lt;P as FnMut&gt;::effect: ?async;
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="generic-over-all-modifier-keywords"><a class="header" href="#generic-over-all-modifier-keywords">generic over all modifier keywords</a></h2>
+<!-- A variant where all items are generic over all modifier keywords (e.g.
+`async`, `const`, `gen`, etc.) -->
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect&gt;
+where
+    // LIMITATION: in order to be generic over all keywords the effect clause must specify all keywords available
+    effect: ?async + ?const
+{
+    type Item;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;
+    where
+        effect: ?async + ?const;
+
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub fn find&lt;I, T, P, effect&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    effect: ?async + ?const,
+    I: Iterator&lt;Item = T&gt; + Sized,
+    &lt;I as Iterator&gt;::effect: ?async + ?const,
+    P: FnMut(&amp;T) -&gt; bool,
+    &lt;P as FnMut&gt;::effect: ?async + ?const;
+<span class="boring">}
+</span></code></pre></pre>
+<h1 id="notes"><a class="header" href="#notes">Notes</a></h1>
+<h2 id="trait-effect-bounds"><a class="header" href="#trait-effect-bounds">Trait effect bounds</a></h2>
+<p>The syntax for specifying the effect of a trait implemented by some generic argument <code>&lt;I as Iterator&gt;::effect: const</code> could be different</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>I: Iterator&lt;effect = ?async + ?const&gt;
+
+// or
+
+// Associated type bounds [RFC 2289](https://github.com/rust-lang/rfcs/blob/master/text/2289-associated-type-bounds.md)
+I: Iterator&lt;effect: ?async + ?const&gt;
+<span class="boring">}
+</span></code></pre></pre>
+<p>The current way mimics how associated types are bound</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_iter&lt;I, effect&gt;(iter: I)
+where
+    effect: ?async,
+    I: Iterator,
+    &lt;I as Iterator&gt;::Item: Display,
+    &lt;I as Iterator&gt;::effect: ?async;
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="explicit-generic-over-all-modifier-keywords"><a class="header" href="#explicit-generic-over-all-modifier-keywords">Explicit generic over all modifier keywords</a></h2>
+<p>The syntax does not give shortans for specifying all modifiers at once. Instead, the function, trait or type should <strong>explicit bound</strong> over all keywords it could be generic.</p>
+<p>Although being inconvenient to list it manually, this has some advantages over the <em>generic over all keywords available</em> syntax.</p>
+<h3 id="explicit"><a class="header" href="#explicit">Explicit</a></h3>
+<p>Readers does not have to remind which keywords are available that may need to be implemented in some specific way.</p>
+<h3 id="backwards-compatible-to-introduce-new-keywords-in-the-language"><a class="header" href="#backwards-compatible-to-introduce-new-keywords-in-the-language">Backwards compatible to introduce new keywords in the language</a></h3>
+<p>Allowing the <em>generic over all</em> means that in case a new keyword lands, all <em>complete generic</em> functions and traits may be affected by the keyword, requiring at least some considerations on the side effects.</p>
+<h2 id="limitations"><a class="header" href="#limitations">Limitations</a></h2>
+<p>These are some limitations (hopefully, not yet supported features) noticed in the syntax.</p>
+<h3 id="effect-sets"><a class="header" href="#effect-sets">Effect sets</a></h3>
+<p>Function generic over sets of effects, limiting it to be called by <strong>only one</strong> group of effects.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn compute&lt;effect&lt;KernelSpace | UserSpace | PreComputed&gt;&gt;() -&gt; Response
+where
+    effect&lt;KernelSpace&gt;: !alloc + !panic + !async,
+    effect&lt;UserSpace&gt;: alloc + ?async,
+    effect&lt;PreComputed&gt;: const
+{
+    if effect&lt;KernelSpace&gt; {
+        // ensures that in &quot;KernelSpace&quot; will not alloc, panic or run futures
+    }
+    if effect&lt;UserSpace&gt; {
+        // allow allocations and futures
+    }
+    if effect&lt;PreComputed&gt; {
+        // only compile-time evaluation
+    }
+}
+
+fn caller1()
+where
+    effect: ?alloc + !panic + !async
+{
+    compute&lt;effect&lt;KernelSpace&gt;&gt;(); // allowed
+}
+
+fn caller2()
+where
+    effect: alloc + async
+{
+    compute&lt;effect&lt;KernelSpace&gt;&gt;(); // allowed
+    compute&lt;effect&lt;UserSpace&gt;&gt;(); // allowed
+}
+
+fn caller3()
+where
+    effect: !alloc
+{
+    compute&lt;effect&lt;UserSpace&gt;&gt;(); // compiler error
+}
+
+fn caller4()
+where
+    effect: const
+{
+    compute&lt;effect&lt;PreComputed&gt;&gt;(); // allowed
+}
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../../evaluation/syntax/postfix-question-mark.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../../evaluation/progress-report-feb-2023.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../../evaluation/syntax/postfix-question-mark.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../../evaluation/progress-report-feb-2023.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

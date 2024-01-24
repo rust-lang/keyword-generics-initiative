@@ -1,0 +1,533 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Const-bool like effects - keyword generics initiative</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../../favicon.svg">
+                        <link rel="shortcut icon" href="../../favicon.png">
+                <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+                <link rel="stylesheet" href="../../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">👋 Welcome</a></li><li class="chapter-item "><a href="../../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../../CHARTER.html">📜 Charter</a></li><li class="chapter-item expanded "><a href="../../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../evaluation/syntax/index.html">Syntax</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../evaluation/syntax/_template.html">Template</a></li><li class="chapter-item "><a href="../../evaluation/syntax/attributes.html">Attributes</a></li><li class="chapter-item expanded "><a href="../../evaluation/syntax/const-bool-like-effects.html" class="active">Const-bool like effects</a></li><li class="chapter-item "><a href="../../evaluation/syntax/effect-as-a-clause.html">Effect as a clause</a></li><li class="chapter-item "><a href="../../evaluation/syntax/postfix-question-mark.html">Postfix question mark</a></li><li class="chapter-item "><a href="../../evaluation/syntax/where-effect-bounds.html">Where effect bounds</a></li></ol></li><li class="chapter-item "><a href="../../evaluation/progress-report-feb-2023.html">Progress report feb 2023</a></li></ol></li><li class="chapter-item "><a href="../../explainer/index.html">📚 Explainer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../explainer/effect-generic-trait-declarations.html">Effect Generic Trait Declarations</a></li></ol></li><li class="chapter-item "><a href="../../archive/index.html">📦 Archive</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/gen.html">Iteration</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../../archive/evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../../archive/evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../../archive/evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../../archive/evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../../archive/evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../../archive/evaluation/prior-art.html">Prior Art</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">keyword generics initiative</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./evaluation/syntax/const-bool-like-effects.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <ul>
+<li>Name: <code>const bool-like effects</code></li>
+<li>Proposed by: <a href="https://github.com/sayaks">@Lili Zoey</a></li>
+<li>Original proposal: <a href="https://github.com/rust-lang/keyword-generics-initiative/issues/10#issuecomment-1445263558">comment</a></li>
+</ul>
+<h1 id="design"><a class="header" href="#design">Design</a></h1>
+<!-- Please fill out the snippets labeled with "fill me in". If there are any
+other examples you want to show, please feel free to append more.-->
+<h2 id="base-reference"><a class="header" href="#base-reference">base (reference)</a></h2>
+<!-- This is the snippet which is being translated to various scenarios we're
+translating from. Please keep this as-is, so we can reference it later.-->
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// A trimmed-down version of the `std::Iterator` trait.
+pub trait Iterator {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+/// An adaptation of `Iterator::find` to a free-function
+pub fn find&lt;I, T, P&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T&gt; + Sized,
+    P: FnMut(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="always-async"><a class="header" href="#always-async">always async</a></h2>
+<!-- A variant where all items are always `async` -->
+<p>In all 
+The methods on the trait are assumed async because the trait is <code>async</code>.</p>
+<p>Variation A:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub async trait Iterator {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    !async fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub async fn find&lt;I, T, P&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T&gt; + Sized,
+    P: async FnMut(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<p>Variation B. Using an &quot;<code>effect</code>-generics&quot; notation:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect async&gt; {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    fn size_hint&lt;effect !async&gt;(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub fn find&lt;I, T, P, effect async&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T&gt; + Sized,
+    P: FnMut&lt;effect async&gt;(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<p>Variation C. Using an <code>effect</code>-notation in <code>where</code>-bounds:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator
+where
+    effect async
+{
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;)
+    where
+        effect !async;
+}
+
+pub fn find&lt;I, T, P&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T&gt; + Sized,
+    P: FnMut&lt;effect async&gt;(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="maybe-async"><a class="header" href="#maybe-async">maybe async</a></h2>
+<!-- A variant where all items are generic over `async` -->
+<p>For all variations the use of <code>&lt;effect async = A&gt;</code> on <code>fn next</code> is elided.</p>
+<p>Variation A. Using an <code>effect A: async</code> + <code>!async fn</code> in the trait definition:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect A: async&gt; {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    !async fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub fn find&lt;I, T, P, effect A: async&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T, effect async = A&gt; + Sized,
+    P: FnMut&lt;effect async = A&gt;(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<p>Variation B. Using <code>effect A: async</code> + <code>effect! async</code> in the trait definition:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect A: async&gt; {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    fn size_hint&lt;effect !async&gt;(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub fn find&lt;I, T, P, effect A: async&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T, effect async = A&gt; + Sized,
+    P: FnMut&lt;effect async = A&gt;(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<p>Variation C. Using <code>effect A: async</code> + <code>where effect !async</code> notation.  If we'd
+instead written <code>where A = !async</code>, the <code>size_hint</code> method would only exist if
+the context was not async. It instead now exists as not async in all contexts:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect A: async&gt; {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;)
+    where
+        effect !async;
+}
+
+pub fn find&lt;I, T, P, effect A: async&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T, effect async = A&gt; + Sized,
+    P: FnMut&lt;effect async = A&gt;(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="generic-over-all-modifier-keywords"><a class="header" href="#generic-over-all-modifier-keywords">generic over all modifier keywords</a></h2>
+<!-- A variant where all items are generic over all modifier keywords (e.g.
+`async`, `const`, `gen`, etc.) -->
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect A: for&lt;effect&gt;&gt; {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    !async fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+
+pub fn find&lt;I, T, P, effect A: for&lt;effect&gt;&gt;(iter: &amp;mut I, predicate: P) -&gt; Option&lt;T&gt;
+where
+    I: Iterator&lt;Item = T, for&lt;effect&gt; = A&gt; + Sized,
+    P: FnMut&lt;for&lt;effect&gt; = A&gt;(&amp;T) -&gt; bool;
+<span class="boring">}
+</span></code></pre></pre>
+<p><a href="#foreffect-bounds-and-traits">See also</a></p>
+<h1 id="notes"><a class="header" href="#notes">Notes</a></h1>
+<p><code>!async fn foo</code> could be <code>sync fn foo</code> or omitted entirely in favor of only having <code>fn foo&lt;effect !async&gt;</code>. It is also a question if <em>all</em> effects should allow for <code>effect fn foo</code> syntax.</p>
+<p><code>for&lt;effect&gt;</code> should maybe be made more special-looking since it behaves quite differently from other generic effect variables.</p>
+<p>The exact syntax of <code>effect A: E</code> and <code>effect E = A</code> for declaring a generic and specifying a bound for an effect could maybe be made different. </p>
+<p>It might be easier to implement specialization for specifically effect-generics, as they are rather simple, effectively just being bools, and there not being any lifetime parameters on them.</p>
+<h2 id="some-nice-things-about-the-syntax"><a class="header" href="#some-nice-things-about-the-syntax">Some nice things about the syntax</a></h2>
+<h3 id="specific-behavior"><a class="header" href="#specific-behavior">Specific behavior</a></h3>
+<p>To make a function have specific behavior in the case where an effect is or is not true, we could do this:</p>
+<pre><code class="language-rs">fn foo&lt;effect A: async&gt;() {
+    if A {
+        // do stuff when foo is async
+    } else {
+        // do stuff when foo is not async
+    }
+}
+</code></pre>
+<h3 id="impl-blocks"><a class="header" href="#impl-blocks">Impl blocks</a></h3>
+<p>impl blocks could look very similar to any other generics.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;effect A: async&gt; SomeTrait&lt;effect async = A&gt; MyGenericType { ... }
+impl SomeTrait&lt;effect async&gt; MyAsyncType { ... }
+impl SomeTrait&lt;effect !async&gt; MySyncType { ... }
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="description"><a class="header" href="#description">Description</a></h2>
+<p>We can add effects to generics like <code>&lt;effect A: E&gt;</code>, and create bounds for the effects of types by doing <code>effect E = A</code> in the <code>&lt;..&gt;</code> list or the where-clause.</p>
+<p>The basic syntax is that <code>effect async = true</code> means the type is async, whereas <code>effect async = false</code> means it is not.</p>
+<p>For convenience we'd let <code>effect async</code> be the same as <code>effect async = true</code> and <code>effect !async</code> be the same as <code>effect async = false</code>.</p>
+<p><code>async fn foo</code> would be syntactic sugar for <code>fn foo&lt;effect async = true&gt;</code>. and similar for other effects.</p>
+<p>So as an example, here are some equivalent ways of writing an async function:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T, O, const N: usize, effect async = true&gt;(...) {...}
+fn foo&lt;T, O, const N: usize, effect async&gt;(...) {...}
+async fn foo&lt;T, O, const N: usize&gt;(...) {...}
+fn foo&lt;T, O, const N: usize&gt;(...) where effect async {...}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Every effect has a default value, and if there is no bound on the type for that specific effect it is assumed to have its default value. So the function above, having no bound on <code>const</code>, would be assumed not-const.</p>
+<p>This could be explicitly stated like</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async fn foo&lt;T, O, const N: usize&gt;(...) where effect !const {...}
+<span class="boring">}
+</span></code></pre></pre>
+<p>However this would be unneccesary.</p>
+<p>If a type has only one generic for an effect, and no other bounds for that effect. It is assumed to have the same bound as that one generic. Meaning the following are equivalent ways of making a function generic over <code>async</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T, O, const N: usize, effect A: async&gt;foo(...) where effect async = A {...}
+fn foo&lt;T, O, const N: usize, effect A: async&gt;foo(...) {...}
+<span class="boring">}
+</span></code></pre></pre>
+<p>However if there are multiple generics, we'd need to explicitly state what the bound should be for the type itself.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;T, O, const N: usize, effect A: async, effect B: async&gt;foo(...) where effect async = A | B {...}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This would mean that <code>foo</code> is async if either <code>A</code> is true or <code>B</code> is true. We could also use <code>A + B</code> if wanted it to be async whenever both are true.</p>
+<p>Declaring an type to have/not have an effect different from the default value might change the type. For instance 
+<code>fn foo&lt;effect async&gt;() -&gt; T</code> would become <code>foo() -&gt; Future&lt;Output = T&gt;</code>.</p>
+<p>Every generic effect variable (except <code>for&lt;effect&gt;</code>) is also like a constant boolean value, which is true whenever the type is in a context where it has that effect, and false otherwise.</p>
+<p>In traits, the items are assumed to have the same effect bounds as the trait itself. But this can be overridden using specific bounds for that item.</p>
+<p>For instance</p>
+<pre><code class="language-rs">trait Read&lt;effect A: async&gt; {
+    // This function is now generic over async
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    // or equivalently
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt; where effect async = A;
+
+    // This function is now always async
+    async fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    // or equivalently
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt; where effect async;
+
+    // This function now only exists when the trait is async
+    fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt; where A;
+}
+</code></pre>
+<p>This also shows that unlike normal <code>const _: bool</code> we can actually use whether the generic effects are <code>true</code>/<code>false</code> in the where-clause.</p>
+<h3 id="foreffect"><a class="header" href="#foreffect"><code>for&lt;effect&gt;</code></a></h3>
+<p><code>for&lt;effect&gt;</code> is a universal effect bound that allows you to place bounds on all the effects of a type. Adding a <code>effect A: for&lt;effect&gt;</code> makes <code>A</code> a generic variable that ranges over every effect. This means its value is no longer a simple <code>true</code>/<code>false</code> and so can't be used bare in where-clauses.</p>
+<p>If another bound is added that is more specific, that bound will limit the possible values of <code>A</code> as well. Meaning that if you have <code>&lt;effect A: for&lt;effect&gt;, effect async&gt;</code>, we would have the type be generic over every effect except async. And the type would always be async.</p>
+<p>For instance, to make a function generic over all effects except const we'd write</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;effect A: for&lt;effect&gt;&gt;(...) where effect async {...}
+<span class="boring">}
+</span></code></pre></pre>
+<p>To place bounds on every effect we write <code>for&lt;effect&gt; = A</code> where <code>A</code> is some bound. This should probably be limited somewhat to avoid people writing code that can very easily break. Consider for instance <code>for&lt;effect&gt; = true</code>, which would declare something as having <em>every</em> effect. This could lead to breakage if a new effect is added and the function isn't compatible with this new effect. The main uses of placing bounds on <code>for&lt;effect&gt;</code> would to use it with other universal bounds.</p>
+<p>Using <code>A + B</code> and <code>A | B</code> bounds for universal bounds may also be problematic, as it may not always be possible to create any meaningful code that is generic in all those cases. So we may have to either disallow having multiple generic universal bounds, or have the compiler automatically infer the relationship between effects.</p>
+<p>For instance</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;O, F1, F2, effect A: for&lt;effect&gt;, effect B: for&lt;effect&gt;&gt;(closure1: F1, closure2: F2) -&gt; O
+where
+    F1: FnMut&lt;for&lt;effect&gt; = A&gt;() -&gt; O,
+    F2: FnMut&lt;for&lt;effect&gt; = B&gt;() -&gt; O
+{ ... }
+<span class="boring">}
+</span></code></pre></pre>
+<p>Here it is unclear when <code>foo</code> should be async and const. For instance, usually a function is <code>async</code> if there is <em>any</em> async code in the function. Whereas it is <code>const</code> if <em>all</em> the code is <code>const</code>.</p>
+<p>I'm not entirely sure if this is best left up to the compiler to infer, it should be disallowed, or if the user must specify the bounds on every specific effect they may use.</p>
+<p>However if the compiler infers it all, we could still specify specific relationships, like:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;O, F1, F2, effect A: for&lt;effect&gt;, effect B: for&lt;effect&gt;&gt;(closure1: F1, closure2: F2) -&gt; O
+where
+    effect async = A + B,
+    F1: FnMut&lt;for&lt;effect&gt; = A&gt;() -&gt; O,
+    F2: FnMut&lt;for&lt;effect&gt; = B&gt;() -&gt; O
+{ ... }
+<span class="boring">}
+</span></code></pre></pre>
+<p>To make this function async only if <em>both</em> <code>A</code> and <code>B</code> are async (or rather <code>async = true</code> in both sets <code>A</code> and <code>B</code>).</p>
+<h3 id="semi-formal-description"><a class="header" href="#semi-formal-description">semi-formal description</a></h3>
+<details>
+<summary>Syntax</summary>
+There's a new kind of generic called effect-generics. For any given type, that effect may be `true` meaning the type has that effect, or it can be `false` meaning the type does not have that effect. 
+<p>We can make a type generic over an effect by adding <code>effect A: E</code>, where <code>A</code> is a generic variable and <code>E</code> is an effect.</p>
+<p>An effect bound is one of: <code>true</code>, <code>false</code>, <code>default</code>, <code>A</code>, <code>B1 + B2</code>, <code>B1 | B2</code>, <code>!B1</code>. Where <code>A</code> is a generic variable, <code>B1</code> and <code>B2</code> are effect bounds.</p>
+<p>An effect is either: the name of an effect, a generic variable, or <code>for&lt;effect&gt;</code></p>
+<p>To specify that a type must fit some effect bound we write <code>effect E = A</code>, where <code>E</code> is an effect and <code>A</code> is an effect bound, either in the <code>&lt;..&gt;</code> list or in the where-clause.</p>
+</details>
+<details>
+<summary>Semantics</summary>
+<ul>
+<li><code>effect E = true</code> means &quot;has the effect <code>E</code>&quot;</li>
+<li><code>effect E = false</code> means &quot;does not have the effect <code>E</code>&quot;</li>
+<li><code>effect E = default</code> means &quot;has the effect <code>E</code> if the default for the effect is true&quot;</li>
+<li><code>effect E = A</code> where <code>A</code> is a generic variable, means &quot;has the effect <code>E</code> if <code>A</code> is true&quot;</li>
+<li><code>effect E = B1 + B2</code> means &quot;has the effect <code>E</code> if the bounds <code>B1</code> and <code>B2</code> are true&quot;</li>
+<li><code>effect E = B1 | B2</code> means &quot;has the effect <code>E</code> if the bounds <code>B1</code> or <code>B2</code> are true&quot;</li>
+<li><code>effect E = !B</code> means &quot;has the effect <code>E</code> if the bound <code>B</code> is false&quot;</li>
+<li><code>effect for&lt;effect&gt; = B</code> means &quot;the effect bound <code>B</code> applies to every effect&quot;</li>
+<li><code>effect A: E</code> means &quot;<code>A</code> is a generic variable corresponding to the effect <code>E</code>&quot;</li>
+</ul>
+</details>
+<h2 id="foreffect-bounds-and-traits"><a class="header" href="#foreffect-bounds-and-traits"><code>for&lt;effect&gt;</code> bounds and traits</a></h2>
+<p>In the <a href="#generic-over-all-modifier-keywords">generic over all keywords</a> case we'd have that <code>size_hint</code> is generic over all effects except async. So it might be better to make such universal bounds not automatically apply to all items in a trait.</p>
+<p>In that case we'd have</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect A: for&lt;effect&gt;&gt; {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; where for&lt;effect&gt; = A;
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Alternatively we could have an opt-out syntax, which would look something like</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Iterator&lt;effect A: for&lt;effect&gt;&gt; {
+    type Item;
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;
+    fn size_hint(&amp;self) -&gt; (usize, Option&lt;usize&gt;) where for&lt;effect&gt; = default;
+}
+<span class="boring">}
+</span></code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../../evaluation/syntax/attributes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../../evaluation/syntax/effect-as-a-clause.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../../evaluation/syntax/attributes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../../evaluation/syntax/effect-as-a-clause.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>

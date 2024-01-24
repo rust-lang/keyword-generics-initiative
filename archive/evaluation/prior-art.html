@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Thread-Safety - keyword generics initiative</title>
+        <title>Prior Art - keyword generics initiative</title>
                 
 
         <!-- Custom HTML head -->
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">👋 Welcome</a></li><li class="chapter-item "><a href="../../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../../CHARTER.html">📜 Charter</a></li><li class="chapter-item expanded "><a href="../../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/gen.html">Iteration</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../../evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item expanded "><a href="../../evaluation/effects-in-rust/send.html" class="active">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../../evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../../evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../../evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../../evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../../evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../../evaluation/prior-art.html">Prior Art</a></li></ol></li><li class="chapter-item "><a href="../../explainer/index.html">📚 Explainer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../explainer/effect-generic-trait-declarations.html">Effect Generic Trait Declarations</a></li></ol></li><li class="chapter-item "><a href="../../FAQ.html">😕 FAQ</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item "><a href="../../index.html">👋 Welcome</a></li><li class="chapter-item "><a href="../../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../updates/progress-report-february-2023.html">Progress Report February 2023</a></li></ol></li><li class="chapter-item "><a href="../../CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="../../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../evaluation/syntax/index.html">Syntax</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../evaluation/syntax/_template.html">Template</a></li><li class="chapter-item "><a href="../../evaluation/syntax/attributes.html">Attributes</a></li><li class="chapter-item "><a href="../../evaluation/syntax/const-bool-like-effects.html">Const-bool like effects</a></li><li class="chapter-item "><a href="../../evaluation/syntax/effect-as-a-clause.html">Effect as a clause</a></li><li class="chapter-item "><a href="../../evaluation/syntax/postfix-question-mark.html">Postfix question mark</a></li><li class="chapter-item "><a href="../../evaluation/syntax/where-effect-bounds.html">Where effect bounds</a></li></ol></li><li class="chapter-item "><a href="../../evaluation/progress-report-feb-2023.html">Progress report feb 2023</a></li></ol></li><li class="chapter-item "><a href="../../explainer/index.html">📚 Explainer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../explainer/effect-generic-trait-declarations.html">Effect Generic Trait Declarations</a></li></ol></li><li class="chapter-item expanded "><a href="../../archive/index.html">📦 Archive</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/gen.html">Iteration</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../../archive/evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../../archive/evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../../archive/evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../../archive/evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../../archive/evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../../archive/evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item expanded "><a href="../../archive/evaluation/prior-art.html" class="active">Prior Art</a></li></ol></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -120,7 +120,7 @@
                                                                         <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./evaluation/effects-in-rust/send.md" title="Suggest an edit" aria-label="Suggest an edit">
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./archive/evaluation/prior-art.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                         
@@ -149,30 +149,77 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="thread-safety-data-type-effect"><a class="header" href="#thread-safety-data-type-effect">Thread-Safety (Data-Type Effect)</a></h1>
-<h2 id="interactions-with-other-effects"><a class="header" href="#interactions-with-other-effects">Interactions with other effects</a></h2>
-<h3 id="asynchrony"><a class="header" href="#asynchrony">Asynchrony</a></h3>
-<h3 id="compile-time-execution"><a class="header" href="#compile-time-execution">Compile-time Execution</a></h3>
-<h3 id="fallibility"><a class="header" href="#fallibility">Fallibility</a></h3>
-<h3 id="iteration"><a class="header" href="#iteration">Iteration</a></h3>
-<h3 id="unwinding"><a class="header" href="#unwinding">Unwinding</a></h3>
-<h3 id="memory-safety"><a class="header" href="#memory-safety">Memory-Safety</a></h3>
-<h3 id="immovability"><a class="header" href="#immovability">Immovability</a></h3>
-<h3 id="object-safety"><a class="header" href="#object-safety">Object-Safety</a></h3>
-<h3 id="ownership"><a class="header" href="#ownership">Ownership</a></h3>
-<h3 id="thread-safety"><a class="header" href="#thread-safety">Thread-Safety</a></h3>
+                        <h1 id="prior-art"><a class="header" href="#prior-art">Prior Art</a></h1>
+<h2 id="c-noexceptnoexcept"><a class="header" href="#c-noexceptnoexcept">C++: <code>noexcept(noexcept(…))</code></a></h2>
+<p>C++'s <code>noexcept(noexcept(…))</code> pattern is used to declare something as <code>noexcept</code>
+if the evaluated pattern is also <code>noexcept</code>. This makes <code>noexcept</code> conditional
+on the pattern provided.</p>
+<p>This is most commonly used in generic templates to mark the output type as
+<code>noexcept</code> if all of the input types are <code>noexcept</code> as well.</p>
+<ul>
+<li><a href="https://devblogs.microsoft.com/oldnewthing/20220408-00/?p=106438">Raymond Chen, “Please Repeat Yourself: The Noexcept(Noexcept(…)) Idiom,” The Old New Thing, April 8, 2022</a></li>
+</ul>
+<h2 id="c-implicits-and-constexpr"><a class="header" href="#c-implicits-and-constexpr">C++: implicits and <code>constexpr</code></a></h2>
+<p><code>constexpr</code> can be applied based on a condition. The following example works:</p>
+<h4 id="c-11"><a class="header" href="#c-11">C++ 11</a></h4>
+<pre><code class="language-cpp">template &lt;
+class U = T,
+detail::enable_if_t&lt;std::is_convertible&lt;U &amp;&amp;, T&gt;::value&gt; * = nullptr,
+detail::enable_forward_value&lt;T, U&gt; * = nullptr&gt;
+constexpr optional(U &amp;&amp;u) : base(in_place, std::forward&lt;U&gt;(u)) {}
+
+template &lt;
+class U = T,
+detail::enable_if_t&lt;!std::is_convertible&lt;U &amp;&amp;, T&gt;::value&gt; * = nullptr,
+detail::enable_forward_value&lt;T, U&gt; * = nullptr&gt;
+constexpr explicit optional(U &amp;&amp;u) : base(in_place, std::forward&lt;U&gt;(u)) {}
+</code></pre>
+<h4 id="c-20"><a class="header" href="#c-20">C++ 20</a></h4>
+<pre><code class="language-cpp">template &lt;
+class U = T,
+detail::enable_forward_value&lt;T, U&gt; * = nullptr&gt;
+explicit(std::is_convertible&lt;U &amp;&amp;, T&gt;::value) constexpr optional(U &amp;&amp;u) : base(in_place, std::forward&lt;U&gt;(u)) {}
+</code></pre>
+<p><strong>todo:</strong> validate what this does exactly by someone who can actually read C++.</p>
+<h2 id="rust-maybe-async-crate"><a class="header" href="#rust-maybe-async-crate">Rust: <code>maybe-async</code> crate</a></h2>
+<ul>
+<li><a href="https://crates.io/crates/maybe-async">fmeow, “maybe-async crate,” January 15, 2020</a></li>
+</ul>
+<h2 id="rust-fn-main"><a class="header" href="#rust-fn-main">Rust: <code>fn main</code></a></h2>
+<p>Rust provides overloads for <code>async fn main</code> through the <code>Termination</code> trait. The
+<code>main</code> function can optionally be made fallible by defining <code>-&gt; Result&lt;()&gt;</code> as
+the return type. In the ecosystem it's common to extend <code>fn main</code> with async
+capabilities by annotating it with an attribute. And this mechanism has been
+shown to work in the compiler as well by implementing <code>Termination for F: Future</code>.</p>
+<p>The mechanism of overloading for <code>fn main</code> differs from what we're proposing,
+but the outcomes are functionally the same: greater flexibility in which
+function modifiers are accepted, and less need to duplicate / wrap code.</p>
+<h2 id="zig-async-functions"><a class="header" href="#zig-async-functions">Zig: async functions</a></h2>
+<blockquote>
+<p>Zig infers whether a function is async, and allows async/await on non-async
+functions, which means that Zig libraries are agnostic of blocking vs async I/O.
+Zig avoids function colors.</p>
+</blockquote>
+<p>— <a href="https://ziglang.org/learn/overview/#concurrency-via-async-functions">Zig contributors, “Zig In-Depth Overview: Concurrency via Async Functions,” October 1, 2019</a></p>
+<h2 id="swift-async-overloading"><a class="header" href="#swift-async-overloading">Swift: async overloading</a></h2>
+<pre><code class="language-swift">// Existing synchronous API
+func doSomethingElse() { ... }
+
+// New and enhanced asynchronous API
+func doSomethingElse() async { ... }
+</code></pre>
+<ul>
+<li>https://github.com/apple/swift-evolution/pull/1392</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                                                    <a rel="prev" href="../../evaluation/effects-in-rust/ownership.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="../../archive/evaluation/overloading-keyword-generics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
-                                                    <a rel="next" href="../../evaluation/effect-hierarchy.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -180,13 +227,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                                    <a rel="prev" href="../../evaluation/effects-in-rust/ownership.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="../../archive/evaluation/overloading-keyword-generics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
-                                    <a rel="next" href="../../evaluation/effect-hierarchy.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                             </nav>
 
         </div>
