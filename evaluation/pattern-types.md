@@ -135,16 +135,18 @@ selected, the lowering of the function would change. Desugared, this would
 roughly look like this:
 
 ```rust
-/// `AtomicBool::load` using compile-time checks
+/// Semantic lowering of `AtomicBool::load`
+/// using compile-time checks
 pub fn load(&self,
     order: Ordering is Ordering::SeqCst | Ordering::Acquire | Ordering::Relaxed
 ) -> bool { .. }
 
-/// `AtomicBool::load` using runtime assertions
+/// Semantic lowering of `AtomicBool::load`
+/// using runtime assertions
 pub fn load(&self, order: Ordering) -> bool {
     match order {
-        Ordering::SeqCst | Ordering::Acquire | Ordering::Relaxed => ..,
-        variant => panic!("Expected `Ordering::{{Acquire | Relaxed | SeqCst}}`, received {variant}"),
+        order @ Ordering::SeqCst | Ordering::Acquire | Ordering::Relaxed => ..,
+        order => panic!("Expected `Ordering::{{Acquire | Relaxed | SeqCst}}`, received {order}"),
     }
 }
 ```
