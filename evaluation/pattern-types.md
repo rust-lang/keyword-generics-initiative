@@ -154,3 +154,26 @@ pub fn load(&self, order: Ordering) -> bool {
 - unclear what the benefits are for a strictly "always subtyping" notation
 - in practice we'll want to independently gate the stabilization of pattern
   types for existing stdlib APIs - which means we need a labeling system in the compiler
+
+## How widespread is this?
+
+Maintaining strict backwards-compatibility is primarily a concern for the Rust
+stdlib. While it might be difficult to create major versions for certain other
+codebases, the Rust stdlib is in the unique position that it is both used by
+everyone, and we can never break existing APIs. So when we're looking at using
+pattern types in input positions, it's okay to assume the Rust stdlib will be
+the main user of it. To date we know of at least the following APIs which would
+want to leverage pattern types as inputs:
+
+- __number primitives__: Number types in Rust expose a wide range of operations.
+  Take for example a look at the [`u8`
+  type](https://doc.rust-lang.org/std/primitive.u8.html). It exposes around 20
+  operations per type which will panic if certain number ranges are passed.
+- __atomics__: this is the example we've been using in this post. Atomic
+  operations take an `Ordering` enum, where each operation can only take certain
+  variants of that enum. Being able to check that during compilation would be a
+  boon.
+- __iterator methods__: For example
+[`Iterator::step_by`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.step_by)
+currently takes a `usize`, but would want to take a `usize is 0..`. The same is
+true for the unstable `Iterator::array_chunks` and `Iterator::map_windows`.
