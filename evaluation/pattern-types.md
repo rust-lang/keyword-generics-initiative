@@ -268,5 +268,5 @@ want to leverage pattern types as inputs:
   boon.
 - __iterator methods__: For example
 [`Iterator::step_by`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.step_by)
-currently takes a `usize`, but would want to take a `usize is 0..`. The same is
+currently takes a `usize`, but would want to take a `usize is 1..`. The same is
 true for the unstable `Iterator::array_chunks` and `Iterator::map_windows`.
