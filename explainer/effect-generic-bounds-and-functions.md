@@ -104,122 +104,94 @@ methods which may returns errors rather than panics if an allocation fails.
 ## Effect-generic functions
 
 Effects such as `async`, `try`, or `gen` define a superset of the language. With
-some minor exceptions [^recursion], they provide access to more features than
+some minor exceptions, they provide access to more features than
 functions which don't have the effect. However, to ensure the effect forwards
 correctly through function bodies, we require some degree of annotations. In the
 case of the `async` effect, we require function calls to be suffixed with
 `.await`. In the case of `try`, we require function calls to be suffixed with
 `?`. This is called "effect forwarding".
 
-[^recursion]: `async fn` functions need some extra steps not required in
-non-async functions right now to support recursion. But that's on the level of a
-performance gotcha, which seems minor.
-
-Say we wanted to write a function `copy` which takes an `impl Read` and an `impl
-Write`, and copies all bytes from the reader to the writer. When completed, it
-either returns `Ok(())` or `io::Error`. We could implement it like so:
-
-TODO: replace with a function `sum` which takes an iterator of numbers.
+Say we wanted to write a function `sum` which takes an `impl Iterator<Item =
+u32>` and sums all numbers together. If we included the trait definition, we could write it like so:
 
 ```rust
-/// The `Read` trait
-pub trait Read {
-    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize>;
+/// The `Iterator` trait
+pub trait Iterator {
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
 }
 
-/// The `Write` trait
-pub trait Write {
-    fn write(&mut self, buf: &[u8]) -> Result<usize>;
-    fn flush(&mut self) -> Result<()>;
-}
-
-/// Copy bytes from the reader into the writer
-pub fn copy<R, W>(reader: &mut R, writer: &mut W) -> Result<()>
-where
-    R: Read + ?Sized,
-    W: Write + ?Sized,
-{
-    let mut buf = vec![0; 1024];
-    loop {
-        match reader.read(&mut buf)? {
-            0 => return Ok(()),
-            n => writer.write(&mut buf[0..n])?,
-        };
+/// Iterate over all numbers in the
+/// iterator and sum them together
+pub fn sum<I: Iterator<Item = u32>>(iter: I) -> u32 {
+    let mut total = 0;
+    while let Some(n) = iter.next() {
+        total += n;
     }
+    total
 }
 ```
 
 This works fine for non-async code. In fact: this is almost exactly how the
-stdlib versions of `Read`, `Write`, and `io::copy` are defined. But say we
-applied the maybe-effect system defined in RFC 0000, and enabled both the `Read`
-and `Write` traits to be generic over async. Their definitions would then look
-like this:
+stdlib versions of
+[`Iterator::sum`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.sum)
+is defined. But this code has a limitation: the underlying iterator will always
+block between calls to `next`. To resolve that, `next` should add support for
+`async/.await`, which we can do by adding the `#[maybe(async)]` notation.
 
 ```rust
-/// The `Read` trait with optional support for the `async` effect
+/// The `Iterator` trait with optional
+/// support for the `async` effect
 #[maybe(async)]
-pub trait Read {
+pub trait Iterator {
+    type Item;
     #[maybe(async)]
-    fn read(&mut self, buf: &mut [u8]) -> Result<usize>;
-}
-
-/// The `Write` trait with optional support for the `async` effect
-#[maybe(async)]
-pub trait Write {
-    #[maybe(async)]
-    fn write(&mut self, buf: &[u8]) -> Result<usize>;
-    #[maybe(async)]
-    fn flush(&mut self) -> Result<()>;
+    fn next(&mut self) -> Option<Self::Item>;
 }
 ```
 
-This is a fairly mechanical translation of the existing traits to enable support
-for `async/.await`. All implementors of the trait have to do is use the right
-`async` prefixes, and the traits will work as expected. What this RFC introduces
-is the ability to also enable *functions* and *trait bounds* to work with
-`async/.await`. In practice that means we can take our earlier function
-definition, add the right `async` and `await` keywords, and it will now also be
-able to work with `async/.await`.
+Nothing too exciting is going on yet. This is all uses the mechanisms we defined
+in [RFC 0000](), and adding support for `async/.await` just required some extra
+`#[maybe(async)]` annotations. This becomes more interesting once we start
+looking to not only allow traits to be generic over the `async` effect, but
+*functions* and *trait bounds* as well. The way we can do that is fairly
+*mechanical: all we have to do is add some extra `#[maybe(async)]` notations to
+*the function signature, and some extra `.await`s inside the function body.
 
 ```rust
-/// Copy bytes from the reader into the writer,
-/// with optional support for the `async` effect
-#[maybe(async)]                                       // 1.
-pub fn copy<R, W>(reader: &mut R, writer: &mut W) -> Result<()>
+/// Iterate over all numbers in the
+/// iterator and sum them together
+#[maybe(async)]                                // 1. async
+pub fn sum<I>(iter: I) -> u32
 where
-    R: #[maybe(async)] Read + ?Sized,                 // 2.
-    W: #[maybe(async)] Write + ?Sized,                // 3.
+    I: #[maybe(async)] Iterator<Item = u32>    // 2. async
 {
-    let mut buf = vec![0; 1024];
-    loop {
-        match reader.read(&mut buf).await? {          // 4.
-            0 => return Ok(()),
-            n => writer.write(&mut buf[0..n]).await?, // 5.
-        };
+    let mut total = 0;
+    while let Some(n) = iter.next().await {    // 3. .await
+        total += n;
     }
+    total
 }
 ```
 
 In this example we've added additional `#[maybe(async)]` notations at comments
-1, 2, and 3. And in the function body added additional `.await` points at
-comments 4 and 5. What's key here is that if we remove the `async` and `await`
-notations, we end up back with a perfectly valid non-async code. And that's
-basically the way the system works under the hood: when compiled as async, the
-`.await` points signal suspension points. While when the function is compiled as
-non-async, you can think of the `.await` points as immediately returning if they
-suspend.
+1, and 2. And in the function body added additional `.await` points at comment 3.
+What's key here is that if we remove the `async` and `await` notations, we
+end up back with a perfectly valid non-async code. And that's basically the way
+the system works under the hood: when compiled as async, the `.await` points
+signal suspension points. While when the function is compiled as non-async, you
+can think of the `.await` points as immediately returning if they suspend.
 
-In order to make this system work though, there are some rules required. The
-first one is that `#[maybe(async)]` functions can't directly call `async`
+In order to make this system work though, we have to apply some rules. The
+first rule is that `#[maybe(async)]` functions can't directly call `async`
 functions. Remember: our function needs to be able to strip away the `.await`
 points and still compile. If a function is always async, then removing the
 `.await` points would leave us with an invalid function, so that's not allowed.
 
-The next rule is a direct consequence of the first rule: maybe-async functions
-may or may not return futures. So we can't treat the return type like a concrete
-future which we can freely pass around. That means that in `#[maybe(async)]`
-contexts, the only valid thing to do with futures is to `.await` immediately
-them.
+The second rules is: maybe-async functions may or may not return futures. So we
+can't treat the return type like a concrete future which we can freely pass
+around. That means that in `#[maybe(async)]` contexts, the only valid thing to
+do with futures is to `.await` immediately them.
 
 ## Using effect-specific behavior
 
@@ -319,6 +291,55 @@ pub trait Read {
 # Reference-level explanation
 [reference-level-explanation]: #reference-level-explanation
 
+## TODO: Lowering
+
+Let's continue with our earlier example of the trait `Iterator` and the function
+`sum` which both have conditional support for the `async` effect via
+`#[maybe(async)]`. In its base form the trait `Iterator` looks like this:
+
+```rust
+/// The `Iterator` trait
+#[maybe(async)]
+pub trait Iterator {
+    type Item;
+    #[maybe(async)]
+    fn next(&mut self) -> Option<Self::Item>;
+}
+```
+
+Which using the desugaring proposed in RFC 0000, would desugar to a trait with a
+const-generic bool which determines whether it is async or not:
+
+```rust
+// Lowered trait definition
+pub trait Iterator<const IS_ASYNC: bool = false> {
+    type Item;
+    type Ret = Option<Self::Item>;
+    fn next(&mut self) -> Ret;
+}
+```
+
+We've seen how when maybe-async traits are implemented as sync they return their
+base type, and when implemented as async they wrap that up in an `impl Future` -
+see RFC 0000's section on "Lowering" for more details. Now for our function
+body, the base definition looks like this:
+
+```rust
+#[maybe(async)]
+pub fn sum<I>(iter: I) -> u32
+where
+    I: #[maybe(async)] Iterator<Item = u32>
+{
+    let mut total = 0;
+    while let Some(n) = iter.next().await {
+        total += n;
+    }
+    total
+}
+```
+
+TODO: ask oli for more details about the desugaring. Ref is: https://github.com/yoshuawuyts/maybe-async-channel/blob/2fc6fa012830525482d62a8facfae5e5a5e762fe/maybe-async-std/src/lib.rs#L47-L54
+
 ## Carried effects as non-destructive code transformations
 
 The reason why this RFC is able to write function bodies which are generic over
@@ -368,26 +389,27 @@ require their notation to be destructive. Given the unstable nature of these
 effects, we'll cover them in more detail in the "future possibilities" section
 of this RFC.
 
-| effect name | forwarding notation | desugaring                            | output type | carried type |
+| effect name | forwarding notation | desugaring                            | logical return type | carried type |
 | ----------- | ------------------- | ------------------------------------- | ----------- | ------------ |
 | `async`     | `.await`            | `impl Future<Output = T>`             | `T`         | `!`          |
 | `try`†      | `?`                 | `impl Try<Output = T, Residual = R>`† | `T`         | `R`          |
 | `gen`†      | `yield from` ‡      | `impl Iterator<Item = U>`             | `()`        | `U`          |
 
-_The "carried type" in this context means: the additional type param introduced by the effect._
+
 
 _† These items exist in Rust, but are unstable._
 
 _‡ These items have been discussed for inclusion, but have not yet been included on nightly._
 
+_"logical return type" in this context means: the type the function returns
+after the function has been evaluated and any forwarding notation has been
+applied. The "carried type" here refers to the additional types end-users need
+to be aware of when the effect is introduced. For example, when using the `try`
+effect, users will be exposed to additional `Result<_, E>` or `Option` types._
+
 ## TODO: Unambiguous variant selection
 
 - `copy::<async>(read, writer).await?;`
-
-## TODO: Desugaring
-
-- how do function bodies desugar?
-- how is the effect generic param passed around?
 
 ## TODO: Effect-generic bodies logic
 
