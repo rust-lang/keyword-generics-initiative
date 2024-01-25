@@ -142,18 +142,109 @@ pub fn load(&self,
 
 /// `AtomicBool::load` using runtime assertions
 pub fn load(&self, order: Ordering) -> bool {
-    assert!(matches!(order, Ordering::SeqCst | Ordering::Acquire | Ordering::Relaxed));
-    ..
+    match order {
+        Ordering::SeqCst | Ordering::Acquire | Ordering::Relaxed => ..,
+        variant => panic!("Expected `Ordering::{{Acquire | Relaxed | SeqCst}}`, received {variant}"),
+    }
 }
 ```
 
 ## TODO: Effect logic and notation
 
 - in its base there are four states possible: `always | never | maybe | unknown`
-- the relation to subtyping and return types will determine which states of this system we'll want to encode
+- `maybe(pattern_types)` is a backwards-compatibility guarantee. Having logical `never`
+  + `always` markers will put us in a position where we can eventually pull the
+  lever across an edition to default all functions to default to always using
+  pattern types - without breaking any existing code or breaking code compat.
+- unlike `maybe(async)`, by lowering to runtime checks functions which use
+  `maybe` patterns should always be able to call functions which take `always`
+  patterns - runtime assertions using `match` will be enough to shrink
+  the input state to be valid from that point onward
+- the relation to subtyping and return types will affect which states of this system we may want to encode
 - unclear what the benefits are for a strictly "always subtyping" notation
 - in practice we'll want to independently gate the stabilization of pattern
   types for existing stdlib APIs - which means we need a labeling system in the compiler
+
+## Example: how to combine effect states for pattern types
+
+[Nadrieril](https://github.com/Nadrieril) asked the following question:
+
+> Consider the case where crate A uses compile-time checks for pattern types and
+> crate B uses crate A but has no knowledge of pattern types. If we encode this
+> choice as an effect, we must be careful not to bubble it up (as effects do) to a
+> function that has no knowledge of pattern types.
+
+Let's write this example out. We're going to write three functions: one which
+always uses pattern types, one which may use pattern types, and a function which
+doesn't use pattern types. They all call each other, and that should Just Work.
+Let's start with the always-pattern function.
+
+```rust
+/// This function always evaluates pattern
+/// types at compile-time.
+fn always(num: u8 is 0..10) {
+    println!("received number {num}");
+}
+```
+
+There's nothing too special about this function: it always takes a pattern type,
+meaning we can't just give it any `u8` - it needs to fit the pattern. Next,
+let's write out a maybe-pattern function which either takes a pattern or a base
+type - and depending on which variant is passed will either validate the input
+during compilation or at runtime. This will then call into our `always` function.
+
+
+```rust
+/// This function can evaluate pattern types
+/// either at compile-time or at runtime
+#[maybe(pattern_types)]
+fn maybe(num: u8 is 0..10) {
+    always(num);
+}
+```
+
+This function either evaluates patterns during compilation or at runtime. As
+we've seen before: if a pattern is evaluated at runtime, it will effectively
+work as a `match` + `panic!`. As a result this function guarantees it will
+*always* validate its inputs, meaning once we gain access to `num` in the
+function body it will always conform to the pattern. And so we have no problem
+calling the `always` function.
+
+Next up is our function `never`, which never evaluates patterns. It takes a bare
+`u8` with no restrictions on it whatsoever. It should be able to call the
+`maybe` function without an issue.
+
+```rust
+/// This function does not reason about pattern types
+fn never(num: u8) {
+    maybe(num);
+}
+```
+
+But if we try calling the `always` function from `never`, we run into issues:
+
+```rust
+/// This function does not reason about pattern types
+fn never(num: u8) {
+    always(num);  // ❌ compiler error
+}
+```
+This should result in a compiler error along these lines:
+
+```text
+error[E0308]: mismatched types
+ --> src/lib.rs:4:12
+  |
+4 |     always(num);
+  |     ------ ^^^^^ expected `u8 is 0..10`, found `u8`
+  |     |
+  |     arguments to this function are incorrect
+```
+
+The easiest way to resolve this would be to rewrite the `never` function to take
+the same signature as the `maybe` function. This would insert the correct
+runtime checks, contraining the value to the right pattern, which as we've seen
+would make it possible to call the `always` function without any issues.
 
 ## How widespread is this?
 
