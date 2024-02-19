@@ -1965,19 +1965,18 @@ close attention to details. And in Rust specifically: once we make a mistake
 it's pretty hard to roll back. And we've made mistakes with effects in the past,
 which we now have to work with <sup class="footnote-reference"><a href="#1">1</a></sup>.</p>
 <div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
-<p>In Rust 1.34 we stabilized a new trait: <code>TryInto</code>. This was supposed to be the
-fallible version of the <code>Into</code> trait, containing a new associated type <code>Error</code>.
-However since Rust 1.0 we've also had the
+<p>In Rust 1.34 we stabilized a new trait: <code>TryInto</code>. This was supposed to be
+the fallible version of the <code>Into</code> trait, containing a new associated type
+<code>Error</code>.  However since Rust 1.0 we've also had the
 <a href="https://doc.rust-lang.org/std/str/trait.FromStr.html"><code>FromStr</code></a> trait, which
 <em>also</em> provides a fallible conversion, but has an associated type <code>Err</code>. This
 means that when writing a fallible conversion trait, it's unclear whether the
 associated type should be called <code>Err</code> or <code>Error</code>.</p>
 </div>
-<pre><code>This might seem minor, but without automation these subtle
+<p>This might seem minor, but without automation these subtle
 similar-but-not-quite-the-same kinds of differences stand out. The only way to
 ensure that different APIs in different contexts work consistently is via
-automation. And the best automation we have for this is the type system.
-</code></pre>
+automation. And the best automation we have for this is the type system.</p>
 <h1 id="guide-level-explanation"><a class="header" href="#guide-level-explanation">Guide-level explanation</a></h1>
 <h2 id="trait-definitions"><a class="header" href="#trait-definitions">Trait definitions</a></h2>
 <p>The base of Effect Generic Trait Declarations is the ability to declare traits
