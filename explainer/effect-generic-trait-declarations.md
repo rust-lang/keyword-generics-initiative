@@ -75,18 +75,18 @@ close attention to details. And in Rust specifically: once we make a mistake
 it's pretty hard to roll back. And we've made mistakes with effects in the past,
 which we now have to work with [^1].
 
-[^1]: In Rust 1.34 we stabilized a new trait: `TryInto`. This was supposed to be the
-    fallible version of the `Into` trait, containing a new associated type `Error`.
-    However since Rust 1.0 we've also had the
-    [`FromStr`](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait, which
-    *also* provides a fallible conversion, but has an associated type `Err`. This
-    means that when writing a fallible conversion trait, it's unclear whether the
-    associated type should be called `Err` or `Error`.
+[^1]: In Rust 1.34 we stabilized a new trait: `TryInto`. This was supposed to be
+the fallible version of the `Into` trait, containing a new associated type
+`Error`.  However since Rust 1.0 we've also had the
+[`FromStr`](https://doc.rust-lang.org/std/str/trait.FromStr.html) trait, which
+*also* provides a fallible conversion, but has an associated type `Err`. This
+means that when writing a fallible conversion trait, it's unclear whether the
+associated type should be called `Err` or `Error`.
 
-    This might seem minor, but without automation these subtle
-    similar-but-not-quite-the-same kinds of differences stand out. The only way to
-    ensure that different APIs in different contexts work consistently is via
-    automation. And the best automation we have for this is the type system.
+This might seem minor, but without automation these subtle
+similar-but-not-quite-the-same kinds of differences stand out. The only way to
+ensure that different APIs in different contexts work consistently is via
+automation. And the best automation we have for this is the type system.
 
 # Guide-level explanation
 [guide-level-explanation]: #guide-level-explanation
