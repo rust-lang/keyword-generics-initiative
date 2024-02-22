@@ -1923,15 +1923,15 @@ the <code>async</code> effect. If they want the <code>async</code> version they 
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>/// The base implementation
-impl Into&lt;Loaf&gt; for Cat {
-    fn into(self) -&gt; Loaf {
+impl Into&lt;Loaf&gt; for Cat {    // The trait is not marked async…
+    fn into(self) -&gt; Loaf {  // and thus neither is the method.
         self.nap()
     }
 }
 
 /// The async implementation
-impl async Into&lt;AsyncLoaf&gt; for AsyncCat {
-    async fn into(self) -&gt; AsyncLoaf {
+impl async Into&lt;AsyncLoaf&gt; for AsyncCat {  // The trait is marked async…
+    async fn into(self) -&gt; AsyncLoaf {     // and thus so is the method.
         self.async_nap().await
     }
 }
