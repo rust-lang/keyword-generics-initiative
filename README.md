@@ -46,15 +46,14 @@ take a look at the [charter].
 The following table lists of the stages of an initiative, along with links to the artifacts that will be produced during that stage.
 
 | Stage              | State | Artifact(s)                                                         |
-|--------------------|-------|---------------------------------------------------------------------|
-| [Proposal]         | 🦀    | [Proposal issue](https://github.com/rust-lang/lang-team/issues/162) |
-|                    |       | [Charter](./CHARTER.md)                                             |
-|                    |       | [Tracking issue](https://github.com/rust-lang/rust/)                |
-| [Experimental]     | 🦀    | [Evaluation](./evaluation/)                                         |
-|                    |       | [RFC](./RFC.md)                                                     |
-| [Development]      | 💤    | [Explainer](./explainer/)                                           |
-| [Feature complete] | 💤    | Stabilization report                                                |
-| [Stabilized]       | 💤    |                                                                     |
+| ------------------ | ----- | ------------------------------------------------------------------- |
+| [Proposal]         | ✅    | [Proposal issue](https://github.com/rust-lang/lang-team/issues/162) |
+|                    | ✅    | [Charter](./CHARTER.md)                                             |
+| [Experimental]     | ✅    | [Evaluation](./evaluation/)                                         |
+| [Development]      | 🦀   | [Draft RFCs](./explainer/)                                           |
+|                    | 🦀   | [Tracking issue](https://github.com/rust-lang/rust/)                |
+| [Feature complete] | 💤   | Stabilization report                                                |
+| [Stabilized]       | 💤   |                                                                     |
 
 [Proposal]: https://lang-team.rust-lang.org/initiatives/process/stages/proposal.html
 [Experimental]: https://lang-team.rust-lang.org/initiatives/process/stages/proposal.html
