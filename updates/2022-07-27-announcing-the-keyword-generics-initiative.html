@@ -1,0 +1,557 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2022-07-27: Announcing the Keyword Generics Initiative - keyword generics initiative</title>
+                
+
+        <!-- Custom HTML head -->
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
+        
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
+        
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+            </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../index.html">👋 Welcome</a></li><li class="chapter-item expanded "><a href="../updates/index.html">✏️ Updates</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../updates/2022-07-27-announcing-the-keyword-generics-initiative.html" class="active">2022-07-27: Announcing the Keyword Generics Initiative</a></li><li class="chapter-item "><a href="../updates/2023-02-23-keyword-generics-progress-report-feb-2023.html">2023-02-23: Keyword Generics Progress Report February 2023</a></li><li class="chapter-item "><a href="../updates/2024-02-09-extending-rusts-effect-system.html">2024-02-09: Extending Rust's Effect System</a></li></ol></li><li class="chapter-item "><a href="../CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="../evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/syntax/index.html">Syntax</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../evaluation/syntax/_template.html">Template</a></li><li class="chapter-item "><a href="../evaluation/syntax/attributes.html">Attributes</a></li><li class="chapter-item "><a href="../evaluation/syntax/const-bool-like-effects.html">Const-bool like effects</a></li><li class="chapter-item "><a href="../evaluation/syntax/effect-as-a-clause.html">Effect as a clause</a></li><li class="chapter-item "><a href="../evaluation/syntax/postfix-question-mark.html">Postfix question mark</a></li><li class="chapter-item "><a href="../evaluation/syntax/where-effect-bounds.html">Where effect bounds</a></li></ol></li><li class="chapter-item "><a href="../evaluation/pattern-types.html">Pattern Types and Backwards Compatibility</a></li></ol></li><li class="chapter-item "><a href="../explainer/index.html">📚 Explainer</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../explainer/effect-generic-trait-declarations.html">Effect Generic Trait Declarations</a></li></ol></li><li class="chapter-item "><a href="../archive/index.html">📦 Archive</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust.html">Effects in Rust</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/async.html">Asynchrony</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/const.html">Compile-Time Execution</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/try.html">Fallibility</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/gen.html">Iteration</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/panic.html">Unwinding</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/unsafe.html">Memory-Safety</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/pin.html">Immovability</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/sized.html">Object-Safety</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/ownership.html">Ownership</a></li><li class="chapter-item "><a href="../archive/evaluation/effects-in-rust/send.html">Thread-Safety</a></li></ol></li><li class="chapter-item "><a href="../archive/evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="../archive/evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="../archive/evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="../archive/evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="../archive/evaluation/overloading-keyword-generics.html">Overloading</a></li><li class="chapter-item "><a href="../archive/evaluation/prior-art.html">Prior Art</a></li></ol></li></ol>            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                                                <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                                            </div>
+
+                    <h1 class="menu-title">keyword generics initiative</h1>
+
+                    <div class="right-buttons">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                                                                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./updates/2022-07-27-announcing-the-keyword-generics-initiative.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+
+                                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="announcing-the-keyword-generics-initiative"><a class="header" href="#announcing-the-keyword-generics-initiative">Announcing the Keyword Generics Initiative&quot;</a></h1>
+<p><em>This post was originally posted on the <a href="https://blog.rust-lang.org/inside-rust/2022/07/27/keyword-generics.html">Inside Rust
+Blog</a>,
+but is included in this repository to be more easily referenced.</em></p>
+<p>We (<a href="https://github.com/oli-obk">Oli</a>, <a href="https://github.com/nikomatsakis">Niko</a>, and <a href="https://github.com/yoshuawuyts">Yosh</a>) are excited to announce the start of the <a href="https://github.com/rust-lang/keyword-generics-initiative">Keyword
+Generics Initiative</a>, a new initiative <sup class="footnote-reference"><a href="#initiative">1</a></sup> under the purview of
+the language team. We're officially just a few weeks old now, and in this post
+we want to briefly share why we've started this initiative, and share some
+insight on what we're about.</p>
+<div class="footnote-definition" id="initiative"><sup class="footnote-definition-label">1</sup>
+<p>Rust governance terminology can sometimes get confusing. An
+&quot;initiative&quot; in Rust parlance is different from a &quot;working group&quot; or &quot;team&quot;.
+Initiatives are intentionally limited: they exist to explore, design, and
+implement specific pieces of work - and once that work comes to a close, the
+initiative will wind back down. This is different from, say, the lang team -
+which essentially carries a <code>'static</code> lifetime - and whose work does
+not have a clearly defined end.</p>
+</div>
+<h2 id="a-missing-kind-of-generic"><a class="header" href="#a-missing-kind-of-generic">A missing kind of generic</a></h2>
+<p>One of Rust's defining features is the ability to write functions which are
+<em>generic</em> over their input types. That allows us to write a function once,
+leaving it up to the compiler to generate the right implementations for us.</p>
+<p>Rust allows you to be generic over types - it does not allow you to be generic
+over other things that are usually specified by keywords. For example, whether a
+function is async, whether a function can fail or not, whether a function is
+const or not, etc.</p>
+<p>The post <a href="https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/">&quot;What color is your function&quot;</a> <sup class="footnote-reference"><a href="#color">2</a></sup> describes what happens
+when a language introduces async functions, but with no way to be generic over
+them:</p>
+<blockquote>
+<p>I will take async-await over bare callbacks or futures any day of the week.
+But we’re lying to ourselves if we think all of our troubles are gone. As soon
+as you start trying to write higher-order functions, or reuse code, you’re
+right back to realizing color is still there, bleeding all over your codebase.</p>
+</blockquote>
+<p>This isn't just limited to async though, it applies to all modifier keywords -
+including ones we may define in the future. So we're looking to fill that gap
+by exploring something we call &quot;keyword generics&quot; <sup class="footnote-reference"><a href="#name">3</a></sup>: the ability to be
+generic over keywords such as <code>const</code> and <code>async</code>.</p>
+<div class="footnote-definition" id="color"><sup class="footnote-definition-label">2</sup>
+<p>R. Nystrom, “What Color is Your Function?,” Feb. 01, 2015.
+https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
+(accessed Apr. 06, 2022).</p>
+</div>
+<div class="footnote-definition" id="name"><sup class="footnote-definition-label">3</sup>
+<p>The longer, more specific name would be: &quot;keyword modifier generics&quot;.
+We've tried calling it that, but it's a bit of a mouthful. So we're just
+sticking with &quot;keyword generics&quot; for now, even if the name for this feature may
+end up being called something more specific in the reference and documentation.</p>
+</div>
+<p>To give you a quick taste of what we're working on, this is roughly how we
+imagine you may be able to write a function which is generic over &quot;asyncness&quot;
+in the future:</p>
+<blockquote>
+<p>Please note that this syntax is entirely made up, just so we can use something
+in examples. Before we can work on syntax we need to finalize the semantics,
+and we're not there yet. This means the syntax will likely be subject to
+change over time.</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;A&gt; trait Read {
+    async&lt;A&gt; fn read(&amp;mut self, buf: &amp;mut [u8]) -&gt; Result&lt;usize&gt;;
+    async&lt;A&gt; fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; { ... }
+}
+
+/// Read from a reader into a string.
+async&lt;A&gt; fn read_to_string(reader: &amp;mut impl Read * A) -&gt; std::io::Result&lt;String&gt; {
+    let mut string = String::new();
+    reader.read_to_string(&amp;mut string).await?;
+    string
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This function introduces a &quot;keyword generic&quot; parameter into the function of <code>A</code>.
+You can think of this as a flag which indicates whether the function is being
+compiled in an async context or not. The parameter <code>A</code> is forwarded to the <code>impl Read</code>, making that conditional on &quot;asyncness&quot; as well.</p>
+<p>In the function body you can see a <code>.await</code> call. Because <a href="https://blog.yoshuawuyts.com/async-cancellation-1/">the <code>.await</code> keyword
+marks cancellation sites</a> we unfortunately can't just infer them
+<sup class="footnote-reference"><a href="#cancellation">4</a></sup>. Instead we require them to be written for when the code is
+compiled in async mode, but are essentially reduced to a no-op in non-async
+mode.</p>
+<div class="footnote-definition" id="cancellation"><sup class="footnote-definition-label">4</sup>
+<p>No really, we can't just infer them - and it may not be as
+simple as omitting all <code>.await</code> calls either. The Async WG is working through
+the full spectrum of cancellation sites, async drop, and more. But for now we're
+working under the assumption that <code>.await</code> will remain relevant going forward.
+And even in the off chance that it isn't, fallibility has similar requirements
+at the call site as async does.</p>
+</div>
+<p>We still have lots of details left to figure out, but we hope this at least
+shows the general <em>feel</em> of what we're going for.</p>
+<h2 id="a-peek-at-the-past-horrors-before-const"><a class="header" href="#a-peek-at-the-past-horrors-before-const">A peek at the past: horrors before const</a></h2>
+<p>Rust didn't always have <code>const fn</code> as part of the language. A long long long long
+long time ago (2018) we had to write a regular function for runtime computations
+and associated const of generic type logic for compile-time computations. As an
+example, to add the number <code>1</code> to a constant provided to you, you had to write
+(<a href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=50e818b79b8af322ed4384d3c33e9773">playground</a>):</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Const&lt;T&gt; {
+    const VAL: T;
+}
+
+/// `42` as a &quot;const&quot; (type) generic:
+struct FourtyTwo;
+impl Const&lt;i32&gt; for FourtyTwo {
+    const VAL: i32 = 42;
+}
+
+/// `C` -&gt; `C + 1` operation:
+struct AddOne&lt;C: Const&lt;i32&gt;&gt;(C);
+impl&lt;C: Const&lt;i32&gt;&gt; Const&lt;i32&gt; for AddOne&lt;C&gt; {
+    const VAL: i32 = C::VAL + 1;
+}
+
+AddOne::&lt;FourtyTwo&gt;::VAL
+<span class="boring">}
+</span></code></pre></pre>
+<p>Today this is as easy as writing a <code>const fn</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn add_one(i: i32) -&gt; i32 {
+    i + 1
+}
+
+add_one(42)
+<span class="boring">}
+</span></code></pre></pre>
+<p>The interesting part here is that you can also just call this function in
+runtime code, which means the implementation is shared between both <code>const</code>
+(CTFE<sup class="footnote-reference"><a href="#ctfe">5</a></sup>) and non-<code>const</code> (runtime) contexts.</p>
+<div class="footnote-definition" id="ctfe"><sup class="footnote-definition-label">5</sup>
+<p>CTFE stands for &quot;Compile Time Function Execution&quot;: <code>const</code> functions
+can be evaluated during compilation, which is implemented using a Rust
+interpreter (miri).</p>
+</div>
+<h2 id="memories-of-the-present-async-today"><a class="header" href="#memories-of-the-present-async-today">Memories of the present: async today</a></h2>
+<p>People write duplicate code for async/non-async with the only difference being
+the <code>async</code> keyword. A good example of that code today is <a href="https://docs.rs/async-std/latest/async_std/"><code>async-std</code></a>, which
+duplicates and translates a large part of the stdlib's API surface to be async
+<sup class="footnote-reference"><a href="#async-std">6</a></sup>. And because the Async WG has made it an explicit goal to <a href="https://rust-lang.github.io/wg-async/vision/how_it_feels.html">bring
+async Rust up to par with non-async Rust</a>, the issue of code
+duplication is particularly relevant for the Async WG as well. Nobody on the
+Async WG seems particularly keen on proposing we add a second instance of just
+about every API currently in the stdlib.</p>
+<div class="footnote-definition" id="async-std"><sup class="footnote-definition-label">6</sup>
+<p>Some limitations in <code>async-std</code> apply: async Rust is missing async
+<code>Drop</code>, async traits, and async closures. So not all APIs could be duplicated.
+Also <code>async-std</code> explicitly didn't reimplement any of the collection APIs to be
+async-aware, which means users are subject to the &quot;sandwich problem&quot;. The
+purpose of <code>async-std</code> was to be a proving ground to test whether creating
+an async mirror of the stdlib would be possible: and it's proven that it is, as
+far as was possible with missing language features.</p>
+</div>
+<p>We're in a similar situation with <code>async</code> today as <code>const</code> was prior to 2018.
+Duplicating entire interfaces and wrapping them in <code>block_on</code> calls is the
+approach taken by e.g. the <code>mongodb</code>
+[<a href="https://docs.rs/mongodb/latest/mongodb/index.html">async</a>,
+<a href="https://docs.rs/mongodb/latest/mongodb/sync/index.html">non-async</a>], <code>postgres</code>
+[<a href="https://docs.rs/tokio-postgres/latest/tokio_postgres/index.html">async</a>,
+<a href="https://docs.rs/postgres/latest/postgres/">non-async</a>], and <code>reqwest</code>
+[<a href="https://docs.rs/reqwest/latest/reqwest/">async</a>,
+<a href="https://docs.rs/reqwest/latest/reqwest/blocking/index.html">non-async</a>] crates:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Async functionality like this would typically be exposed from a crate &quot;foo&quot;:
+async fn bar() -&gt; Bar { 
+    // async implementation goes here
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// And a sync counterpart would typically be exposed from a crate
+// named &quot;blocking_foo&quot; or a submodule on the original crate as
+// &quot;foo::blocking&quot;. This wraps the async code in a `block_on` call:
+fn bar() -&gt; Bar {
+    futures::executor::block_on(foo::bar())
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This situation is not ideal. Instead of using the host's synchronous syscalls,
+we're now going through an async runtime to get the same results - something
+which is often not zero-cost. But more importantly, it's rather hard to
+keep both a sync and async API version of the same crate in, err, sync with each
+other. Without automation it's really easy for the two APIs to get out of sync,
+leading to mismatched functionality.</p>
+<p>The ecosystem has come up with some solutions to this, perhaps most notably the
+proc-macro based <a href="https://docs.rs/maybe-async/0.2.6/maybe_async/"><code>maybe-async</code> crate</a>.  Instead of writing two
+separate copies of <code>foo</code>, it generates a sync and async variant for you:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[maybe_async]
+async fn foo() -&gt; Bar { ... }
+<span class="boring">}
+</span></code></pre></pre>
+<p>While being useful, the macro has clear limitations with respect to diagnostics
+and ergonomics. That's absolutely not an issue with the crate, but an inherent
+property of the problem it's trying to solve. Implementing a way to be generic
+over the <code>async</code> keyword is something which will affect the language in many
+ways, and a type system + compiler will be better equipped to handle it than
+proc macros reasonably can.</p>
+<h2 id="a-taste-of-trouble-the-sandwich-problem"><a class="header" href="#a-taste-of-trouble-the-sandwich-problem">A taste of trouble: the sandwich problem</a></h2>
+<p>A pervasive issue in existing Rust is the <em>sandwich</em> problem. It occurs when a
+type passed into an operation wants to perform control flow not supported by the
+type it's passed into. Thus creating a <em>sandwich</em> <sup class="footnote-reference"><a href="#dilemma">7</a></sup> The classic example
+is a <code>map</code> operation:</p>
+<div class="footnote-definition" id="dilemma"><sup class="footnote-definition-label">7</sup>
+<p>Not to be confused with the higher-order <em>sandwich dilemma</em> which is
+when you look at the sandwich problem and attempt to determine whether the
+sandwich is two slices of bread with a topping in between, or two toppings with
+a slice of bread in between. Imo the operation part of the problem feels more
+<em>bready</em>, but that would make for a weird-looking sandwich. Ergo: sandwich
+dilemma. (yes, you can ignore all of this.)</p>
+</div>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Option&lt;T&gt; {
+    Some(T),
+    None,
+}
+
+impl&lt;T&gt; Option&lt;T&gt; {
+    fn map&lt;J&gt;(self, f: impl FnOnce(T) -&gt; J) -&gt; Option&lt;J&gt; { ... }
+}
+
+my_option.map(|x| x.await)
+<span class="boring">}
+</span></code></pre></pre>
+<p>This will produce a compiler error: the closure <code>f</code> is not an async context, so
+<code>.await</code> cannot be used within it. And we can't just convert the closure to be
+<code>async</code> either, since <code>fn map</code> doesn't know how to call async functions. In
+order to solve this issue, we could provide a new <code>async_map</code> method which
+<em>does</em> provide an async closure. But we may want to repeat those for more
+effects, and that would result in a combinatorial explosion of effects. Take for
+example &quot;can fail&quot; and &quot;can be async&quot;:</p>
+<table><thead><tr><th></th><th>not async</th><th>async</th></tr></thead><tbody>
+<tr><td><strong>infallible</strong></td><td><code>fn map</code></td><td><code>fn async_map</code></td></tr>
+<tr><td><strong>fallible</strong></td><td><code>fn try_map</code></td><td><code>fn async_try_map</code></td></tr>
+</tbody></table>
+<p>That's a lot of API surface for just a single method, and <strong>that problem
+multiplies across the entire API surface in the stdlib</strong>. We expect that once we
+start applying &quot;keyword generics&quot; to traits, we will be able to solve the
+sandwich problem. The type <code>f</code> would be marked generic over a set of effects,
+and the compiler would choose the right variant during compilation.</p>
+<h2 id="affecting-all-effects"><a class="header" href="#affecting-all-effects">Affecting all effects</a></h2>
+<p>Both <code>const</code> and <code>async</code> share a very similar issue, and we expect that other
+&quot;effects&quot; will face the same issue. &quot;fallibility&quot; is particularly on our mind here,
+but it isn't the only effect. In order for the language to feel consistent we
+need consistent solutions.</p>
+<h2 id="faq"><a class="header" href="#faq">FAQ</a></h2>
+<h3 id="q-is-there-an-rfc-available-to-read"><a class="header" href="#q-is-there-an-rfc-available-to-read">Q: Is there an RFC available to read?</a></h3>
+<p>Rust initiatives are intended for <em>exploration</em>. The announcement of the Keyword
+Generics Initiative marks the <em>start</em> of the exploration process. Part of
+exploring is not knowing what the outcomes will be. Right now we're in the
+&quot;pre-RFC&quot; phase of design. What we hope we'll achieve is to enumerate the
+full problem space, design space, find a balanced solution, and eventually
+summarize that in the form of an RFC. Then after the RFC is accepted: implement
+it on nightly, work out the kinks, and eventually move to stabilize.  But we may
+at any point during this process conclude that this initiative is actually
+infeasible and start ramping down.</p>
+<p>But while we can't make any <em>assurances</em> about the outcome of the initiative,
+what we can share is that we're pretty optimistic about the initiative overall.
+We wouldn't be investing the time we are on this if we didn't think we'd be
+actually be able to see it through to completion.</p>
+<h3 id="q-will-this-make-the-language-more-complicated"><a class="header" href="#q-will-this-make-the-language-more-complicated">Q: Will this make the language more complicated?</a></h3>
+<p>The goal of keyword generics is not to minimize the complexity of the Rust
+programming language, but to <em>minimize the complexity of programming in Rust.</em>
+These two might sound similar, but they're not. Our reasoning here is that by
+<em>adding</em> a feature, we will actually be able to significantly reduce the surface
+area of the stdlib, crates.io libraries, and user code - leading to a more
+streamlined user experience.</p>
+<p>Choosing between sync or async code is a fundamental choice which needs to be
+made. This is complexity which cannot be avoided, and which needs to exist
+somewhere. Currently in Rust that complexity is thrust entirely on users of
+Rust, making them responsible for choosing whether their code should support
+async Rust or not. But other languages have made diferent choices. For example
+Go doesn't distinguish between &quot;sync&quot; and &quot;async&quot; code, and has a runtime which
+is able to remove that distinction.</p>
+<p>In today's Rust application authors choose whether their application will be sync
+or async, and even after the introduction of keyword generics we don't really
+expect that to change. All generics eventually need to have their types known,
+and keyword generics are no different. What we're targeting is the choice made
+by <em>library</em> authors whether their library supports is sync or async. With
+keyword generics library authors will be able to support both with the help of
+the compiler, and leave it up to application authors to decide how they want to
+compile their code.</p>
+<h3 id="q-are-you-building-an-effect-system"><a class="header" href="#q-are-you-building-an-effect-system">Q: Are you building an effect system?</a></h3>
+<p>The short answer is: kind of, but not really. &quot;Effect systems&quot; or &quot;algebraic
+effect systems&quot; generally have a lot of surface area. A common example of what
+effects allow you to do is implement your own <code>try/catch</code> mechanism. What we're
+working on is intentionally limited to built-in keywords only, and wouldn't
+allow you to implement anything like that at all.</p>
+<p>What we do share with effect systems is that we're integrating modifier keywords
+more directly into the type system. Modifier keywords like <code>async</code> are often
+referred to as &quot;effects&quot;, so being able to be conditional over them in
+composable ways effectively gives us an &quot;effect algebra&quot;. But that's very
+different from &quot;generalized effect systems&quot; in other languages.</p>
+<h3 id="q-are-you-looking-at-other-keywords-beyond-async-and-const"><a class="header" href="#q-are-you-looking-at-other-keywords-beyond-async-and-const">Q: Are you looking at other keywords beyond <code>async</code> and <code>const</code>?</a></h3>
+<p>For a while we were referring to the initiative as &quot;modifier generics&quot; or
+&quot;modifier keyword generics&quot;, but it never really stuck. We're only really
+interested in keywords which modify how types work. Right now this is <code>const</code>
+and <code>async</code> because that's what's most relevant for the const-generics WG and
+async WG. But we're designing the feature with other keywords in mind as well.</p>
+<p>The one most at the top of our mind is a future keyword for fallibility. There
+is talk about introducing <code>try fn() {}</code> or <code>fn () -&gt; throws</code> syntax. This could
+make it so methods such as <code>Iterator::filter</code> would be able to use <code>?</code> to break
+out of the closure and short-circuit iteration.</p>
+<p>Our main motivation for this feature is that without it, it's easy for Rust to
+start to feel <em>disjointed</em>. We sometimes joke that Rust is actually 3-5
+languages in a trenchcoat. Between const rust, fallible rust, async rust, unsafe
+rust - it can be easy for common APIs to only be available in one variant of the
+language, but not in others. We hope that with this feature we can start to
+systematically close those gaps, leading to a more consistent Rust experience
+for <em>all</em> Rust users.</p>
+<h3 id="q-what-will-the-backwards-compatibility-story-be-like"><a class="header" href="#q-what-will-the-backwards-compatibility-story-be-like">Q: What will the backwards compatibility story be like?</a></h3>
+<p>Rust has pretty strict backwards-compatibility guarantees, and any feature we
+implement needs to adhere to this. Luckily we have some wiggle room because of
+the edition mechanism, but our goal is to shoot for maximal backwards compat. We
+have some ideas of how we're going to make this work though, and we're
+cautiously optimistic we might actually be able to pull this off.</p>
+<p>But to be frank: this is by far one of the hardest aspects of this feature, and
+we're lucky that we're not designing any of this just by ourselves, but have the
+support of the language team as well.</p>
+<h3 id="q-arent-implementations-sometimes-fundamentally-different"><a class="header" href="#q-arent-implementations-sometimes-fundamentally-different">Q: Aren't implementations sometimes fundamentally different?</a></h3>
+<p>Const Rust can't make any assumptions about the host it runs on, so it can't do
+anything platform-specific. This includes using more efficient instructions of
+system calls which are only available in one platform but not another. In order
+to work around this, the <a href="https://doc.rust-lang.org/std/intrinsics/fn.const_eval_select.html"><code>const_eval_select</code></a> intrinsic in the standard
+library enables <code>const</code> code to detect whether it's executing during CTFE or
+runtime, and execute different code based on that.</p>
+<p>For async we expect to be able to add a similar intrinsic, allowing library
+authors to detect whether code is being compiled as sync or async, and do
+something different based on that. This includes: using internal concurrency, or
+switching to a different set of system calls. We're not sure whether an
+intrinsic is the right choice for this though; we may want to provide a more
+ergonomic API for this instead. But because keyword generics is being designed
+as a consistent feature, we expect that whatever we end up going with can be used
+consistently by <em>all</em> modifier keywords.</p>
+<h2 id="conclusion"><a class="header" href="#conclusion">Conclusion</a></h2>
+<p>In this post we've introduced the new keyword generics initiative, explained why
+it exists, and shown a brief example of what it might look like in the future.</p>
+<p>The initiative is active on the Rust Zulip under
+<a href="https://rust-lang.zulipchat.com/#narrow/stream/328082-t-lang.2Fkeyword-generics"><code>t-lang/keyword-generics</code></a> - if this seems interesting to you, please
+pop by!</p>
+<p><em>Thanks to everyone who's helped review this post, but in particular:
+<a href="https://github.com/fee1-dead">fee1-dead</a>, <a href="https://github.com/danielhenrymantilla">Daniel Henry-Mantilla</a>, and <a href="https://github.com/rylev">Ryan Levick</a></em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                                                    <a rel="prev" href="../updates/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+                                                    <a rel="next" href="../updates/2023-02-23-keyword-generics-progress-report-feb-2023.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                                    <a rel="prev" href="../updates/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+                                    <a rel="next" href="../updates/2023-02-23-keyword-generics-progress-report-feb-2023.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                            </nav>
+
+        </div>
+
+        
+        
+        
+                <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+        
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+        
+    </body>
+</html>
