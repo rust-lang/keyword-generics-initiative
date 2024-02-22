@@ -13,7 +13,7 @@
     - [Postfix question mark](./evaluation/syntax/postfix-question-mark.md)
     - [Where effect bounds](./evaluation/syntax/where-effect-bounds.md)
   - [Pattern Types and Backwards Compatibility](./evaluation/pattern-types.md)
-- [📚 Explainer](./explainer/README.md)
+- [📚 Draft RFCs](./explainer/README.md)
   - [0000: Effect-Generic Trait Declarations](./explainer/effect-generic-trait-declarations.md)
   - [0001: Effect-Generic Bounds and Functions]()
   - [0002: Effect-Generic Types]()
