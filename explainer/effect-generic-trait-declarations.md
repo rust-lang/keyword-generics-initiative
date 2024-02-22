@@ -27,15 +27,15 @@ the `async` effect. If they want the `async` version they can include the
 
 ```rust
 /// The base implementation
-impl Into<Loaf> for Cat {
-    fn into(self) -> Loaf {
+impl Into<Loaf> for Cat {    // The trait is not marked async…
+    fn into(self) -> Loaf {  // and thus neither is the method.
         self.nap()
     }
 }
 
 /// The async implementation
-impl async Into<AsyncLoaf> for AsyncCat {
-    async fn into(self) -> AsyncLoaf {
+impl async Into<AsyncLoaf> for AsyncCat {  // The trait is marked async…
+    async fn into(self) -> AsyncLoaf {     // and thus so is the method.
         self.async_nap().await
     }
 }
