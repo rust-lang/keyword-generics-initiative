@@ -1,8 +1,8 @@
 # Progress Report February 2023
 
-* This post is intended to be published on the Rust internals blog.*
-
-## Introduction
+_This post was originally posted on the [Inside Rust
+Blog](https://blog.rust-lang.org/inside-rust/2023/02/23/keyword-generics-progress-report-feb-2023.html),
+but is included in this repository to be more easily referenced._
 
 About 9 months ago [we announced][announce] the creation of the Keyword Generics
 Initiative; a group working under the lang team with the intent to solve the 
@@ -77,7 +77,7 @@ The way this would work is that `Read` and `read_to_string` would become generic
 their "asyncness". When compiled for an `async` context, they will behave
 asynchronously. When compiled in a non-async context, they will behave
 synchronously. The `.await` in the `read_to_string` function body is necessary
-to mark the cancellation pointin case the function is compiled as async; but
+to mark the cancellation point in case the function is compiled as async; but
 when not async would essentially become a no-op [^always-async-maybe]:
 
 [^always-async-maybe]: One restriction `?async` contexts have is that they can
@@ -180,7 +180,7 @@ trait ?const ?async Read {
 }
 
 /// Read from a reader into a string.
-?const ?async fn read_to_string(reader: &mut impl ?const ?async Read) -> io::Result<String> {
+const ?async fn read_to_string(reader: &mut impl ?const ?async Read) -> io::Result<String> {
     let mut string = String::new();
     reader.read_to_string(&mut string).await?;
     Ok(string)
@@ -189,7 +189,7 @@ trait ?const ?async Read {
 
 That's sure starting to feel like a lot of keywords, right? We've accurately
 described exactly what's going on, but there's a lot of repetition. We know that
-if we're dealing with a `?const ?async fn`, most arguments probably will also
+if we're dealing with a `const ?async fn`, most arguments probably will
 want to be `?const ?async`. But under the syntax rules we've proposed so far,
 you'd end up repeating that everywhere. And it probably gets worse once we start
 adding in more keywords. Not ideal!
@@ -324,6 +324,8 @@ able to add `+ Send` bound to anonymous futures. There are more details about
 this in ["Lightweight, Predictable Async Send Bounds"][bounds-post] by Eric
 Holk. But it would roughly become the following notation:
 
+[bounds-post]: https://blog.theincredibleholk.org/blog/2023/02/16/lightweight-predictable-async-send-bounds/
+
 ```rust
 struct File { .. }
 impl async Read for File {                                                // async trait declaration
@@ -395,14 +397,14 @@ the following proposals (in no particular order):
 
 We'll be working closely with the Lang Team, Const WG, and Async WG on these
 proposals, and in some cases (such as `trait async`) we may even take an
-advicing role with a WG directly driving the RFC. As usual, these will be going
+advising role with a WG directly driving the RFC. As usual, these will be going
 through the RFC-nightly-stabilization cycle. And only once we're fully confident
 in them will they become available on stable Rust.
 
 We're intentionally not yet including `effect/.do` notation on this roadmap. We
 expect to only be able to start this work once we have `?async` on nightly,
 which we don't yet have. So for now we'll continue work on designing it within
-the iniatiative, and hold off on making plans to introduce it quite yet.
+the initiative, and hold off on making plans to introduce it quiet yet.
 
 ## Conclusion
 

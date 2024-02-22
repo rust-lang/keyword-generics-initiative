@@ -2,7 +2,9 @@
 
 - [👋 Welcome](./README.md)
 - [✏️ Updates](./updates/README.md)
-  - [Progress Report February 2023](./updates/progress-report-february-2023.md)
+  - [2022-07-27: Announcing the Keyword Generics Initiative](./updates/2022-07-27-announcing-the-keyword-generics-initiative.md)
+  - [2023-02-23: Keyword Generics Progress Report February 2023](./updates/2023-02-23-keyword-generics-progress-report-feb-2023.md)
+  - [2024-02-09: Extending Rust's Effect System](./updates/2024-02-09-extending-rusts-effect-system.md)
 - [📜 Charter](./CHARTER.md)
 - [🔬 Evaluation](./evaluation/README.md)
   - [Syntax](./evaluation/syntax/README.md)
