@@ -1,5 +1,5 @@
-# 📚 Explainer
+# 📚 Draft RFCs
 
-> The "explainer" is "end-user readable" documentation that explains how to use the feature being deveoped by this initiative.
+> The "Draft RFCs" are "end-user readable" documentation that explains how to use the feature being deveoped by this initiative.
 > If you want to experiment with the feature, you've come to the right place.
-> Until the feature enters "feature complete" form, the explainer should be considered a work-in-progress.
+> Until the feature enters "feature complete" form, the Draft RFCs should be considered a work-in-progress.
