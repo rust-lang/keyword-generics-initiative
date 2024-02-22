@@ -17,6 +17,7 @@
   - [Pattern Types and Backwards Compatibility](./evaluation/pattern-types.md)
 - [📚 Explainer](./explainer/README.md)
   - [Effect Generic Trait Declarations](./explainer/effect-generic-trait-declarations.md)
+  - [0001: Effect-Generic Bounds and Functions](./explainer/effect-generic-bounds-and-functions.md)
 - [📦 Archive](./archive/README.md)
   - [Effects in Rust](./archive/evaluation/effects-in-rust.md)
     - [Asynchrony](./archive/evaluation/effects-in-rust/async.md)
@@ -35,3 +36,4 @@
   - [MIR desugaring](./archive/evaluation/mir-desugaring.md)
   - [Overloading](./archive/evaluation/overloading-keyword-generics.md)
   - [Prior Art](./archive/evaluation/prior-art.md)
+- [😕 FAQ](./FAQ.md)
