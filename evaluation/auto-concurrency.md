@@ -43,9 +43,10 @@ The following constraints and operations occur here:
 - concurrency: `oven` and `dish` are computed concurrently
 
 In Swift the `async let` syntax automatically spawns tasks and ensures that they
-resolve when they need to - occasionally it will even implicitly insert `await`
-points where needed (e.g. `oven` is never explicitly `await`ed). We can
-translate this to Rust using the [`futures-concurrency`
+resolve when they need to. In Swift `await {}` and `try {}` apply not just to
+the top-level expressions but also to all sub-expressions, so for example
+awaiting the `oven` is handled by `await oven.cook (..)`. We can translate this
+to Rust using the [`futures-concurrency`
 library](https://docs.rs/futures-concurrency) without having to use parallel
 tasks - just concurrent futures. That would look like this:
 
@@ -90,7 +91,7 @@ implement `Future::join` calls. An example:
 
 ```rust
 async fn make_dinner() -> SomeResult<Meal> {
-    async let veggies = chop_vegetable();
+    async let veggies = chop_vegetables();
     async let meat = marinate_meat();
     async let oven = preheat_oven(350);
 
@@ -132,7 +133,7 @@ make it conditional over the `async` effect:
 ```rust
 #[maybe(async)]  // <- changed `async fn` to `#[maybe(async)] fn`
 fn make_dinner() -> SomeResult<Meal> {
-    async let veggies = chop_vegetable();
+    async let veggies = chop_vegetables();
     async let meat = marinate_meat();
     async let oven = preheat_oven(350);
 
@@ -147,7 +148,7 @@ Rust's ad-hoc async capabilities.
 
 ```rust
 fn make_dinner() -> SomeResult<Meal> {
-    let veggies = chop_vegetable();
+    let veggies = chop_vegetables();
     let meat = marinate_meat();
     let oven = preheat_oven(350);
 
@@ -164,6 +165,41 @@ creating parity between both contexts. As well as make async Rust code that much
 easier to read.
 
 ## Conclusion
+
+In this document we describe a mechanism inspired by Swift's `async let`
+primitive to author imperative-looking code which is lowered into concurrent,
+unmanaged futures. Rather than needing to manually convert linear code into a
+concurrent directed graph, the compiler could do that for us. Here is an example
+code as we would write it today using the
+[`Join::join`](https://docs.rs/futures-concurrency/latest/futures_concurrency/future/trait.Join.html)
+operation, compared to a high-level `async let` based variant which would
+desugar into the same code.
+
+```rust
+/// A manual concurrent implementation using Rust 1.76 today.
+async fn make_dinner() -> SomeResult<Meal> {
+    use futures_concurrency::prelude::*;
+    let dish_fut = {
+        let veggies_fut = chop_vegetables();
+        let meat_fut = marinate_meat();
+        let (veggies, meat) = (veggies_fut, meat_fut).join().await?;
+        Dish::new(&[veggies, meat]).await
+    };
+    let (dish, oven) = (dish_fut, preheat_oven(350)).join().await;
+    oven.cook(dish, Duration::from_mins(3 * 60)).await
+}
+
+/// An automatic concurrent implementation using a hypothetical `async let`
+/// feature. This would desugar into equivalent code as the manual example.
+async fn make_dinner() -> SomeResult<Meal> {
+    async let veggies = chop_vegetables();
+    async let meat = marinate_meat();
+    async let oven = preheat_oven(350);
+
+    async let dish = Dish(&[veggies.await?, meat.await?]);
+    oven.await.cook(dish.await, Duration::from_mins(3 * 60)).await
+}
+```
 
 This is not the first proposal to suggest an `async let` notation for async
 Rust; to our knowledge that would be Conrad Ludgate in their [async let blog
