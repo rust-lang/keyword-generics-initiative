@@ -21,7 +21,7 @@ Graphs (control-flow DAGs).
 Swift has introduced the `async let` keyword to enable linear-looking
 control-flow which statically expands to a concurrent DAG backed by tasks. To
 see how this works we can reference
-[SE-304](https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md)'s
+[SE-0304](https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md)'s
 example which provides a `makeDinner` routine:
 
 ```swift
@@ -86,7 +86,7 @@ For this reason we can't quite do what Swift does - but I believe we could
 probably do something similar. From a language perspective, it seems like it
 should be possible to do a similar system using `async let` and `.await` - but
 where we statically analyze the control-flow graph to figure out where to
-implement the right concurrent `.await` points. An example:
+implement `Future::join` calls. An example:
 
 ```rust
 async fn make_dinner() -> SomeResult<Meal> {
@@ -99,7 +99,83 @@ async fn make_dinner() -> SomeResult<Meal> {
 }
 ```
 
-This would achieve something very similar to
+Here, just like in the Swift example, we'd achieve concurrency between all
+independent steps. And where steps are dependent on one another, they would be
+computed as sequential. Each future still needs to be `.await`ed - but in order
+to be evaluated concurrently the program authors no longer have to figure it out
+by hand.
+
+If we think about it, this feels like a natural evolution from the principles of
+`async/.await`. Just the syntax alone provides us with the ability to convert
+complex asynchronous callback graphs into seemingly imperative-looking code. And
+by extending that to concurrency too, we're able to reap even more benefits from it.
+
+## What about other concurrency operations?
+
+A brief look at the [`futures-concurrency`
+library](https://docs.rs/futures-concurrency/latest/futures_concurrency/) will
+reveal a number of concurrency operations. Yet here we're only discussing one:
+`Join`. That is because all the other operations do something which is unique to
+async code, and so we have to write async code to make full use of it. Whereas
+`join` does not semantically change the code: it just takes independent
+sequential operations and runs them in concert.
+
+## Maybe-async and auto-concurrency
+
+The main premise of `#[maybe(async)]` notations is that they can take sequential
+code and optionally run them without blocking. Under the system described in
+this post that code could not only be non-blocking, it could also be concurrent.
+Taking the system we're describing in the "Effect Generic Function Bodies and
+Bounds" draft, we could write our `async let`-based code example as follows to
+make it conditional over the `async` effect:
+
+```rust
+#[maybe(async)]  // <- changed `async fn` to `#[maybe(async)] fn`
+fn make_dinner() -> SomeResult<Meal> {
+    async let veggies = chop_vegetable();
+    async let meat = marinate_meat();
+    async let oven = preheat_oven(350);
+
+    async let dish = Dish(ingredients: [veggies.await?, meat.await?]);
+    oven.await.cook(dish.await, Duration::mins(3 * 60)).await
+}
+```
+
+Which when evaluated synchronously would be lowered to the following code. This
+code blocks and runs sequentially, but that is the best we can do without async
+Rust's ad-hoc async capabilities.
+
+```rust
+fn make_dinner() -> SomeResult<Meal> {
+    let veggies = chop_vegetable();
+    let meat = marinate_meat();
+    let oven = preheat_oven(350);
+
+    let dish = Dish(ingredients: [veggies?, meat?]);
+    oven.cook(dish, Duration::mins(3 * 60))
+}
+```
+
+This is not the only way that `#[maybe(async)]` code could leverage async
+concurrency operations: an async version of
+[`const_eval_select`](https://doc.rust-lang.org/std/intrinsics/fn.const_eval_select.html)
+would also work. It would, however, be by far the most convenient way of
+creating parity between both contexts. As well as make async Rust code that much
+easier to read.
+
+## Conclusion
+
+This is not the first proposal to suggest an `async let` notation for async
+Rust; to our knowledge that would be Conrad Ludgate in their [async let blog
+post](https://conradludgate.com/posts/async-let). However the didn't seem to
+mention Swift's work on the topic, and just like Swift it was based on the idea
+of multi-threaded tasks - not Rust's lightweight futures primitive.
+
+A version of this is likely possible for multi-threaded code too; ostensibly via
+some kind of `par` keyword (`par let` / `par async let` / `par for await..in`).
+A full design is out of scope for this post; but it should be possible to
+improve Rust's parallel system in both async and non-async Rust alike (using
+tasks and threads respectively).
 
 ## References
 
