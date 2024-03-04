@@ -60,7 +60,7 @@ async fn make_dinner() -> SomeResult<Meal> {
         let (veggies, meat) = (veggies_fut, meat_fut).join().await?;
         Dish::new(&[veggies, meat]).await
     };
-    let (dish, oven) = (dish_fut, preheat_oven(350)).join().await;
+    let (dish, oven) = (dish_fut, preheat_oven(350)).try_join().await?;
     oven.cook(dish, Duration::from_mins(3 * 60)).await
 }
 ```
@@ -178,14 +178,13 @@ desugar into the same code.
 ```rust
 /// A manual concurrent implementation using Rust 1.76 today.
 async fn make_dinner() -> SomeResult<Meal> {
-    use futures_concurrency::prelude::*;
     let dish_fut = {
         let veggies_fut = chop_vegetables();
         let meat_fut = marinate_meat();
         let (veggies, meat) = (veggies_fut, meat_fut).join().await?;
         Dish::new(&[veggies, meat]).await
     };
-    let (dish, oven) = (dish_fut, preheat_oven(350)).join().await;
+    let (dish, oven) = (dish_fut, preheat_oven(350)).try_join().await?;
     oven.cook(dish, Duration::from_mins(3 * 60)).await
 }
 
