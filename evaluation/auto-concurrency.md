@@ -60,7 +60,7 @@ async fn make_dinner() -> SomeResult<Meal> {
         Dish::new(&[veggies, meat]).await
     };
     let (dish, oven) = (dish_fut, preheat_oven(350)).join().await;
-    oven.cook(dish, Duration::mins(3 * 60)).await
+    oven.cook(dish, Duration::from_mins(3 * 60)).await
 }
 ```
 
@@ -94,8 +94,8 @@ async fn make_dinner() -> SomeResult<Meal> {
     async let meat = marinate_meat();
     async let oven = preheat_oven(350);
 
-    async let dish = Dish(ingredients: [veggies.await?, meat.await?]);
-    oven.await.cook(dish.await, Duration::mins(3 * 60)).await
+    async let dish = Dish(&[veggies.await?, meat.await?]);
+    oven.await.cook(dish.await, Duration::from_mins(3 * 60)).await
 }
 ```
 
@@ -136,8 +136,8 @@ fn make_dinner() -> SomeResult<Meal> {
     async let meat = marinate_meat();
     async let oven = preheat_oven(350);
 
-    async let dish = Dish(ingredients: [veggies.await?, meat.await?]);
-    oven.await.cook(dish.await, Duration::mins(3 * 60)).await
+    async let dish = Dish(&[veggies.await?, meat.await?]);
+    oven.await.cook(dish.await, Duration::from_mins(3 * 60)).await
 }
 ```
 
@@ -151,8 +151,8 @@ fn make_dinner() -> SomeResult<Meal> {
     let meat = marinate_meat();
     let oven = preheat_oven(350);
 
-    let dish = Dish(ingredients: [veggies?, meat?]);
-    oven.cook(dish, Duration::mins(3 * 60))
+    let dish = Dish(&[veggies?, meat?]);
+    oven.cook(dish, Duration::from_mins(3 * 60))
 }
 ```
 
