@@ -167,9 +167,9 @@ easier to read.
 
 This is not the first proposal to suggest an `async let` notation for async
 Rust; to our knowledge that would be Conrad Ludgate in their [async let blog
-post](https://conradludgate.com/posts/async-let). However the didn't seem to
-mention Swift's work on the topic, and just like Swift it was based on the idea
-of multi-threaded tasks - not Rust's lightweight futures primitive.
+post](https://conradludgate.com/posts/async-let). However just like in Swift it
+was based on the idea of managed multi-threaded tasks - not Rust's unmanaged,
+lightweight futures primitive.
 
 A version of this is likely possible for multi-threaded code too; ostensibly via
 some kind of `par` keyword (`par let` / `par async let` / `par for await..in`).
