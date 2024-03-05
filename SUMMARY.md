@@ -15,6 +15,7 @@
     - [Postfix question mark](./evaluation/syntax/postfix-question-mark.md)
     - [Where effect bounds](./evaluation/syntax/where-effect-bounds.md)
   - [Pattern Types and Backwards Compatibility](./evaluation/pattern-types.md)
+  - [Auto Concurrency](./evaluation/auto-concurrency.md)
 - [📚 Explainer](./explainer/README.md)
   - [Effect Generic Trait Declarations](./explainer/effect-generic-trait-declarations.md)
 - [📦 Archive](./archive/README.md)
