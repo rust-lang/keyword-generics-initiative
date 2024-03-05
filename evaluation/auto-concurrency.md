@@ -83,26 +83,24 @@ main differences as it comes to what we'd want to do here are three-fold:
    expressions is not supported. This is because as mentioned earlier: functions
    may permanently yield control flow at `.await` points, and so they have to be
    called out in the source code.
-3. In Rust many keywords exist in postfix position and have a guaranteed
-   evaluation order. Combining this with keywords in prefix position would lead
-   to issues.
 
 For these reasons we can't quite do what Swift does - but I believe we could
 probably do something similar. From a language perspective, it seems like it
-should be possible to do a similar system to `async let` by leveraging a new
-keyword we'll call `.co` (short for "concurrent"). Any number of `.co.await`
-statements can be joined together by the compiler into a single control-flow
-graph, as long as their outputs don't depend on each other. And if we're calling
-`.co.await?` we could even introduce the right `try_join` calls to early-abort.
+should be possible to do a similar system to `async let`. Any number of `async
+let` statements can be joined together by the compiler into a single
+control-flow graph, as long as their outputs don't depend on each other. And if
+we're calling `.await?` on `async let` statements we can even ensure to insert
+calls to `try_join` so concurrently executing functions can early abort on
+error.
 
 ```rust
 async fn make_dinner() -> SomeResult<Meal> {
-    let veggies = chop_vegetables().co.await?;         // 1. concurrent with: 2, 3
-    let meat = marinate_meat().co.await?;              // 2. concurrent with: 1, 3
-    let oven = preheat_oven(350).co.await;             // 3. concurrent with: 1, 2, 4
+    async let veggies = chop_vegetables();  // 1. concurrent with: 2, 3
+    async let meat = marinate_meat();       // 2. concurrent with: 1, 3
+    async let oven = preheat_oven(350);     // 3. concurrent with: 1, 2, 4
 
-    let dish = Dish(&[veggies, meat]).co.await;        // 4. depends on: 1, 2, concurrent with: 3
-    oven.cook(dish, Duration::from_mins(3 * 60)).await // 5. depends on: 3, 4, not concurrent
+    async let dish = Dish(&[veggies.await?, meat.await?]);   // 4. depends on: 1, 2, concurrent with: 3
+    oven.cook(dish.await, Duration::from_mins(3 * 60)).await // 5. depends on: 3, 4, not concurrent
 }
 ```
 
@@ -133,18 +131,18 @@ The main premise of `#[maybe(async)]` notations is that they can take sequential
 code and optionally run them without blocking. Under the system described in
 this post that code could not only be non-blocking, it could also be concurrent.
 Taking the system we're describing in the "Effect Generic Function Bodies and
-Bounds" draft, we could write our `.co.await`-based code example as follows to
+Bounds" draft, we could write our `async let`-based code example as follows to
 make it conditional over the `async` effect:
 
 ```rust
 #[maybe(async)]  // <- changed `async fn` to `#[maybe(async)] fn`
 fn make_dinner() -> SomeResult<Meal> {
-    let veggies = chop_vegetables().co.await?;
-    let meat = marinate_meat().co.await?;
-    let oven = preheat_oven(350).co.await;
+    async let veggies = chop_vegetables();
+    async let meat = marinate_meat();
+    async let oven = preheat_oven(350);
 
-    let dish = Dish(&[veggies, meat]).co.await;
-    oven.cook(dish, Duration::from_mins(3 * 60)).await
+    async let dish = Dish(&[veggies.await?, meat.await?]);
+    oven.cook(dish.await, Duration::from_mins(3 * 60)).await
 }
 ```
 
@@ -154,11 +152,11 @@ Rust's ad-hoc async capabilities.
 
 ```rust
 fn make_dinner() -> SomeResult<Meal> {
-    let veggies = chop_vegetables()?;
-    let meat = marinate_meat()?;
+    let veggies = chop_vegetables();
+    let meat = marinate_meat();
     let oven = preheat_oven(350);
 
-    let dish = Dish(&[veggies, meat]);
+    let dish = Dish(&[veggies?, meat?]);
     oven.cook(dish, Duration::from_mins(3 * 60))
 }
 ```
@@ -178,7 +176,7 @@ unmanaged futures. Rather than needing to manually convert linear code into a
 concurrent directed graph, the compiler could do that for us. Here is an example
 code as we would write it today using the
 [`Join::join`](https://docs.rs/futures-concurrency/latest/futures_concurrency/future/trait.Join.html)
-operation, compared to a high-level `.co.await` based variant which would
+operation, compared to a high-level `async let` based variant which would
 desugar into the same code.
 
 ```rust
@@ -194,26 +192,26 @@ async fn make_dinner() -> SomeResult<Meal> {
     oven.cook(dish, Duration::from_mins(3 * 60)).await
 }
 
-/// An automatic concurrent implementation using a hypothetical `.co.await`
+/// An automatic concurrent implementation using a hypothetical `async let`
 /// feature. This would desugar into equivalent code as the manual example.
 async fn make_dinner() -> SomeResult<Meal> {
-    let veggies = chop_vegetables().co.await?;
-    let meat = marinate_meat().co.await?;
-    let oven = preheat_oven(350).co.await;
+    async let veggies = chop_vegetables();  // 1. concurrent with: 2, 3
+    async let meat = marinate_meat();       // 2. concurrent with: 1, 3
+    async let oven = preheat_oven(350);     // 3. concurrent with: 1, 2, 4
 
-    let dish = Dish(&[veggies, meat]).co.await;
-    oven.cook(dish, Duration::from_mins(3 * 60)).await
+    async let dish = Dish(&[veggies.await?, meat.await?]);   // 4. depends on: 1, 2, concurrent with: 3
+    oven.cook(dish.await, Duration::from_mins(3 * 60)).await // 5. depends on: 3, 4, not concurrent
 }
 ```
 
 This is not the first proposal to suggest an some form of concurrent notation
 for async Rust; to our knowledge that would be Conrad Ludgate in their [async
 let blog post](https://conradludgate.com/posts/async-let). However just like in
-Swift it was based on the idea of managed multi-threaded tasks - not Rust's
-unmanaged, lightweight futures primitive.
+Swift it seems to be based on the idea of managed multi-threaded tasks - not
+Rust's unmanaged, lightweight futures primitive.
 
 A version of this is likely possible for multi-threaded code too; ostensibly via
-some kind of `par` keyword (`.par` / `par for await..in`). A full design is out
+some kind of `par` keyword (`par let` / `par for await..in`). A full design is out
 of scope for this post; but it should be possible to improve Rust's parallel
 system in both async and non-async Rust alike (using tasks and threads
 respectively).
