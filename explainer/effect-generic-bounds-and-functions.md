@@ -155,8 +155,8 @@ in [RFC 0000](), and adding support for `async/.await` just required some extra
 `#[maybe(async)]` annotations. This becomes more interesting once we start
 looking to not only allow traits to be generic over the `async` effect, but
 *functions* and *trait bounds* as well. The way we can do that is fairly
-*mechanical: all we have to do is add some extra `#[maybe(async)]` notations to
-*the function signature, and some extra `.await`s inside the function body.
+mechanical: all we have to do is add some extra `#[maybe(async)]` notations to
+the function signature, and some extra `.await`s inside the function body.
 
 ```rust
 /// Iterate over all numbers in the
