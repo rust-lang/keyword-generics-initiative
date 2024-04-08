@@ -293,6 +293,12 @@ pub trait Read {
 
 ## TODO: Lowering
 
+_NOTE: this section is incomplete and in-progress. While we know it is possible
+because we have implemented a working version of this outside of the compiler,
+there are changes in the compiler happening which means this section may change.
+Once those changes have landed, this section should be rewritten to match that.
+Until that time please consider this section incomplete and subject to change._
+
 Let's continue with our earlier example of the trait `Iterator` and the function
 `sum` which both have conditional support for the `async` effect via
 `#[maybe(async)]`. In its base form the trait `Iterator` looks like this:
