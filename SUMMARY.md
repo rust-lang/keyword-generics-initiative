@@ -38,4 +38,3 @@
   - [MIR desugaring](./archive/evaluation/mir-desugaring.md)
   - [Overloading](./archive/evaluation/overloading-keyword-generics.md)
   - [Prior Art](./archive/evaluation/prior-art.md)
-- [😕 FAQ](./FAQ.md)
