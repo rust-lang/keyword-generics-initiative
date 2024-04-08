@@ -412,6 +412,11 @@ pub trait Read {
 </span></code></pre></pre>
 <h1 id="reference-level-explanation"><a class="header" href="#reference-level-explanation">Reference-level explanation</a></h1>
 <h2 id="todo-lowering"><a class="header" href="#todo-lowering">TODO: Lowering</a></h2>
+<p><em>NOTE: this section is incomplete and in-progress. While we know it is possible
+because we have implemented a working version of this outside of the compiler,
+there are changes in the compiler happening which means this section may change.
+Once those changes have landed, this section should be rewritten to match that.
+Until that time please consider this section incomplete and subject to change.</em></p>
 <p>Let's continue with our earlier example of the trait <code>Iterator</code> and the function
 <code>sum</code> which both have conditional support for the <code>async</code> effect via
 <code>#[maybe(async)]</code>. In its base form the trait <code>Iterator</code> looks like this:</p>
