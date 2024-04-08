@@ -168,6 +168,17 @@ would also work. It would, however, be by far the most convenient way of
 creating parity between both contexts. As well as make async Rust code that much
 easier to read.
 
+## A note on syntax
+
+An earlier version of this document proposed using `.co.await`, `.co_await`,
+just `.co` or some other keyword to take the place of `async let` to indicate a
+concurrent `.await` can happen. The feasibility of syntax like that is not
+clear; though there would likely be distinct benefits to preserving the postfix
+nature of existing notations. Any further exploration of this direction should
+consider alternate syntaxes to `async let`. In particular as concurrent
+execution of `for await` loops is something that's also desirable, and would
+likely want syntax parity with concurrent execution of futures.
+
 ## Conclusion
 
 In this document we describe a mechanism inspired by Swift's `async let`
