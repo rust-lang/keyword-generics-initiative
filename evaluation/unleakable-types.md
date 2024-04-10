@@ -229,10 +229,11 @@ would enable for these to be introduced.
 
 ## On the choice of keywords
 
-None of the keywords or syntax proposed in this post are intended to be final.
-The emphasis of this post is on the semantics of the system and showing how we
-can express linear types in a consistent way by leveraging the framework of
-effect generics.
+All keywords and syntax used in this post should be interpreted as placeholders
+only. It's hard to show examples if you don't name things, so we've picked some
+names to make the example easier to follow. The emphasis of this post is on the
+semantics of the system and showing how we can express linear types in a
+consistent way by leveraging the framework of effect generics.
 
 ## References
 
