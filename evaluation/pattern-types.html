@@ -421,6 +421,25 @@ boon.</li>
 currently takes a <code>usize</code>, but would want to take a <code>usize is 1..</code>. The same is
 true for the unstable <code>Iterator::array_chunks</code> and <code>Iterator::map_windows</code>.</li>
 </ul>
+<h2 id="a-note-on-subtyping"><a class="header" href="#a-note-on-subtyping">A note on subtyping</a></h2>
+<p>So far we have assumed that pattern types will subtype. That means that if we
+have a <code>u32 is 0..10</code>, we can pass that anywhere a <code>u32</code> is accepted. And if we
+have a function that returns a <code>u32</code>, it would not be a breaking change to
+restrict that to become a pattern. Enabling patterns to subtype would be
+complicated, and may not be reasonably possible. If that is the case, then
+changing any argument or return type in any existing API would be
+backwards-incompatible.</p>
+<p>Even if types don't strictly sub-type, it is likely still going to be possible
+to cast from pattern types back to their base types since it's infallible and
+should be supported by the language. That means the following would likely be
+supported:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x: u8 as 0..10 = 2;
+let x: u8 = x as u8;
+<span class="boring">}
+</span></code></pre></pre>
 
                     </main>
 
