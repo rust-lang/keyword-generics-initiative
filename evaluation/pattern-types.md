@@ -280,3 +280,13 @@ restrict that to become a pattern. Enabling patterns to subtype would be
 complicated, and may not be reasonably possible. If that is the case, then
 changing any argument or return type in any existing API would be
 backwards-incompatible.
+
+Even if types don't strictly sub-type, it is likely still going to be possible
+to cast from pattern types back to their base types since it's infallible and
+should be supported by the language. That means the following would likely be
+supported:
+
+```rust
+let x: u8 as 0..10 = 2;
+let x: u8 = x as u8;
+```
