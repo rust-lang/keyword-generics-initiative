@@ -270,3 +270,23 @@ want to leverage pattern types as inputs:
 [`Iterator::step_by`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.step_by)
 currently takes a `usize`, but would want to take a `usize is 1..`. The same is
 true for the unstable `Iterator::array_chunks` and `Iterator::map_windows`.
+
+## A note on subtyping
+
+So far we have assumed that pattern types will subtype. That means that if we
+have a `u32 is 0..10`, we can pass that anywhere a `u32` is accepted. And if we
+have a function that returns a `u32`, it would not be a breaking change to
+restrict that to become a pattern. Enabling patterns to subtype would be
+complicated, and may not be reasonably possible. If that is the case, then
+changing any argument or return type in any existing API would be
+backwards-incompatible.
+
+Even if types don't strictly sub-type, it is likely still going to be possible
+to cast from pattern types back to their base types since it's infallible and
+should be supported by the language. That means the following would likely be
+supported:
+
+```rust
+let x: u8 as 0..10 = 2;
+let x: u8 = x as u8;
+```
