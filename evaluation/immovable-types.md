@@ -73,6 +73,14 @@ please do so now. Much of the conversation around shapes and tradeoffs around
 API design is discussed there.
 
 ```rust
+let movable = Movable::new(value1, value2);          // Type can be moved
+thread::spawn(move || {
+    let movable = movable;                           // Move the type
+    let immovable: Immovable<_, _> = movable.into(); // Type can no longer be moved
+})
+```
+
+```rust
 //! Create an immovable type.
 immovable struct Immovable<immovable T, U> {
     immovable pinned: T
